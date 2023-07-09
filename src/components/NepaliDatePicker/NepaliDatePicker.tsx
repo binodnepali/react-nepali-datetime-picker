@@ -4,6 +4,14 @@ import ExpandMoreIcon from '@assets/expand_more.svg';
 import NextIcon from '@assets/chevron_right.svg';
 import PrevIcon from '@assets/chevron_left.svg';
 
+import {
+  getDays,
+  getDates,
+  getCurrentNepaliDate,
+  getMonths,
+  getYears,
+} from '../../utils/date-fns';
+
 interface NepaliDatePickerProps {
   className?: string;
 }
@@ -14,6 +22,71 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
   const [showPicker, setShowPicker] = useState(false);
 
   const [showYearSelector, setShowYearSelector] = useState(false);
+
+  const years = getYears('ne');
+  const months = getMonths('ne');
+  const days = getDays('ne');
+
+  const { date, month, year } = getCurrentNepaliDate();
+
+  const [currentYear, setCurrentYear] = useState(
+    years.find((y) => y.value === year)
+  );
+  const [currentMonth, setCurrentMonth] = useState(
+    months.find((m) => m.value === month)
+  );
+  const dates = getDates('ne', currentYear?.value, currentMonth?.value);
+  const currentDate = dates.find((d) => d.value === date);
+
+  const handleOnYearClick = (year: number) => {
+    setCurrentYear(() => years.find((y) => y.value === year));
+    setShowYearSelector(false);
+  };
+
+  const handleOnNextClick = () => {
+    if (!currentYear || !currentMonth) {
+      return;
+    }
+
+    const nextMonth = currentMonth.value + 1;
+    const nextYear = currentYear.value + 1;
+
+    if (
+      nextMonth > months.length - 1 &&
+      years.find((y) => y.value === nextYear)
+    ) {
+      setCurrentYear(() => years.find((y) => y.value === nextYear));
+      setCurrentMonth(() => months.find((m) => m.value === 0));
+      return;
+    }
+
+    if (nextMonth > months.length - 1) {
+      return;
+    }
+
+    setCurrentMonth(() => months.find((m) => m.value === nextMonth));
+  };
+
+  const handleOnPrevClick = () => {
+    if (!currentYear || !currentMonth) {
+      return;
+    }
+
+    const prevMonth = currentMonth.value - 1;
+    const prevYear = currentYear.value - 1;
+
+    if (prevMonth < 0 && years.find((y) => y.value === prevYear)) {
+      setCurrentYear(() => years.find((y) => y.value === prevYear));
+      setCurrentMonth(() => months.find((m) => m.value === 11));
+      return;
+    }
+
+    if (prevMonth < 0) {
+      return;
+    }
+
+    setCurrentMonth(() => months.find((m) => m.value === prevMonth));
+  };
 
   return (
     <div className={className}>
@@ -31,74 +104,59 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
         <div className='bg-neutral-50 pt-4 px-4 pb-8'>
           <div className='flex flex-row justify-between'>
             <div className='flex flex-row gap-2 items-center'>
-              <span>Aashadha</span>
-              <span>2080</span>
+              <span>{currentMonth?.label}</span>
+              <span>{currentYear?.label}</span>
               <ExpandMoreIcon
                 onClick={() => setShowYearSelector((value) => !value)}
               />
             </div>
 
             <div className='grid grid-cols-2 gap-2'>
-              <PrevIcon />
-              <NextIcon />
+              <PrevIcon onClick={handleOnPrevClick} />
+              <NextIcon onClick={handleOnNextClick} />
             </div>
           </div>
 
           {!showYearSelector && (
             <>
               <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
+                {days.map((day) => (
+                  <span key={day.value}>{day.label}</span>
+                ))}
               </div>
 
               <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-                <span>11</span>
-                <span>12</span>
-                <span>13</span>
-                <span>14</span>
-                <span>15</span>
-                <span>16</span>
-                <span>17</span>
-                <span>18</span>
-                <span>19</span>
-                <span>20</span>
-                <span>21</span>
-                <span>22</span>
-                <span>23</span>
-                <span>24</span>
-                <span>25</span>
-                <span>26</span>
-                <span>27</span>
-                <span>28</span>
-                <span>29</span>
-                <span>30</span>
-                <span>31</span>
+                {dates.map((date) => (
+                  <span
+                    key={date.value}
+                    className={`${
+                      date.value === currentDate?.value
+                        ? 'border border-green-500 rounded-md px-2 py-1'
+                        : ''
+                    }`}
+                  >
+                    {date.label}
+                  </span>
+                ))}
               </div>
             </>
           )}
 
           {showYearSelector && (
             <>
-              <div className='grid grid-cols-4 gap-2 justify-items-center mt-4'>
-                {[
-                  2080, 2081, 2082, 2083, 2084, 2085, 2086, 2087, 2088, 2089,
-                ].map((year) => (
-                  <span key={year}>{year}</span>
+              <div className='grid grid-cols-4 gap-2 justify-items-center mt-4 max-h-xs'>
+                {years.map((year) => (
+                  <span
+                    key={year.value}
+                    className={`${
+                      year.value === currentYear?.value
+                        ? 'border border-green-500 rounded-md px-2 py-1'
+                        : ''
+                    } hover:cursor-pointer`}
+                    onClick={() => handleOnYearClick(year.value)}
+                  >
+                    {year.label}
+                  </span>
                 ))}
               </div>
             </>
