@@ -11,14 +11,9 @@ import {
   getMonths,
   getYears,
 } from '../../utils/date-fns';
+import { Button } from '../ui/Button/Button';
 
-interface NepaliDatePickerProps {
-  className?: string;
-}
-
-export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
-  className,
-}: NepaliDatePickerProps) => {
+export const NepaliDatePicker: React.FC = () => {
   const [showPicker, setShowPicker] = useState(false);
 
   const [showYearSelector, setShowYearSelector] = useState(false);
@@ -89,7 +84,7 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
   };
 
   return (
-    <div className={className}>
+    <>
       <div className='flex flex-col space-y-2'>
         <input
           type='text'
@@ -97,6 +92,7 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
           className='border border-gray-300 rounded-md px-2 py-1'
           placeholder='Select Date'
           onClick={() => setShowPicker(true)}
+          onBlur={() => setShowPicker(false)}
         />
       </div>
 
@@ -106,20 +102,34 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
             <div className='flex flex-row gap-2 items-center'>
               <span>{currentMonth?.label}</span>
               <span>{currentYear?.label}</span>
-              <ExpandMoreIcon
-                onClick={() => setShowYearSelector((value) => !value)}
-              />
+              <Button onClick={() => setShowYearSelector((value) => !value)}>
+                <ExpandMoreIcon
+                  width='36'
+                  height='36'
+                  className={`transition-transform duration-500
+                    ${showYearSelector ? 'transform rotate-180' : ''}
+                      `}
+                />
+              </Button>
             </div>
 
-            <div className='grid grid-cols-2 gap-2'>
-              <PrevIcon onClick={handleOnPrevClick} />
-              <NextIcon onClick={handleOnNextClick} />
+            <div
+              className={`grid grid-cols-2 gap-2 ${
+                showYearSelector ? 'hidden' : ''
+              }`}
+            >
+              <Button onClick={handleOnPrevClick}>
+                <PrevIcon width='36' height='36' />
+              </Button>
+              <Button onClick={handleOnNextClick}>
+                <NextIcon width='36' height='36' />
+              </Button>
             </div>
           </div>
 
           {!showYearSelector && (
             <>
-              <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
+              <div className='grid grid-cols-7 gap-2 justify-items-center mt-4 '>
                 {days.map((day) => (
                   <span key={day.value}>{day.label}</span>
                 ))}
@@ -127,42 +137,36 @@ export const NepaliDatePicker: React.FC<NepaliDatePickerProps> = ({
 
               <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
                 {dates.map((date) => (
-                  <span
+                  <Button
                     key={date.value}
-                    className={`${
-                      date.value === currentDate?.value
-                        ? 'border border-green-500 rounded-md px-2 py-1'
-                        : ''
-                    }`}
+                    className={`w-9 h-9 p-2`}
+                    active={currentDate?.value === date.value}
                   >
-                    {date.label}
-                  </span>
+                    <span>{date.label}</span>
+                  </Button>
                 ))}
               </div>
             </>
           )}
 
           {showYearSelector && (
-            <>
+            <div className='max-h-72 overflow-y-auto'>
               <div className='grid grid-cols-4 gap-2 justify-items-center mt-4 max-h-xs'>
-                {years.map((year) => (
-                  <span
-                    key={year.value}
-                    className={`${
-                      year.value === currentYear?.value
-                        ? 'border border-green-500 rounded-md px-2 py-1'
-                        : ''
-                    } hover:cursor-pointer`}
-                    onClick={() => handleOnYearClick(year.value)}
+                {years.map((y) => (
+                  <Button
+                    key={y.value}
+                    onClick={() => handleOnYearClick(y.value)}
+                    active={year === y.value}
+                    variant='pilled'
                   >
-                    {year.label}
-                  </span>
+                    <span>{y.label}</span>
+                  </Button>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
