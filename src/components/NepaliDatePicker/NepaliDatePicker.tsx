@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import ExpandMoreIcon from '@assets/expand_more.svg';
 import NextIcon from '@assets/chevron_right.svg';
@@ -12,9 +12,15 @@ import {
   getYears,
 } from '../../utils/date-fns';
 import { Button } from '../ui/Button/Button';
+import { Modal } from '../ui/Modal/Modal';
 
 export const NepaliDatePicker: React.FC = () => {
-  const [showPicker, setShowPicker] = useState(false);
+  const [modalPosition, setModalPosition] = useState<
+    | {
+        top?: number;
+      }
+    | undefined
+  >();
 
   const [showYearSelector, setShowYearSelector] = useState(false);
 
@@ -83,90 +89,110 @@ export const NepaliDatePicker: React.FC = () => {
     setCurrentMonth(() => months.find((m) => m.value === prevMonth));
   };
 
+  const handleOnInputDateClick = (
+    event: React.MouseEvent<HTMLInputElement>
+  ) => {
+    const element = event.currentTarget.getBoundingClientRect();
+
+    setModalPosition(() => ({
+      top: element?.height + 4,
+    }));
+  };
+
+  const Calendar = () => {
+    return (
+      <div className='bg-neutral-50 py-4 px-4'>
+        <div className='flex flex-row justify-between'>
+          <div className='flex flex-row gap-2 items-center'>
+            <span>{currentMonth?.label}</span>
+            <span>{currentYear?.label}</span>
+            <Button onClick={() => setShowYearSelector((value) => !value)}>
+              <ExpandMoreIcon
+                width='36'
+                height='36'
+                className={`transition-transform duration-500
+          ${showYearSelector ? 'transform rotate-180' : ''}
+            `}
+              />
+            </Button>
+          </div>
+
+          <div
+            className={`grid grid-cols-2 gap-2 ${
+              showYearSelector ? 'hidden' : ''
+            }`}
+          >
+            <Button onClick={handleOnPrevClick}>
+              <PrevIcon width='36' height='36' />
+            </Button>
+            <Button onClick={handleOnNextClick}>
+              <NextIcon width='36' height='36' />
+            </Button>
+          </div>
+        </div>
+
+        {!showYearSelector && (
+          <>
+            <div className='grid grid-cols-7 gap-2 justify-items-center mt-4 '>
+              {days.map((day) => (
+                <span key={day.value}>{day.label}</span>
+              ))}
+            </div>
+
+            <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
+              {dates.map((date) => (
+                <Button
+                  key={date.value}
+                  className={`w-9 h-9 p-2`}
+                  active={currentDate?.value === date.value}
+                >
+                  <span>{date.label}</span>
+                </Button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {showYearSelector && (
+          <div className='max-h-72 overflow-y-auto'>
+            <div className='grid grid-cols-4 gap-2 justify-items-center mt-4 max-h-xs'>
+              {years.map((y) => (
+                <Button
+                  key={y.value}
+                  onClick={() => handleOnYearClick(y.value)}
+                  active={year === y.value}
+                  variant='pilled'
+                >
+                  <span>{y.label}</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <>
+    <div className='relative'>
       <div className='flex flex-col space-y-2'>
         <input
           type='text'
           id='date-picker'
           className='border border-gray-300 rounded-md px-2 py-1'
           placeholder='Select Date'
-          onClick={() => setShowPicker(true)}
-          onBlur={() => setShowPicker(false)}
+          onClick={handleOnInputDateClick}
         />
       </div>
 
-      {showPicker && (
-        <div className='bg-neutral-50 pt-4 px-4 pb-8'>
-          <div className='flex flex-row justify-between'>
-            <div className='flex flex-row gap-2 items-center'>
-              <span>{currentMonth?.label}</span>
-              <span>{currentYear?.label}</span>
-              <Button onClick={() => setShowYearSelector((value) => !value)}>
-                <ExpandMoreIcon
-                  width='36'
-                  height='36'
-                  className={`transition-transform duration-500
-                    ${showYearSelector ? 'transform rotate-180' : ''}
-                      `}
-                />
-              </Button>
-            </div>
-
-            <div
-              className={`grid grid-cols-2 gap-2 ${
-                showYearSelector ? 'hidden' : ''
-              }`}
-            >
-              <Button onClick={handleOnPrevClick}>
-                <PrevIcon width='36' height='36' />
-              </Button>
-              <Button onClick={handleOnNextClick}>
-                <NextIcon width='36' height='36' />
-              </Button>
-            </div>
-          </div>
-
-          {!showYearSelector && (
-            <>
-              <div className='grid grid-cols-7 gap-2 justify-items-center mt-4 '>
-                {days.map((day) => (
-                  <span key={day.value}>{day.label}</span>
-                ))}
-              </div>
-
-              <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
-                {dates.map((date) => (
-                  <Button
-                    key={date.value}
-                    className={`w-9 h-9 p-2`}
-                    active={currentDate?.value === date.value}
-                  >
-                    <span>{date.label}</span>
-                  </Button>
-                ))}
-              </div>
-            </>
-          )}
-
-          {showYearSelector && (
-            <div className='max-h-72 overflow-y-auto'>
-              <div className='grid grid-cols-4 gap-2 justify-items-center mt-4 max-h-xs'>
-                {years.map((y) => (
-                  <Button
-                    key={y.value}
-                    onClick={() => handleOnYearClick(y.value)}
-                    active={year === y.value}
-                    variant='pilled'
-                  >
-                    <span>{y.label}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+      {modalPosition && (
+        <Modal
+          onClose={() => setModalPosition(undefined)}
+          top={modalPosition.top}
+        >
+          <Calendar />
+        </Modal>
       )}
-    </>
+    </div>
   );
 };
