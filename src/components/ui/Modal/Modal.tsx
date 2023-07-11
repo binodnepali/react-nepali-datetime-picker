@@ -1,12 +1,10 @@
 interface ModalProps {
   children: React.ReactNode;
-  top?: number;
   onClose?: () => void;
 }
 
 export const Modal: React.FC<ModalProps> = ({
   children,
-  top,
   onClose,
 }: ModalProps) => {
   return (
@@ -17,9 +15,7 @@ export const Modal: React.FC<ModalProps> = ({
       />
 
       <div
-        className={`fixed md:absolute h-full w-full inset-0 ${
-          top ? `md:top-[${top}px]` : ''
-        } bg-black bg-opacity-50 flex md:block items-center justify-center z-[1000]`}
+        className={`fixed md:absolute h-full w-full inset-0 md:top-9 bg-black bg-opacity-50 flex md:block items-center justify-center z-[1000]`}
       >
         <div className='md:hidden'>
           <div

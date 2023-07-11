@@ -1,6 +1,6 @@
 import { convertToNepaliDigit } from './convertToNepaliDigit';
 
-import daysJson from '../data/days.json';
+import { yearsDateMapInMonth } from '../constants/yearsDateMapInMonth';
 
 export const startYear = 2000;
 
@@ -13,12 +13,12 @@ function generateYears(startYear: number, endYear: number) {
     ne: string;
     en: string;
     value: number;
-    daysInMonth: number[];
+    daysInMonth: [number, number, number][];
   }[] = [];
 
-  const days = daysJson as {
+  const days = yearsDateMapInMonth as unknown as {
     [year: number]: {
-      daysInMonth: number[];
+      daysInMonth: [number, number, number][];
     };
   };
 

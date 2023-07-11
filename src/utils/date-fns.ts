@@ -1,3 +1,5 @@
+import { yearsDateMapInMonth } from '../constants/yearsDateMapInMonth';
+
 import { years } from './year';
 import { months } from './month';
 import { days } from './day';
@@ -47,12 +49,14 @@ export const getDates = (lang: Language, year?: number, month?: number) => {
   return newDates.map((date) => {
     if (lang === 'ne') {
       return {
+        id: date.id,
         value: date.value,
         label: date.ne,
       };
     }
 
     return {
+      id: date.id,
       value: date.value,
       label: date.en,
     };
@@ -75,24 +79,53 @@ export const getDays = (lang: Language, short = true) => {
   });
 };
 
+const GREGORIAN_START_YEAR = 1943;
+const NEPALI_START_YEAR = 2000;
 export const getCurrentNepaliDate = () => {
-  const date = new Date(); // Get current date in Gregorian calendar
-  const currentYear = date.getFullYear();
-  const currentMonth = date.getMonth() + 1; // Adding 1 since month is zero-based
-  const currentDate = date.getDate();
+  const date = new Date();
 
-  let nepaliYear = currentYear + 57; // Convert Gregorian year to Nepali year
+  const localizedDate = date.toLocaleString('ne-NP', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: 'Asia/Kathmandu',
+  });
+
+  const [currentDate, currentMonth, currentYear] = localizedDate
+    .split('/')
+    .map((item) => parseInt(item, 10));
+
+  let nepaliYear = currentYear + (NEPALI_START_YEAR - GREGORIAN_START_YEAR); // Convert Gregorian year to Nepali year
   let nepaliMonth = currentMonth + 8; // Add an offset of 8 to convert Gregorian month to Nepali month
-  let nepaliDate = currentDate + 16; // Add an offset of 16 to convert Gregorian date to Nepali date
+  let nepaliDate = currentDate + 15; // Add an offset of 15 to convert Gregorian date to Nepali date
 
   const nepaliMonthsInYear = 12;
-  const nepaliDaysInMonth = [30, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30]; // Nepali days in each month
 
   // Adjust Nepali month and year if it exceeds the maximum values
   if (nepaliMonth > nepaliMonthsInYear) {
-    nepaliYear++;
     nepaliMonth -= nepaliMonthsInYear;
   }
+
+  // Adjust Nepali year if it exceeds the maximum value
+  if (nepaliMonth - 1 === 11) {
+    nepaliYear += 1;
+  }
+
+  const days = yearsDateMapInMonth as unknown as {
+    [year: number]: {
+      daysInMonth: [number, number, number][];
+    };
+  };
+  const nepaliDaysInMonth = days[nepaliYear].daysInMonth.map((day) => {
+    if (typeof day === 'number') {
+      return day;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, daysInMonth, __] = day;
+
+    return daysInMonth;
+  });
 
   // Adjust Nepali day if it exceeds the maximum value for the current month
   if (nepaliDate > nepaliDaysInMonth[nepaliMonth - 1]) {
@@ -100,8 +133,8 @@ export const getCurrentNepaliDate = () => {
   }
 
   return {
-    year: nepaliYear - 1,
+    year: nepaliYear,
     month: nepaliMonth - 1,
-    date: nepaliDate - 1,
+    date: nepaliDate,
   };
 };

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import ExpandMoreIcon from '@assets/expand_more.svg';
 import NextIcon from '@assets/chevron_right.svg';
@@ -7,20 +7,15 @@ import PrevIcon from '@assets/chevron_left.svg';
 import {
   getDays,
   getDates,
-  getCurrentNepaliDate,
   getMonths,
   getYears,
+  getCurrentNepaliDate,
 } from '../../utils/date-fns';
 import { Button } from '../ui/Button/Button';
 import { Modal } from '../ui/Modal/Modal';
 
 export const NepaliDatePicker: React.FC = () => {
-  const [modalPosition, setModalPosition] = useState<
-    | {
-        top?: number;
-      }
-    | undefined
-  >();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const [showYearSelector, setShowYearSelector] = useState(false);
 
@@ -89,14 +84,8 @@ export const NepaliDatePicker: React.FC = () => {
     setCurrentMonth(() => months.find((m) => m.value === prevMonth));
   };
 
-  const handleOnInputDateClick = (
-    event: React.MouseEvent<HTMLInputElement>
-  ) => {
-    const element = event.currentTarget.getBoundingClientRect();
-
-    setModalPosition(() => ({
-      top: element?.height + 4,
-    }));
+  const handleOnInputDateClick = () => {
+    setShowModal(() => true);
   };
 
   const Calendar = () => {
@@ -142,9 +131,13 @@ export const NepaliDatePicker: React.FC = () => {
             <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
               {dates.map((date) => (
                 <Button
-                  key={date.value}
+                  key={date.id}
                   className={`w-9 h-9 p-2`}
-                  active={currentDate?.value === date.value}
+                  active={
+                    currentDate?.value === date.value &&
+                    year === currentYear?.value &&
+                    month === currentMonth?.value
+                  }
                 >
                   <span>{date.label}</span>
                 </Button>
@@ -185,11 +178,8 @@ export const NepaliDatePicker: React.FC = () => {
         />
       </div>
 
-      {modalPosition && (
-        <Modal
-          onClose={() => setModalPosition(undefined)}
-          top={modalPosition.top}
-        >
+      {showModal && (
+        <Modal onClose={() => setShowModal(() => false)}>
           <Calendar />
         </Modal>
       )}
