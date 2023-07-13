@@ -1,7 +1,7 @@
 {
-  "name": "@nepalibinod9/react-nepali-datetime-picker",
+  "name": "react-nepali-datetime-picker",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.0",
   "type": "module",
   "license": "MIT",
   "main": "dist/index.umd.js",
