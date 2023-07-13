@@ -1,71 +1,126 @@
-## Before getting started
+## Contributing Guide
 
-Make sure you have installed [Node.js 16.8 or higher](https://nodejs.org/en/) on your machine. You can use [nvm](https://github.com/nvm-sh/nvm) to manage multiple node version on your machine.
+Thank you for your interest in contributing to the React Nepali Datetime Picker project! Your contributions will help improve and enhance this library. Please take a moment to review the guidelines before getting started.
 
-## Getting started
+### Before Getting Started
 
-You can set up this project using npm, yarn or pnpm package managers.
+Before you start contributing, please ensure that you have the following prerequisites:
 
-### Clone repo
+* Node.js 16.8 or higher installed on your machine. You can download it from the [official Node.js website](https://nodejs.org/en/). Alternatively, you can use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions.
 
-```bash
-git clone https://github.com/binodnepali/react-nepali-datetime-picker.git
-#or
-git clone git@github.com:binodnepali/react-nepali-datetime-picker.git
-```
+### Getting Started
 
-### Navigate to cloned repo
+To set up the project on your local machine, follow these steps:
 
-```bash
-cd react-nepali-datetime-picker
-```
+1. Clone the repository:
 
-### Install dependencies
+   
 
 ```bash
-pnpm i
-#or
-yarn install
-#or
-npm install
-```
+   git clone https://github.com/binodnepali/react-nepali-datetime-picker.git
+   # or
+   git clone git@github.com:binodnepali/react-nepali-datetime-picker.git
+   ```
 
-### Start development server
+2. Navigate to the cloned repository:
 
-```bash
-pnpm dev
-#or
-yarn dev
-#or
-npm run dev
-```
-
-### Build for production
+   
 
 ```bash
-pnpm build
-#or
-yarn build
-#or
-npm run build
-```
+   cd react-nepali-datetime-picker
+   ```
 
-### Run lint
+3. Install project dependencies:
+
+   
 
 ```bash
-pnpm lint
-#or
-yarn lint
-#or
-npm run lint
-```
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
 
-### Start preview server after build
+4. Start the development server:
+
+   
 
 ```bash
-pnpm preview
-#or
-yarn preview
-#or
-npm run preview
-```
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+5. Build the project for production:
+
+   
+
+```bash
+   npm run build
+   # or
+   yarn build
+   # or
+   pnpm build
+   ```
+
+6. Run lint checks:
+
+   
+
+```bash
+   npm run lint
+   # or
+   yarn lint
+   # or
+   pnpm lint
+   ```
+
+7. Start the preview server after building:
+
+   
+
+```bash
+   npm run preview
+   # or
+   yarn preview
+   # or
+   pnpm preview
+   ```
+
+### Pull Requests
+
+We welcome and appreciate pull requests from the community. If you have any improvements, bug fixes, or new features to contribute, please follow these steps:
+
+1. Fork the repository and create a new branch based on the `main` branch.
+
+2. Make your changes and ensure that the codebase adheres to the project's linting rules.
+
+3. Write tests for your changes if applicable.
+
+4. Commit your changes with descriptive commit messages.
+
+5. Push your branch to your forked repository.
+
+6. Create a pull request from your branch to the `main` branch of the original repository.
+
+7. Provide a clear and concise description of your changes in the pull request, along with any additional context or information that may be useful.
+
+8. Participate in the code review process and address any feedback or suggestions.
+
+### License
+
+By contributing to this project, you agree that your contributions will be licensed under the MIT License. For more details, please see the [LICENSE](./LICENSE) file.
+
+### Author
+
+* Name: Binod Nepali
+* GitHub: [@binodnepali](https://github.com/binodnepali)
+* Email: nepalibinod9@gmail.com
+* Website: [https://binodnepali.me/](https://binodnepali.me/)
+
+If you have any questions, feedback, or need further assistance, feel free to reach out to the author.
+
+Thank you for your valuable contributions to the React Nepali Datetime Picker project! We appreciate your efforts in making this library even better.
