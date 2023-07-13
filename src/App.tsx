@@ -1,4 +1,4 @@
-import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker';
+//import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker';
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ export default function App() {
         </nav>
       </header>
 
-      <main className='bg-gray-100 min-h-screen p-4 md:p-8'>
+      <main className='bg-gray-100  p-4 md:p-8'>
         <h1 className='text-3xl font-bold'>React Nepali Date Time Picker</h1>
         <p className='text-lg text-gray-600 my-2'>
           A simple and reusable date time picker component for React.
@@ -39,7 +39,7 @@ export default function App() {
             Date Picker
           </label>
 
-          <NepaliDatePicker />
+          {/* <NepaliDatePicker /> */}
         </div>
       </main>
     </>

@@ -1,8 +1,26 @@
 {
-  "name": "react-nepali-datetime-picker",
-  "private": true,
-  "version": "1.0.0",
+  "name": "@nepalibinod9/react-nepali-datetime-picker",
+  "private": false,
+  "version": "0.1.2",
   "type": "module",
+  "license": "MIT",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "files": [
+    "/dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=16.8.0"
   },
@@ -10,6 +28,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prepare": "npm run build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -31,6 +50,7 @@
     "postcss": "^8.4.25",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "^3.2.0"
   }
 }

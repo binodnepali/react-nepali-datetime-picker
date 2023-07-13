@@ -20,6 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    /* Aliases */
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -28,8 +29,11 @@
       "@ui/*": ["src/components/ui/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"]
-    }
+    },
+
+    /* type for lib */
+    "typeRoots": ["./dist/index.d.ts", "node_modules/@types"]
   },
-  "include": ["src"],
+  "include": ["src", "src/index.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
