@@ -28,7 +28,8 @@
       "@assets/*": ["src/assets/*"],
       "@ui/*": ["src/components/ui/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"]
     },
 
     /* type for lib */

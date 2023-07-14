@@ -1,13 +1,17 @@
 import { useState } from 'react';
 
-import ExpandMoreIcon from '@assets/expand_more.svg';
-import NextIcon from '@assets/chevron_right.svg';
-import PrevIcon from '@assets/chevron_left.svg';
+import ExpandMoreIcon from '@assets/More.svg';
+import NextIcon from '@assets/Next.svg';
+import PrevIcon from '@assets/Prev.svg';
 
 import { Button } from '@ui/Button/Button';
 import { useNepaliCalendar } from './useNepaliCalendar';
 
-export const NepaliCalendar = () => {
+interface NepaliCalendarProps {
+  className?: string;
+}
+
+export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
   const [showYearSelector, setShowYearSelector] = useState(false);
 
   const {
@@ -75,7 +79,7 @@ export const NepaliCalendar = () => {
   };
 
   return (
-    <div className='bg-neutral-50 py-4 px-4'>
+    <div className={`bg-neutral-50 py-4 px-4 rounded-md ${className || ''}`}>
       <div className='flex flex-row justify-between'>
         <div className='flex flex-row gap-2 items-center'>
           <span>{currentLocalisedMonth?.label}</span>
