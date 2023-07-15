@@ -21,3 +21,13 @@ export const convertToNepaliDigit = (number: number): string => {
 
   return nepaliNumber;
 };
+
+export const addLeadingNepaliZero = (number: number): string => {
+  const nepaliDigit = convertToNepaliDigit(number);
+
+  return number < 10 ? `०${nepaliDigit}` : `${nepaliDigit}`;
+};
+
+export const addLeadingZero = (number: number): string => {
+  return number < 10 ? `0${number}` : `${number}`;
+};

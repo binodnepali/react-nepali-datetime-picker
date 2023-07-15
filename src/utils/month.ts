@@ -1,74 +1,123 @@
 export const months = [
   {
-    en: 'Baishakh',
-    ne: 'बैशाख',
-    value: 0,
-    label: '०१',
+    label: {
+      en: 'Baishakh',
+      ne: 'बैशाख',
+    },
+    value: {
+      en: 0,
+      ne: '०१',
+    },
   },
   {
-    en: 'Jestha',
-    ne: 'जेठ',
-    value: 1,
-    label: '०२',
+    label: {
+      en: 'Jestha',
+      ne: 'जेठ',
+    },
+    value: {
+      en: 1,
+      ne: '०२',
+    },
   },
   {
-    en: 'Ashad',
-    ne: 'असार',
-    value: 2,
-    label: '०३',
+    label: {
+      en: 'Ashadh',
+      ne: 'असार',
+    },
+    value: {
+      en: 2,
+      ne: '०३',
+    },
   },
   {
-    en: 'Shrawan',
-    ne: 'श्रावण',
-    value: 3,
-    label: '०४',
+    label: {
+      en: 'Shrawan',
+      ne: 'श्रावण',
+    },
+    value: {
+      en: 3,
+      ne: '०४',
+    },
   },
   {
-    en: 'Bhadra',
-    ne: 'भाद्र',
-    value: 4,
-    label: '०५',
+    label: {
+      en: 'Bhadra',
+      ne: 'भाद्र',
+    },
+
+    value: {
+      en: 4,
+      ne: '०५',
+    },
   },
   {
-    en: 'Ashwin',
-    ne: 'आश्विन',
-    value: 5,
-    label: '०६',
+    label: {
+      en: 'Ashwin',
+      ne: 'असोज',
+    },
+    value: {
+      en: 5,
+      ne: '०६',
+    },
   },
   {
-    en: 'Kartik',
-    ne: 'कार्तिक',
-    value: 6,
-    label: '०७',
+    label: {
+      en: 'Kartik',
+      ne: 'कार्तिक',
+    },
+    value: {
+      en: 6,
+      ne: '०७',
+    },
   },
   {
-    en: 'Mangsir',
-    ne: 'मङ्सिर',
-    value: 7,
-    label: '०८',
+    label: {
+      en: 'Mangsir',
+      ne: 'मंसिर',
+    },
+    value: {
+      en: 7,
+      ne: '०८',
+    },
   },
   {
-    en: 'Poush',
-    ne: 'पौष',
-    value: 8,
-    label: '०९',
+    label: {
+      en: 'Poush',
+      ne: 'पौष',
+    },
+    value: {
+      en: 8,
+      ne: '०९',
+    },
   },
   {
-    en: 'Magh',
-    ne: 'माघ',
-    value: 9,
-    label: '१०',
+    label: {
+      en: 'Magh',
+      ne: 'माघ',
+    },
+    value: {
+      en: 9,
+      ne: '१०',
+    },
   },
   {
-    en: 'Falgun',
-    ne: 'फाल्गुण',
-    value: 10,
-    label: '११',
+    label: {
+      en: 'Falgun',
+      ne: 'फाल्गुन',
+    },
+    value: {
+      en: 10,
+      ne: '११',
+    },
   },
   {
-    en: 'Chaitra',
-    ne: 'चैत',
-    value: 11,
-    label: '१२',
+    label: {
+      en: 'Chaitra',
+      ne: 'चैत्र',
+    },
+    value: {
+      en: 11,
+      ne: '१२',
+    },
   },
 ] as const;

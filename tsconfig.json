@@ -29,7 +29,8 @@
       "@ui/*": ["src/components/ui/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@types/*": ["src/types/*"]
     },
 
     /* type for lib */

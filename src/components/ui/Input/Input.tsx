@@ -1,64 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { years as localisedYears } from '@utils/year';
-import { months as localisedMonths } from '@utils/month';
-import { dates as localisedDates } from '@constants/date';
-
-const SEPARATOR = '/';
+import { validateDate } from './validation';
+import { Language } from '@/types/Locale';
+import { NepaliDate } from '@/types/NepaliDate';
 
 interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
-  locale?: 'en' | 'ne';
+  lang?: Language;
+  value?: NepaliDate;
 }
-export const Input: React.FC<InputProps> = ({
+export const Input = ({
   icon,
   className,
-  locale = 'ne',
+  lang = 'ne',
+  value,
   ...rest
 }: InputProps): JSX.Element => {
+  const ref = useRef<HTMLInputElement>(null);
+  const [val, setVal] = useState<string>('');
+
   const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    if (locale === 'ne') {
-      const yearValue = value.split(SEPARATOR)[0];
-      const foundYear =
-        localisedYears.findIndex((year) => year.ne === yearValue) !== -1;
+    const { isValid } = validateDate(value, lang);
 
-      const monthValue = value.split(SEPARATOR)[1];
-      const foundMonth =
-        localisedMonths.findIndex((month) => month.label === monthValue) !== -1;
+    setIsValid(() => isValid);
 
-      const dateValue = value.split(SEPARATOR)[2];
-      const foundDate =
-        localisedDates.findIndex((date) => date.label === dateValue) !== -1;
-
-      setIsValid(() => foundYear && foundMonth && foundDate);
-
-      return;
-    }
-
-    if (value === '') {
-      setIsValid(() => true);
-      return;
-    }
-
-    const dateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
-    const isValidDate = dateRegex.test(value);
-    setIsValid(() => isValidDate);
+    setVal(() => value);
   };
+
+  useEffect(() => {
+    const { isValid, value: val } = validateDate(value, lang);
+
+    if (isValid) {
+      setVal(() => val);
+    } else {
+      setIsValid(() => false);
+    }
+  }, [lang, value]);
 
   return (
     <div className='relative'>
       <input
+        ref={ref}
         className={`border border-gray-300 rounded-md px-2 py-2 w-full ${
           className || ''
         }`}
         type='text'
-        placeholder='YYYY/MM/DD'
         autoComplete='off'
         onChange={handleOnChange}
+        value={val}
         {...rest}
       />
 

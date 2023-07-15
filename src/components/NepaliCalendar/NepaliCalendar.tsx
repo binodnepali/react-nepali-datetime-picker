@@ -5,13 +5,27 @@ import NextIcon from '@assets/Next.svg';
 import PrevIcon from '@assets/Prev.svg';
 
 import { Button } from '@ui/Button/Button';
-import { useNepaliCalendar } from './useNepaliCalendar';
+import { useNepaliCalendar } from '@hooks/useNepaliCalendar';
+import { Language } from '@/types/Locale';
+import {
+  addLeadingNepaliZero,
+  addLeadingZero,
+} from '@/utils/convertToNepaliDigit';
+import { NepaliDate } from '@/types/NepaliDate';
 
 interface NepaliCalendarProps {
   className?: string;
+  lang?: Language;
+  separator?: string;
+  onDateSelect?: (date: NepaliDate) => void;
 }
 
-export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
+export const NepaliCalendar = ({
+  className,
+  separator = '/',
+  lang = 'ne',
+  onDateSelect,
+}: NepaliCalendarProps) => {
   const [showYearSelector, setShowYearSelector] = useState(false);
 
   const {
@@ -26,7 +40,44 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
     currentYear,
     currentMonth,
     currentDate,
-  } = useNepaliCalendar();
+  } = useNepaliCalendar({
+    lang,
+  });
+
+  const handleOnSelectDate = (date: {
+    id: string;
+    value: number;
+    label: string;
+  }) => {
+    if (!currentLocalisedYear || !currentLocalisedMonth) {
+      return;
+    }
+
+    if (lang === 'ne') {
+      onDateSelect?.({
+        value: {
+          year: currentLocalisedYear.value,
+          month: currentLocalisedMonth.value.en + 1,
+          date: date.value,
+        },
+        label: `${currentLocalisedYear?.label}${separator}${
+          currentLocalisedMonth?.value.ne
+        }${separator}${addLeadingNepaliZero(date.value)}`,
+      });
+      return;
+    }
+
+    onDateSelect?.({
+      value: {
+        year: currentLocalisedYear.value,
+        month: currentLocalisedMonth.value.en + 1,
+        date: date.value,
+      },
+      label: `${currentLocalisedYear.label}${separator}${addLeadingZero(
+        currentLocalisedMonth.value.en + 1
+      )}${separator}${addLeadingZero(date.value)}`,
+    });
+  };
 
   const handleOnYearClick = (year: number) => {
     setCurrentLocalisedYear(() => years.find((y) => y.value === year));
@@ -38,12 +89,12 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
       return;
     }
 
-    const prevMonth = currentLocalisedMonth.value - 1;
+    const prevMonth = currentLocalisedMonth.value.en - 1;
     const prevYear = currentLocalisedYear.value - 1;
 
     if (prevMonth < 0 && years.find((y) => y.value === prevYear)) {
       setCurrentLocalisedYear(() => years.find((y) => y.value === prevYear));
-      setCurrentLocalisedMonth(() => months.find((m) => m.value === 11));
+      setCurrentLocalisedMonth(() => months.find((m) => m.value.en === 11));
       return;
     }
 
@@ -51,7 +102,9 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
       return;
     }
 
-    setCurrentLocalisedMonth(() => months.find((m) => m.value === prevMonth));
+    setCurrentLocalisedMonth(() =>
+      months.find((m) => m.value.en === prevMonth)
+    );
   };
 
   const handleOnNextClick = () => {
@@ -59,7 +112,7 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
       return;
     }
 
-    const nextMonth = currentLocalisedMonth.value + 1;
+    const nextMonth = currentLocalisedMonth.value.en + 1;
     const nextYear = currentLocalisedYear.value + 1;
 
     if (
@@ -67,7 +120,7 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
       years.find((y) => y.value === nextYear)
     ) {
       setCurrentLocalisedYear(() => years.find((y) => y.value === nextYear));
-      setCurrentLocalisedMonth(() => months.find((m) => m.value === 0));
+      setCurrentLocalisedMonth(() => months.find((m) => m.value.en === 0));
       return;
     }
 
@@ -75,7 +128,9 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
       return;
     }
 
-    setCurrentLocalisedMonth(() => months.find((m) => m.value === nextMonth));
+    setCurrentLocalisedMonth(() =>
+      months.find((m) => m.value.en === nextMonth)
+    );
   };
 
   return (
@@ -125,6 +180,7 @@ export const NepaliCalendar = ({ className }: NepaliCalendarProps) => {
                 active={date.id.includes(
                   `${currentYear}-${currentMonth}-${currentDate}`
                 )}
+                onClick={() => handleOnSelectDate(date)}
               >
                 <span>{date.label}</span>
               </Button>

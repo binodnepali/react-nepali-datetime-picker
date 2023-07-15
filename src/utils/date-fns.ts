@@ -28,13 +28,13 @@ export const getMonths = (lang: Language) => {
     if (lang === 'ne') {
       return {
         value: month.value,
-        label: month.ne,
+        label: month.label.ne,
       };
     }
 
     return {
       value: month.value,
-      label: month.en,
+      label: month.label.en,
     };
   });
 };

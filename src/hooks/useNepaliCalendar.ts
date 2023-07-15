@@ -6,17 +6,22 @@ import {
   getMonths,
   getYears,
 } from '@utils/date-fns';
+import { Language } from '@/types/Locale';
 
-export const useNepaliCalendar = () => {
+interface UseNepaliCalendarParams {
+  lang?: Language;
+}
+
+export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
   const {
     date: currentDate,
     month: currentMonth,
     year: currentYear,
   } = getCurrentNepaliDate();
 
-  const years = useMemo(() => getYears('ne'), []);
-  const months = useMemo(() => getMonths('ne'), []);
-  const days = useMemo(() => getDays('ne'), []);
+  const years = useMemo(() => getYears(lang), [lang]);
+  const months = useMemo(() => getMonths(lang), [lang]);
+  const days = useMemo(() => getDays(lang), [lang]);
 
   const [currentLocalisedYear, setCurrentLocalisedYear] = useState<{
     label: string;
@@ -24,14 +29,17 @@ export const useNepaliCalendar = () => {
   }>();
   const [currentLocalisedMonth, setCurrentLocalisedMonth] = useState<{
     label: string;
-    value: number;
+    value: {
+      en: number;
+      ne: string;
+    };
   }>();
 
   useEffect(() => {
     setCurrentLocalisedYear(() => years.find((y) => y.value === currentYear));
 
     setCurrentLocalisedMonth(() =>
-      months.find((m) => m.value === currentMonth)
+      months.find((m) => m.value.en === currentMonth)
     );
   }, [currentMonth, currentYear, months, years]);
 
@@ -43,11 +51,11 @@ export const useNepaliCalendar = () => {
     currentLocalisedDates: useMemo(
       () =>
         getDates(
-          'ne',
+          lang,
           currentLocalisedYear?.value,
-          currentLocalisedMonth?.value
+          currentLocalisedMonth?.value.en
         ),
-      [currentLocalisedMonth?.value, currentLocalisedYear?.value]
+      [currentLocalisedMonth?.value.en, currentLocalisedYear?.value, lang]
     ),
     currentMonth,
     currentYear,
