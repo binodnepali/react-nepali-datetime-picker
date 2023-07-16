@@ -15,7 +15,7 @@ export type Month = {
 };
 
 export type Day = {
-  //id is the date in YYYY-MM-DD format
+  //id is the date in YYYY/MM/DD format
   id: string;
   value: number;
   label: string;

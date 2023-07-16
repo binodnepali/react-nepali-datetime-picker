@@ -1,28 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar';
 import { formatNepaliDate } from '@/utils/nepaliDate';
 
-interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface NepaliDatePickerInputProps
+  extends React.HTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
   lang?: Language;
   value?: NepaliDate;
 }
-export const Input = ({
+export const NepaliDatePickerInput = ({
   icon,
   className,
   lang = 'ne',
   value,
   onChange,
   ...rest
-}: InputProps): JSX.Element => {
+}: NepaliDatePickerInputProps): JSX.Element => {
   const { validateDate } = useNepaliCalendar({
     lang,
   });
 
-  const ref = useRef<HTMLInputElement>(null);
   const [val, setVal] = useState<string>('');
 
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -55,7 +55,6 @@ export const Input = ({
   return (
     <div className='relative'>
       <input
-        ref={ref}
         className={`border border-gray-300 rounded-md px-2 py-2 w-full ${
           className || ''
         }`}

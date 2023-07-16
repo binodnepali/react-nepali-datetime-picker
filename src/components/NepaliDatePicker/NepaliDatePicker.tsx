@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import { NepaliCalendar } from '@components/NepaliCalendar/NepaliCalendar';
-import { Input } from '@ui/Input/Input';
+import { NepaliDatePickerInput } from './NepaliDatePickerInput';
 import { Modal } from '@ui/Modal/Modal';
 
 import Date from '@assets/Date.svg';
@@ -45,7 +45,7 @@ export const NepaliDatePicker = ({
   return (
     <div className='relative'>
       <div className='flex flex-col space-y-2'>
-        <Input
+        <NepaliDatePickerInput
           icon={
             <Date
               width='36'

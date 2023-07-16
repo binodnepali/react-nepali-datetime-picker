@@ -1,3 +1,5 @@
 import { NepaliCalendar } from '@components/NepaliCalendar/NepaliCalendar';
 
-export { NepaliCalendar };
+import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker';
+
+export { NepaliCalendar, NepaliDatePicker };
