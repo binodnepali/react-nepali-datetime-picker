@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { validateDate } from './validation';
-import { Language } from '@/types/Locale';
+import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
+import { useNepaliCalendar } from '@/hooks/useNepaliCalendar';
+import { formatNepaliDate } from '@/utils/nepaliDate';
 
 interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
@@ -14,8 +15,13 @@ export const Input = ({
   className,
   lang = 'ne',
   value,
+  onChange,
   ...rest
 }: InputProps): JSX.Element => {
+  const { validateDate } = useNepaliCalendar({
+    lang,
+  });
+
   const ref = useRef<HTMLInputElement>(null);
   const [val, setVal] = useState<string>('');
 
@@ -24,21 +30,26 @@ export const Input = ({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    const { isValid } = validateDate(value, lang);
+    const { valid, value: val } = validateDate(value);
 
-    setIsValid(() => isValid);
+    setIsValid(() => valid);
 
     setVal(() => value);
+
+    e.target.value = JSON.stringify(val);
+
+    onChange?.(e);
   };
 
   useEffect(() => {
-    const { isValid, value: val } = validateDate(value, lang);
+    if (!value) {
+      setVal(() => '');
 
-    if (isValid) {
-      setVal(() => val);
-    } else {
-      setIsValid(() => false);
+      return;
     }
+
+    setVal(() => formatNepaliDate(value, lang));
+    setIsValid(() => true);
   }, [lang, value]);
 
   return (

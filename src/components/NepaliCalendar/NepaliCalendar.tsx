@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@assets/More.svg';
 import NextIcon from '@assets/Next.svg';
@@ -6,95 +6,119 @@ import PrevIcon from '@assets/Prev.svg';
 
 import { Button } from '@ui/Button/Button';
 import { useNepaliCalendar } from '@hooks/useNepaliCalendar';
-import { Language } from '@/types/Locale';
-import {
-  addLeadingNepaliZero,
-  addLeadingZero,
-} from '@/utils/convertToNepaliDigit';
+import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
 
 interface NepaliCalendarProps {
   className?: string;
   lang?: Language;
   separator?: string;
+  selectedDate?: NepaliDate;
   onDateSelect?: (date: NepaliDate) => void;
 }
 
 export const NepaliCalendar = ({
   className,
-  separator = '/',
   lang = 'ne',
+  selectedDate,
   onDateSelect,
 }: NepaliCalendarProps) => {
   const [showYearSelector, setShowYearSelector] = useState(false);
 
   const {
-    currentLocalisedYear,
-    currentLocalisedMonth,
-    setCurrentLocalisedYear,
-    setCurrentLocalisedMonth,
-    currentLocalisedDates,
+    selectedLocalisedYear,
+    selectedLocalisedMonth,
+    setSelectedLocalisedYear,
+    setSelectedLocalisedMonth,
+    selectedLocalisedDates,
+    currentLocalisedDate,
     years,
     months,
     days,
-    currentYear,
-    currentMonth,
-    currentDate,
   } = useNepaliCalendar({
     lang,
   });
+
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const foundYear = years.find((y) => y.value === selectedDate.year.value);
+    if (!foundYear) {
+      console.warn('Year not found');
+      return;
+    }
+
+    const foundMonth = months.find((m) => m.value === selectedDate.month.value);
+    if (!foundMonth) {
+      console.warn('Month not found');
+      return;
+    }
+
+    setSelectedLocalisedYear(() => foundYear);
+    setSelectedLocalisedMonth(() => foundMonth);
+  }, [
+    months,
+    selectedDate,
+    setSelectedLocalisedMonth,
+    setSelectedLocalisedYear,
+    years,
+  ]);
 
   const handleOnSelectDate = (date: {
     id: string;
     value: number;
     label: string;
   }) => {
-    if (!currentLocalisedYear || !currentLocalisedMonth) {
-      return;
-    }
-
-    if (lang === 'ne') {
-      onDateSelect?.({
-        value: {
-          year: currentLocalisedYear.value,
-          month: currentLocalisedMonth.value.en + 1,
-          date: date.value,
-        },
-        label: `${currentLocalisedYear?.label}${separator}${
-          currentLocalisedMonth?.value.ne
-        }${separator}${addLeadingNepaliZero(date.value)}`,
-      });
+    if (!selectedLocalisedYear || !selectedLocalisedMonth) {
       return;
     }
 
     onDateSelect?.({
-      value: {
-        year: currentLocalisedYear.value,
-        month: currentLocalisedMonth.value.en + 1,
-        date: date.value,
+      year: selectedLocalisedYear,
+      month: {
+        ...selectedLocalisedMonth,
+        value: selectedLocalisedMonth.value + 1,
       },
-      label: `${currentLocalisedYear.label}${separator}${addLeadingZero(
-        currentLocalisedMonth.value.en + 1
-      )}${separator}${addLeadingZero(date.value)}`,
+      date,
     });
   };
 
   const handleOnYearClick = (year: number) => {
-    setCurrentLocalisedYear(() => years.find((y) => y.value === year));
-    setShowYearSelector(false);
-  };
+    const selectedYear = years.find((y) => y.value === year);
+    if (!selectedYear) {
+      console.warn('Year not found');
 
-  const handleOnPrevClick = () => {
-    if (!currentLocalisedYear || !currentLocalisedMonth) {
       return;
     }
 
-    const prevMonth = currentLocalisedMonth.value.en - 1;
-    const prevYear = currentLocalisedYear.value - 1;
+    setSelectedLocalisedYear(() => selectedYear);
+    setShowYearSelector(() => false);
+  };
+
+  const handleOnPrevClick = () => {
+    if (!selectedLocalisedYear || !selectedLocalisedMonth) {
+      return;
+    }
+
+    const prevMonth = selectedLocalisedMonth.value - 1;
+    const prevYear = selectedLocalisedYear.value - 1;
 
     if (prevMonth < 0 && years.find((y) => y.value === prevYear)) {
-      setCurrentLocalisedYear(() => years.find((y) => y.value === prevYear));
-      setCurrentLocalisedMonth(() => months.find((m) => m.value.en === 11));
+      const foundPrevYear = years.find((y) => y.value === prevYear);
+      if (!foundPrevYear) {
+        console.warn('Year not found');
+        return;
+      }
+
+      const foundPrevMonth = months.find((m) => m.value === 11);
+      if (!foundPrevMonth) {
+        console.warn('Month not found');
+        return;
+      }
+
+      setSelectedLocalisedYear(() => foundPrevYear);
+      setSelectedLocalisedMonth(() => foundPrevMonth);
+
       return;
     }
 
@@ -102,25 +126,41 @@ export const NepaliCalendar = ({
       return;
     }
 
-    setCurrentLocalisedMonth(() =>
-      months.find((m) => m.value.en === prevMonth)
-    );
-  };
-
-  const handleOnNextClick = () => {
-    if (!currentLocalisedYear || !currentLocalisedMonth) {
+    const foundPrevMonth = months.find((m) => m.value === prevMonth);
+    if (!foundPrevMonth) {
+      console.warn('Month not found');
       return;
     }
 
-    const nextMonth = currentLocalisedMonth.value.en + 1;
-    const nextYear = currentLocalisedYear.value + 1;
+    setSelectedLocalisedMonth(() => foundPrevMonth);
+  };
+
+  const handleOnNextClick = () => {
+    if (!selectedLocalisedYear || !selectedLocalisedMonth) {
+      return;
+    }
+
+    const nextMonth = selectedLocalisedMonth.value + 1;
+    const nextYear = selectedLocalisedYear.value + 1;
 
     if (
       nextMonth > months.length - 1 &&
       years.find((y) => y.value === nextYear)
     ) {
-      setCurrentLocalisedYear(() => years.find((y) => y.value === nextYear));
-      setCurrentLocalisedMonth(() => months.find((m) => m.value.en === 0));
+      const foundNextYear = years.find((y) => y.value === nextYear);
+      if (!foundNextYear) {
+        console.warn('Year not found');
+        return;
+      }
+
+      const foundNextMonth = months.find((m) => m.value === 0);
+      if (!foundNextMonth) {
+        console.warn('Month not found');
+        return;
+      }
+
+      setSelectedLocalisedYear(() => foundNextYear);
+      setSelectedLocalisedMonth(() => foundNextMonth);
       return;
     }
 
@@ -128,17 +168,21 @@ export const NepaliCalendar = ({
       return;
     }
 
-    setCurrentLocalisedMonth(() =>
-      months.find((m) => m.value.en === nextMonth)
-    );
+    const foundNextMonth = months.find((m) => m.value === nextMonth);
+    if (!foundNextMonth) {
+      console.warn('Month not found');
+      return;
+    }
+
+    setSelectedLocalisedMonth(() => foundNextMonth);
   };
 
   return (
     <div className={`bg-neutral-50 py-4 px-4 rounded-md ${className || ''}`}>
       <div className='flex flex-row justify-between'>
         <div className='flex flex-row gap-2 items-center'>
-          <span>{currentLocalisedMonth?.label}</span>
-          <span>{currentLocalisedYear?.label}</span>
+          <span>{selectedLocalisedMonth?.label}</span>
+          <span>{selectedLocalisedYear?.label}</span>
           <Button onClick={() => setShowYearSelector((value) => !value)}>
             <ExpandMoreIcon
               width='36'
@@ -173,13 +217,12 @@ export const NepaliCalendar = ({
           </div>
 
           <div className='grid grid-cols-7 gap-2 justify-items-center mt-4'>
-            {currentLocalisedDates.map((date) => (
+            {selectedLocalisedDates.map((date) => (
               <Button
                 key={date.id}
                 className={`w-9 h-9 p-2`}
-                active={date.id.includes(
-                  `${currentYear}-${currentMonth}-${currentDate}`
-                )}
+                active={date.id === currentLocalisedDate?.id}
+                selected={date.id === selectedDate?.date?.id}
                 onClick={() => handleOnSelectDate(date)}
               >
                 <span>{date.label}</span>
@@ -196,7 +239,10 @@ export const NepaliCalendar = ({
               <Button
                 key={y.value}
                 onClick={() => handleOnYearClick(y.value)}
-                active={currentYear === y.value}
+                active={currentLocalisedDate?.id.includes(y.value.toString())}
+                selected={selectedLocalisedYear?.label.includes(
+                  y.value.toString()
+                )}
                 variant='pilled'
               >
                 <span>{y.label}</span>

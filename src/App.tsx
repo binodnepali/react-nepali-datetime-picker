@@ -1,6 +1,10 @@
 import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker';
+import { NepaliDate } from './types/NepaliDate';
+import { useState } from 'react';
 
 export default function App() {
+  const [selectedDate, setSelectedDate] = useState<NepaliDate>();
+
   return (
     <>
       <header>
@@ -39,7 +43,14 @@ export default function App() {
             Date Picker
           </label>
 
-          <NepaliDatePicker />
+          <div className='flex flex-col space-y-2'>
+            <p className='text-lg text-gray-600'>
+              Selected Date:{' '}
+              {selectedDate ? JSON.stringify(selectedDate) : 'No date selected'}
+            </p>
+          </div>
+
+          <NepaliDatePicker onDateSelect={setSelectedDate} lang='en' />
         </div>
       </main>
     </>

@@ -1,12 +1,14 @@
-import { convertToNepaliDigit } from './convertToNepaliDigit';
+import { convertToNepaliDigit } from './digit';
 
-import { yearsDateMapInMonth } from '../constants/yearsDateMapInMonth';
+import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth';
 
 export const startYear = 2000;
 
 export const endYear = 2089;
 
 export const years = generateYears(startYear, endYear);
+
+export const getYear = (year: number) => years.find((y) => y.value === year);
 
 function generateYears(startYear: number, endYear: number) {
   const years: {
@@ -16,7 +18,7 @@ function generateYears(startYear: number, endYear: number) {
     daysInMonth: [number, number, number][];
   }[] = [];
 
-  const days = yearsDateMapInMonth as unknown as {
+  const days = yearsWithDaysInMonth as unknown as {
     [year: number]: {
       daysInMonth: [number, number, number][];
     };

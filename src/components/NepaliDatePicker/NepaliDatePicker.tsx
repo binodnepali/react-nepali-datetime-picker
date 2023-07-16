@@ -1,28 +1,45 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { NepaliCalendar } from '@components/NepaliCalendar/NepaliCalendar';
 import { Input } from '@ui/Input/Input';
 import { Modal } from '@ui/Modal/Modal';
 
 import Date from '@assets/Date.svg';
-import { Language } from '@/types/Locale';
+import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
 
 interface NepaliDatePickerProps {
   lang?: Language;
+  onDateSelect?: (date: NepaliDate | undefined) => void;
 }
 
-export const NepaliDatePicker = ({ lang = 'ne' }: NepaliDatePickerProps) => {
+export const NepaliDatePicker = ({
+  lang = 'ne',
+  onDateSelect,
+}: NepaliDatePickerProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const [selectedDate, setSelectedDate] = useState<NepaliDate>();
+  const selectedDateRef = useRef<NepaliDate>();
 
   const handleOnInputDateClick = () => {
     setShowModal(() => true);
   };
 
   const handleOnSelectDate = (date: NepaliDate) => {
+    selectedDateRef.current = date;
+    onDateSelect?.(date);
     setSelectedDate(() => date);
     setShowModal(() => false);
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    selectedDateRef.current =
+      value !== 'undefined' ? JSON.parse(value) : undefined;
+
+    onDateSelect?.(selectedDateRef.current);
   };
 
   return (
@@ -39,6 +56,7 @@ export const NepaliDatePicker = ({ lang = 'ne' }: NepaliDatePickerProps) => {
           }
           lang={lang}
           value={selectedDate}
+          onChange={handleOnChange}
           placeholder={lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD'}
         />
       </div>
@@ -48,7 +66,11 @@ export const NepaliDatePicker = ({ lang = 'ne' }: NepaliDatePickerProps) => {
           onClose={() => setShowModal(() => false)}
           className='mt-11 rounded-md'
         >
-          <NepaliCalendar onDateSelect={handleOnSelectDate} lang={lang} />
+          <NepaliCalendar
+            onDateSelect={handleOnSelectDate}
+            lang={lang}
+            selectedDate={selectedDateRef.current}
+          />
         </Modal>
       )}
     </div>
