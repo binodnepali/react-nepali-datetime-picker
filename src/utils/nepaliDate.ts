@@ -1,5 +1,4 @@
 import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth';
-import { years } from './year';
 import { months } from '@/constants/months';
 import { weekDays } from '@/constants/weekDays';
 import { Language } from '@/types/Language';
@@ -13,6 +12,7 @@ import { Day, Month, NepaliDate, Year } from '@/types/NepaliDate';
 
 const GREGORIAN_START_YEAR = 1943; // Start year of the Gregorian calendar
 const NEPALI_START_YEAR = 2000; // Start year of the Nepali calendar
+const NEPALI_END_YEAR = 2089; // End year of the Nepali calendar
 const NEPALI_YEAR_OFFSET = NEPALI_START_YEAR - GREGORIAN_START_YEAR; // Convert Gregorian year to Nepali year
 const NEPALI_MONTH_OFFSET = 8; // Add an offset of 8 to convert Gregorian month to Nepali month
 const NEPALI_DATE_OFFSET = 15; // Add an offset of 15 to convert Gregorian date to Nepali date
@@ -78,21 +78,52 @@ export const currentNepaliDate = () => {
   };
 };
 
+const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR);
 export const getYears = (lang: Language): Year[] => {
   return years.map((year) => {
     if (lang === 'ne') {
       return {
         value: year.value,
-        label: year.ne,
+        label: year.label.ne,
       };
     }
 
     return {
       value: year.value,
-      label: year.en,
+      label: year.label.en,
     };
   });
 };
+
+function generateYears(startYear: number, endYear: number) {
+  const years: {
+    label: {
+      ne: string;
+      en: string;
+    };
+    value: number;
+    daysInMonth: [number, number, number][];
+  }[] = [];
+
+  const days = yearsWithDaysInMonth as unknown as {
+    [year: number]: {
+      daysInMonth: [number, number, number][];
+    };
+  };
+
+  for (let year = startYear; year <= endYear; year++) {
+    years.push({
+      label: {
+        ne: convertToNepaliDigit(year),
+        en: year.toString(),
+      },
+      value: year,
+      daysInMonth: days[year].daysInMonth,
+    });
+  }
+
+  return years;
+}
 
 export const getMonths = (lang: Language): Month[] => {
   return months.map((month) => {

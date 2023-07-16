@@ -50,7 +50,7 @@ export default function App() {
             </p>
           </div>
 
-          <NepaliDatePicker onDateSelect={setSelectedDate} lang='en' />
+          <NepaliDatePicker onDateSelect={setSelectedDate} />
         </div>
       </main>
     </>

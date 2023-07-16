@@ -48,7 +48,9 @@ export const NepaliCalendar = ({
       return;
     }
 
-    const foundMonth = months.find((m) => m.value === selectedDate.month.value);
+    const foundMonth = months.find(
+      (m) => m.value === selectedDate.month.value - 1
+    );
     if (!foundMonth) {
       console.warn('Month not found');
       return;
