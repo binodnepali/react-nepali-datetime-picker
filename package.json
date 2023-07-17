@@ -1,5 +1,16 @@
 {
   "name": "react-nepali-datetime-picker",
+  "description": "A simple and reusable Nepali calendar, date and time picker components for React.",
+  "keywords": [
+    "nepali-calendar",
+    "nepali-datepicker",
+    "nepali-timepicker",
+    "nepali-datetime-picker",
+    "react-nepali-calendar",
+    "react-nepali-datepicker",
+    "react-nepali-timepicker",
+    "react-nepali-datetime-picker"
+  ],
   "private": false,
   "version": "1.0.0-alpha.0",
   "type": "module",
