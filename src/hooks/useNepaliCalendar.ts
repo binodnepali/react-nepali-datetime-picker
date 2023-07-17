@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Language } from '@/types/Language';
 import { NepaliDate, Month, Year } from '@/types/NepaliDate';
 import {
-  currentNepaliDate,
+  getCurrentNepaliDate,
   getMonthDatesByYear,
   getWeekDays,
   getMonths,
@@ -22,7 +22,7 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
     date: currentDate,
     month: currentMonth,
     year: currentYear,
-  } = currentNepaliDate();
+  } = getCurrentNepaliDate();
 
   const years = useMemo(() => getYears(lang), [lang]);
   const months = useMemo(() => getMonths(lang), [lang]);

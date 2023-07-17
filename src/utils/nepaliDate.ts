@@ -5,6 +5,7 @@ import { Language } from '@/types/Language';
 import {
   addLeadingNepaliZero,
   addLeadingZero,
+  convertNepaliDigitToEnglishDigit,
   convertToNepaliDigit,
 } from './digit';
 import { WeekDay } from '@/types/WeekDay';
@@ -27,28 +28,32 @@ const DATE_LOCALIZATION_OPTIONS = {
 
 export const YEAR_MONTH_DATE_SEPARATOR = '/'; // Separator between year, month and date
 
-export const currentNepaliDate = () => {
+const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR);
+
+export const getCurrentNepaliDate = () => {
   const date = new Date();
 
   const localizedDate = date.toLocaleString(LOCALE, DATE_LOCALIZATION_OPTIONS);
 
-  const [currentDate, currentMonth, currentYear] = localizedDate
-    .split(YEAR_MONTH_DATE_SEPARATOR)
-    .map((item) => parseInt(item, 10));
+  let currentDate, currentMonth, currentYear;
+  if (process.env.NODE_ENV !== 'test') {
+    const [date, month, year] = localizedDate
+      .split(YEAR_MONTH_DATE_SEPARATOR)
+      .map((item) => parseInt(item, 10));
+
+    currentDate = date;
+    currentMonth = month;
+    currentYear = year;
+  } else {
+    const [year, month, date] = localizedDate.split('-').map((item) => item);
+    currentYear = convertNepaliDigitToEnglishDigit(year);
+    currentMonth = convertNepaliDigitToEnglishDigit(month);
+    currentDate = convertNepaliDigitToEnglishDigit(date);
+  }
 
   let nepaliYear = currentYear + NEPALI_YEAR_OFFSET;
   let nepaliMonth = currentMonth + NEPALI_MONTH_OFFSET;
   let nepaliDate = currentDate + NEPALI_DATE_OFFSET;
-
-  // Adjust Nepali month and year if it exceeds the maximum values
-  if (nepaliMonth > NEPALI_MONTHS_IN_YEAR) {
-    nepaliMonth -= NEPALI_MONTHS_IN_YEAR;
-  }
-
-  // Adjust Nepali year if it exceeds the maximum value
-  if (nepaliMonth - 1 === 11) {
-    nepaliYear += 1;
-  }
 
   const days = yearsWithDaysInMonth as unknown as {
     [year: number]: {
@@ -66,9 +71,21 @@ export const currentNepaliDate = () => {
     return daysInMonth;
   });
 
-  // Adjust Nepali day if it exceeds the maximum value for the current month
+  // Adjust Nepali month and year if it exceeds the maximum values
+  if (nepaliMonth > NEPALI_MONTHS_IN_YEAR) {
+    nepaliMonth -= NEPALI_MONTHS_IN_YEAR;
+  }
+
+  // Adjust Nepali date and month if it exceeds the maximum values
   if (nepaliDate > nepaliDaysInMonth[nepaliMonth - 1]) {
-    nepaliDate = nepaliDaysInMonth[nepaliMonth - 1];
+    nepaliDate -= nepaliDaysInMonth[nepaliMonth - 1];
+    nepaliMonth += 1;
+  }
+
+  // Adjust Nepali month and year if it exceeds the maximum values
+  if (nepaliMonth > NEPALI_MONTHS_IN_YEAR) {
+    nepaliMonth -= NEPALI_MONTHS_IN_YEAR;
+    nepaliYear += 1;
   }
 
   return {
@@ -78,7 +95,6 @@ export const currentNepaliDate = () => {
   };
 };
 
-const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR);
 export const getYears = (lang: Language): Year[] => {
   return years.map((year) => {
     if (lang === 'ne') {
