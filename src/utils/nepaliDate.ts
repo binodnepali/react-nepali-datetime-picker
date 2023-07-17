@@ -1,3 +1,12 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import neLocale from 'dayjs/locale/ne';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale(neLocale);
+
 import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth';
 import { months } from '@/constants/months';
 import { weekDays } from '@/constants/weekDays';
@@ -5,7 +14,6 @@ import { Language } from '@/types/Language';
 import {
   addLeadingNepaliZero,
   addLeadingZero,
-  convertNepaliDigitToEnglishDigit,
   convertToNepaliDigit,
 } from './digit';
 import { WeekDay } from '@/types/WeekDay';
@@ -18,38 +26,21 @@ const NEPALI_YEAR_OFFSET = NEPALI_START_YEAR - GREGORIAN_START_YEAR; // Convert 
 const NEPALI_MONTH_OFFSET = 8; // Add an offset of 8 to convert Gregorian month to Nepali month
 const NEPALI_DATE_OFFSET = 15; // Add an offset of 15 to convert Gregorian date to Nepali date
 const NEPALI_MONTHS_IN_YEAR = 12; // Number of months in a year
-const LOCALE = 'ne-NP'; // Locale
-const DATE_LOCALIZATION_OPTIONS = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  timeZone: 'Asia/Kathmandu',
-} as const;
 
 export const YEAR_MONTH_DATE_SEPARATOR = '/'; // Separator between year, month and date
 
 const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR);
 
 export const getCurrentNepaliDate = () => {
-  const date = new Date();
+  const date = dayjs();
 
-  const localizedDate = date.toLocaleString(LOCALE, DATE_LOCALIZATION_OPTIONS);
+  const localizedDate = date
+    .tz('Asia/Kathmandu')
+    .format(`YYYY${YEAR_MONTH_DATE_SEPARATOR}MM${YEAR_MONTH_DATE_SEPARATOR}DD`);
 
-  let currentDate, currentMonth, currentYear;
-  if (process.env.NODE_ENV !== 'test') {
-    const [date, month, year] = localizedDate
-      .split(YEAR_MONTH_DATE_SEPARATOR)
-      .map((item) => parseInt(item, 10));
-
-    currentDate = date;
-    currentMonth = month;
-    currentYear = year;
-  } else {
-    const [year, month, date] = localizedDate.split('-').map((item) => item);
-    currentYear = convertNepaliDigitToEnglishDigit(year);
-    currentMonth = convertNepaliDigitToEnglishDigit(month);
-    currentDate = convertNepaliDigitToEnglishDigit(date);
-  }
+  const [currentYear, currentMonth, currentDate] = localizedDate
+    .split(YEAR_MONTH_DATE_SEPARATOR)
+    .map((item) => parseInt(item, 10));
 
   let nepaliYear = currentYear + NEPALI_YEAR_OFFSET;
   let nepaliMonth = currentMonth + NEPALI_MONTH_OFFSET;
