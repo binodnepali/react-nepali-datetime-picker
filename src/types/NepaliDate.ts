@@ -19,4 +19,5 @@ export type Day = {
   id: string;
   value: number;
   label: string;
+  currentMonth?: boolean;
 };

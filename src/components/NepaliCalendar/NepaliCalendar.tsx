@@ -32,6 +32,7 @@ export const NepaliCalendar = ({
     setSelectedLocalisedMonth,
     selectedLocalisedDates,
     currentLocalisedDate,
+
     years,
     months,
     days,
@@ -222,8 +223,10 @@ export const NepaliCalendar = ({
             {selectedLocalisedDates.map((date) => (
               <Button
                 key={date.id}
+                id={date.id}
                 className={`w-9 h-9 p-2`}
                 active={date.id === currentLocalisedDate?.id}
+                inactive={!date.currentMonth}
                 selected={date.id === selectedDate?.date?.id}
                 onClick={() => handleOnSelectDate(date)}
               >

@@ -53,7 +53,7 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
 
     return dates.find(
       (d) =>
-        d.id ===
+        d?.id ===
         `${currentYear}${YEAR_MONTH_DATE_SEPARATOR}${currentMonth}${YEAR_MONTH_DATE_SEPARATOR}${currentDate}`
     );
   }, [currentDate, currentMonth, currentYear, lang]);
@@ -172,5 +172,8 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
     years,
     months,
     days: weekDays,
+    currentYear,
+    currentMonth,
+    currentDate,
   };
 };

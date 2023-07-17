@@ -165,13 +165,14 @@ export const getMonthDatesByYear = ({
   year: number;
   month: number;
   lang?: Language;
-}): Day[] => {
+}): Array<Day> => {
   return getDatesInMonthByYear(year, month).map((date) => {
     if (lang === 'ne') {
       return {
         id: date.id,
         value: date.value,
         label: convertToNepaliDigit(date.value),
+        currentMonth: date.currentMonth,
       };
     }
 
@@ -179,6 +180,7 @@ export const getMonthDatesByYear = ({
       id: date.id,
       value: date.value,
       label: date.value.toString(),
+      currentMonth: date.currentMonth,
     };
   });
 };
@@ -197,16 +199,18 @@ const getDatesInMonthByYear = (year: number, month: number) => {
     return [];
   }
 
-  const dates: {
+  const dates: Array<{
     id: string;
     value: number;
-  }[] = [];
+    currentMonth: boolean;
+  }> = [];
 
   if (typeof currentMonthDates === 'number') {
     for (let date = 1; date <= currentMonthDates; date++) {
       dates.push({
         id: `${year}${YEAR_MONTH_DATE_SEPARATOR}${month}${YEAR_MONTH_DATE_SEPARATOR}${date}`,
         value: date,
+        currentMonth: true,
       });
     }
 
@@ -226,6 +230,7 @@ const getDatesInMonthByYear = (year: number, month: number) => {
     dates.push({
       id: `${year}${YEAR_MONTH_DATE_SEPARATOR}${prevMonth}${YEAR_MONTH_DATE_SEPARATOR}${date}`,
       value: date,
+      currentMonth: false,
     });
   }
 
@@ -233,6 +238,7 @@ const getDatesInMonthByYear = (year: number, month: number) => {
     dates.push({
       id: `${year}${YEAR_MONTH_DATE_SEPARATOR}${month}${YEAR_MONTH_DATE_SEPARATOR}${date}`,
       value: date,
+      currentMonth: true,
     });
   }
 
@@ -242,6 +248,7 @@ const getDatesInMonthByYear = (year: number, month: number) => {
         month + 1
       }${YEAR_MONTH_DATE_SEPARATOR}${date}`,
       value: date,
+      currentMonth: false,
     });
   }
 
