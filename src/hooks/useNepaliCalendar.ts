@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Language } from '@/types/Language';
-import { NepaliDate, Month, Year } from '@/types/NepaliDate';
+import { Language } from '@/types/Language'
+import { NepaliDate, Month, Year } from '@/types/NepaliDate'
 import {
   getCurrentNepaliDate,
   getMonthDatesByYear,
@@ -9,12 +9,12 @@ import {
   getMonths,
   getYears,
   YEAR_MONTH_DATE_SEPARATOR,
-} from '@/utils/nepaliDate';
-import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit';
-import { days } from '@/constants/days';
+} from '@/utils/nepaliDate'
+import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
+import { days } from '@/constants/days'
 
 interface UseNepaliCalendarParams {
-  lang?: Language;
+  lang?: Language
 }
 
 export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
@@ -22,18 +22,18 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
     date: currentDate,
     month: currentMonth,
     year: currentYear,
-  } = getCurrentNepaliDate();
+  } = getCurrentNepaliDate()
 
-  const years = useMemo(() => getYears(lang), [lang]);
-  const months = useMemo(() => getMonths(lang), [lang]);
-  const weekDays = useMemo(() => getWeekDays(lang), [lang]);
+  const years = useMemo(() => getYears(lang), [lang])
+  const months = useMemo(() => getMonths(lang), [lang])
+  const weekDays = useMemo(() => getWeekDays(lang), [lang])
 
   const [selectedLocalisedYear, setSelectedLocalisedYear] = useState<Year>(
-    years.find((y) => y.value === currentYear) as Year
-  );
+    years.find((y) => y.value === currentYear) as Year,
+  )
   const [selectedLocalisedMonth, setSelectedLocalisedMonth] = useState<Month>(
-    months.find((m) => m.value === currentMonth) as Month
-  );
+    months.find((m) => m.value === currentMonth) as Month,
+  )
   const selectedLocalisedDates = useMemo(
     () =>
       getMonthDatesByYear({
@@ -41,125 +41,131 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
         month: selectedLocalisedMonth.value,
         lang,
       }),
-    [selectedLocalisedMonth.value, selectedLocalisedYear.value, lang]
-  );
+    [selectedLocalisedMonth.value, selectedLocalisedYear.value, lang],
+  )
 
   const currentLocalisedDate = useMemo(() => {
     const dates = getMonthDatesByYear({
       year: currentYear,
       month: currentMonth,
       lang,
-    });
+    })
 
     return dates.find(
       (d) =>
         d?.id ===
-        `${currentYear}${YEAR_MONTH_DATE_SEPARATOR}${currentMonth}${YEAR_MONTH_DATE_SEPARATOR}${currentDate}`
-    );
-  }, [currentDate, currentMonth, currentYear, lang]);
+        `${currentYear}${YEAR_MONTH_DATE_SEPARATOR}${currentMonth}${YEAR_MONTH_DATE_SEPARATOR}${currentDate}`,
+    )
+  }, [currentDate, currentMonth, currentYear, lang])
 
   const validateDate = useCallback(
     (
-      value: string
+      value: string,
     ): {
-      valid: boolean;
-      value?: NepaliDate;
+      valid: boolean
+      value?: NepaliDate
     } => {
       if (lang === 'ne') {
-        const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR);
+        const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
 
         if (!year || !month || !date) {
           return {
             valid: false,
-          };
+          }
         }
 
-        const foundYear = years.find((y) => y.label === year);
+        const foundYear = years.find((y) => y.label === year)
 
         if (!foundYear) {
           return {
             valid: false,
-          };
+          }
         }
 
         const foundMonth = months.find(
-          (m) => addLeadingNepaliZero(m.value + 1) === month
-        );
+          (m) => addLeadingNepaliZero(m.value + 1) === month,
+        )
         if (!foundMonth) {
           return {
             valid: false,
-          };
+          }
         }
 
-        const foundDate = days.find((d) => d.label.ne === date);
+        const foundDate = days.find((d) => d.label.ne === date)
 
         if (!foundDate) {
           return {
             valid: false,
-          };
+          }
         }
 
         return {
           valid: true,
           value: {
             year: foundYear,
-            month: foundMonth,
+            month: {
+              ...foundMonth,
+              value: foundMonth.value + 1,
+            },
             date: {
               id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
               value: foundDate.value,
               label: foundDate.label.ne,
             },
           },
-        };
+        }
       }
 
-      const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR);
+      const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
 
-      const foundYear = years.find((y) => y.label === year);
+      const foundYear = years.find((y) => y.label === year)
       const foundMonth = months.find(
-        (m) => addLeadingZero(m.value + 1) === month
-      );
+        (m) => addLeadingZero(m.value + 1) === month,
+      )
 
-      const foundDate = days.find((d) => d.label.en === date);
+      const foundDate = days.find((d) => d.label.en === date)
 
       if (!foundYear || !foundMonth || !foundDate) {
         return {
           valid: false,
-        };
+        }
       }
 
       return {
         valid: true,
         value: {
           year: foundYear,
-          month: foundMonth,
+          month: {
+            ...foundMonth,
+            value: foundMonth.value + 1,
+          },
           date: {
             id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
             value: foundDate.value,
             label: foundDate.label.en,
           },
         },
-      };
+      }
     },
-    [lang, months, years]
-  );
+    [lang, months, years],
+  )
 
   useEffect(() => {
-    const foundCurrentYear = years.find((y) => y.value === currentYear);
+    const foundCurrentYear = years.find((y) => y.value === currentYear)
     if (!foundCurrentYear) {
-      console.log('No current year found');
-      return;
+      console.log('No current year found')
+      return
     }
 
-    const foundCurrentMonth = months.find((m) => m.value === currentMonth);
+    const foundCurrentMonth = months.find((m) => m.value === currentMonth)
     if (!foundCurrentMonth) {
-      console.log('No current month found');
-      return;
+      console.log('No current month found')
+      return
     }
 
-    setSelectedLocalisedYear(() => foundCurrentYear);
-    setSelectedLocalisedMonth(() => foundCurrentMonth);
-  }, [currentMonth, currentYear, months, years]);
+    setSelectedLocalisedYear(() => foundCurrentYear)
+    setSelectedLocalisedMonth(() => foundCurrentMonth)
+  }, [currentMonth, currentYear, months, years])
 
   return {
     selectedLocalisedYear,
@@ -175,5 +181,5 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
     currentYear,
     currentMonth,
     currentDate,
-  };
-};
+  }
+}
