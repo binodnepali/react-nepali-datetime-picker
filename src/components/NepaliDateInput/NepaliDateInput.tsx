@@ -11,20 +11,27 @@ interface NepaliDateInputProps {
   className?: string;
   lang?: Language;
   value?: NepaliDate;
-  input?: React.HTMLAttributes<HTMLInputElement> & {
-    className?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  };
-  icon?: {
-    className?: string;
-    children?: React.ReactNode;
-    onClick?: () => void;
-  };
-  error?: {
-    className?: string;
-    message?: string;
-  };
+  input?: InputProps;
+  icon?: IconProps;
+  error?: ErrorProps;
 }
+
+export type InputProps = React.HTMLAttributes<HTMLInputElement> & {
+  className?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export type IconProps = React.HTMLAttributes<HTMLDivElement> & {
+  className?: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
+};
+
+export type ErrorProps = {
+  className?: string;
+  message?: string;
+};
+
 export const NepaliDateInput = ({
   className = '',
   error = {},
@@ -36,13 +43,14 @@ export const NepaliDateInput = ({
   const {
     className: inputClassName = '',
     onChange: onInputChange,
-    ...rest
+    ...inputRest
   } = input;
 
   const {
     className: iconClassName = '',
     children: iconChildren,
     onClick: handleOnIconClick,
+    ...iconRest
   } = icon;
 
   const {
@@ -94,11 +102,15 @@ export const NepaliDateInput = ({
         autoComplete='off'
         onChange={handleOnChange}
         value={val}
-        {...rest}
+        {...inputRest}
       />
 
       <div
         className={`absolute inset-y-0 right-0 mr-1 flex items-center cursor-pointer ${iconClassName}`}
+        {...(iconChildren && {
+          onClick: handleOnIconClick,
+        })}
+        {...iconRest}
       >
         {iconChildren ?? (
           <DateIcon

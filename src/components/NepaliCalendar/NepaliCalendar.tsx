@@ -18,7 +18,7 @@ interface NepaliCalendarProps {
 }
 
 export const NepaliCalendar = ({
-  className,
+  className = '',
   lang = 'ne',
   selectedDate,
   onDateSelect,
@@ -179,7 +179,7 @@ export const NepaliCalendar = ({
   ]);
 
   return (
-    <div className={`bg-neutral-50 py-4 px-4 rounded-md ${className || ''}`}>
+    <div className={`bg-neutral-50 py-4 px-4 rounded-md ${className}`}>
       <div className='flex flex-row justify-between'>
         <div className='flex flex-row gap-2 items-center'>
           <span>{selectedLocalisedMonth?.label}</span>

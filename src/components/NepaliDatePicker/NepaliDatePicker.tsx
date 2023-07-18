@@ -4,6 +4,9 @@ import { NepaliCalendar } from '@/components/NepaliCalendar/NepaliCalendar';
 import {
   NepaliDateInput,
   TargetValue,
+  InputProps,
+  IconProps,
+  ErrorProps,
 } from '@/components/NepaliDateInput/NepaliDateInput';
 import { Modal } from '@/components/ui/Modal/Modal';
 
@@ -11,14 +14,29 @@ import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
 
 interface NepaliDatePickerProps {
+  className?: string;
   lang?: Language;
-  onDateSelect?: (date: NepaliDate | undefined) => void;
+  onDateSelect?: (selectedDate?: NepaliDate) => void;
+  modal?: {
+    className?: string;
+    onClose?: () => void;
+  };
+  input?: InputProps;
+  inputIcon?: IconProps;
+  inputError?: ErrorProps;
 }
 
 export const NepaliDatePicker = ({
+  className = '',
   lang = 'ne',
+  modal = {},
   onDateSelect,
+  input = {},
+  inputIcon = {},
+  inputError = {},
 }: NepaliDatePickerProps) => {
+  const { className: modalClassName = '', onClose: onCloseModal } = modal;
+
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [selectedDate, setSelectedDate] = useState<NepaliDate>();
@@ -43,32 +61,38 @@ export const NepaliDatePicker = ({
 
     selectedDateRef.current = targetValue?.value;
 
-    onDateSelect?.(selectedDateRef.current);
+    onDateSelect?.(targetValue?.value);
+  };
+
+  const handleOnModalClose = () => {
+    setShowModal(() => false);
+    onCloseModal?.();
   };
 
   return (
-    <div className='relative'>
-      <div className='flex flex-col space-y-2'>
-        <NepaliDateInput
-          lang={lang}
-          value={selectedDate}
-          input={{
-            onChange: handleOnChange,
-            placeholder: lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD',
-          }}
-          icon={{
-            onClick: handleOnInputDateClick,
-          }}
-          error={{
-            message: 'Please enter a valid date',
-          }}
-        />
-      </div>
+    <div className={`relative ${className}`}>
+      <NepaliDateInput
+        lang={lang}
+        value={selectedDate}
+        input={{
+          onChange: handleOnChange,
+          placeholder: lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD',
+          ...input,
+        }}
+        icon={{
+          onClick: handleOnInputDateClick,
+          ...inputIcon,
+        }}
+        error={{
+          message: 'Please enter a valid date',
+          ...inputError,
+        }}
+      />
 
       {showModal && (
         <Modal
-          onClose={() => setShowModal(() => false)}
-          className='md:mt-11 rounded-md'
+          onClose={handleOnModalClose}
+          className={`md:mt-11 md:bg-transparent ${modalClassName}`}
         >
           <NepaliCalendar
             onDateSelect={handleOnSelectDate}

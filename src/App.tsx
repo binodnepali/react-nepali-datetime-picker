@@ -1,6 +1,7 @@
 import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker';
 import { NepaliDate } from './types/NepaliDate';
 import { useState } from 'react';
+//import { NepaliCalendar } from '.';
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState<NepaliDate>();
@@ -12,8 +13,7 @@ export default function App() {
           className='bg-gray-800
         flex justify-between items-center
         px-4 py-2
-        sm:px-6 sm:py-4
-        lg:px-8 lg:py-6'
+        sm:px-6 sm:py-4'
         >
           <h1 className='text-white text-2xl font-bold p-2'>
             React Nepali Date Time Picker
@@ -21,7 +21,7 @@ export default function App() {
 
           <div className='flex justify-end'>
             <a
-              href='https://github.com/binodnepali/packages'
+              href='https://github.com/binodnepali/react-nepali-datetime-picker'
               target='_blank'
               rel='noreferrer'
               className='text-white text-lg font-bold p-2'
@@ -33,8 +33,7 @@ export default function App() {
       </header>
 
       <main className='bg-gray-100  p-4 md:p-8 min-h-screen'>
-        <h1 className='text-3xl font-bold'>React Nepali Date Time Picker</h1>
-        <p className='text-lg text-gray-600 my-2'>
+        <p className='text-lg text-gray-600'>
           A simple and reusable date time picker component for React.
         </p>
 
@@ -43,15 +42,21 @@ export default function App() {
             Date Picker
           </label>
 
-          <div className='flex flex-col space-y-2'>
-            <p className='text-lg text-gray-600'>
-              Selected Date:{' '}
-              {selectedDate ? JSON.stringify(selectedDate) : 'No date selected'}
-            </p>
-          </div>
+          <NepaliDatePicker onDateSelect={setSelectedDate} className='mt-2' />
 
-          <NepaliDatePicker onDateSelect={setSelectedDate} />
+          <p className='text-gray-600 text-sm mt-6'>
+            Selected Date:{' '}
+            {selectedDate ? JSON.stringify(selectedDate, null, 2) : 'None'}
+          </p>
         </div>
+
+        {/* <div className='flex flex-col max-w-lg mt-4 md:mt-6'>
+          <label htmlFor='calendar' className='text-lg'>
+            Calendar
+          </label>
+
+          <NepaliCalendar />
+        </div> */}
       </main>
     </>
   );
