@@ -43,9 +43,19 @@
     "test:unit:watch": "vitest watch",
     "prepare": "npm run build",
     "preview": "vite preview",
+    "prerelease:alpha": "standard-version --prerelease alpha",
+    "prerelease:beta": "standard-version --prerelease beta",
+    "prerelease:rc": "standard-version --prerelease rc",
+    "release:ci:alpha": "standard-version --prerelease alpha --dry-run",
+    "release:ci:beta": "standard-version --prerelease beta --dry-run",
+    "release:ci:rc": "standard-version --prerelease rc --dry-run",
     "release": "standard-version",
-    "release:first": "standard-version --first-release",
-    "release:ci": "standard-version --dry-run"
+    "release:ci": "standard-version --dry-run",
+    "release:ci:minor": "standard-version --release-as minor --dry-run",
+    "release:ci:major": "standard-version --release-as major --dry-run",
+    "release:ci:patch": "standard-version --release-as patch --dry-run",
+    "npm:prepublish": "pnpm lint && pnpm test:unit && pnpm build",
+    "npm:publish": "pnpm npm:prepublish && npm publish --access public"
   },
   "dependencies": {
     "dayjs": "^1.11.9",
