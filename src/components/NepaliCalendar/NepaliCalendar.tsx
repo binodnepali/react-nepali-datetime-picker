@@ -40,33 +40,6 @@ export const NepaliCalendar = ({
     lang,
   });
 
-  useEffect(() => {
-    if (!selectedDate) return;
-
-    const foundYear = years.find((y) => y.value === selectedDate.year.value);
-    if (!foundYear) {
-      console.warn('Year not found');
-      return;
-    }
-
-    const foundMonth = months.find(
-      (m) => m.value === selectedDate.month.value - 1
-    );
-    if (!foundMonth) {
-      console.warn('Month not found');
-      return;
-    }
-
-    setSelectedLocalisedYear(() => foundYear);
-    setSelectedLocalisedMonth(() => foundMonth);
-  }, [
-    months,
-    selectedDate,
-    setSelectedLocalisedMonth,
-    setSelectedLocalisedYear,
-    years,
-  ]);
-
   const handleOnSelectDate = (date: {
     id: string;
     value: number;
@@ -179,6 +152,33 @@ export const NepaliCalendar = ({
 
     setSelectedLocalisedMonth(() => foundNextMonth);
   };
+
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const foundYear = years.find((y) => y.value === selectedDate.year.value);
+    if (!foundYear) {
+      console.warn('Year not found');
+      return;
+    }
+
+    const foundMonth = months.find(
+      (m) => m.value === selectedDate.month.value - 1
+    );
+    if (!foundMonth) {
+      console.warn('Month not found');
+      return;
+    }
+
+    setSelectedLocalisedYear(() => foundYear);
+    setSelectedLocalisedMonth(() => foundMonth);
+  }, [
+    months,
+    selectedDate,
+    setSelectedLocalisedMonth,
+    setSelectedLocalisedYear,
+    years,
+  ]);
 
   return (
     <div className={`bg-neutral-50 py-4 px-4 rounded-md ${className || ''}`}>

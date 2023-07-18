@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react';
 
-import { NepaliCalendar } from '@components/NepaliCalendar/NepaliCalendar';
-import { NepaliDatePickerInput } from './NepaliDatePickerInput';
-import { Modal } from '@ui/Modal/Modal';
+import { NepaliCalendar } from '@/components/NepaliCalendar/NepaliCalendar';
+import {
+  NepaliDateInput,
+  TargetValue,
+} from '@/components/NepaliDateInput/NepaliDateInput';
+import { Modal } from '@/components/ui/Modal/Modal';
 
-import Date from '@assets/Date.svg';
 import { Language } from '@/types/Language';
 import { NepaliDate } from '@/types/NepaliDate';
 
@@ -36,8 +38,10 @@ export const NepaliDatePicker = ({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    selectedDateRef.current =
-      value !== 'undefined' ? JSON.parse(value) : undefined;
+    const targetValue =
+      value !== 'undefined' ? (JSON.parse(value) as TargetValue) : undefined;
+
+    selectedDateRef.current = targetValue?.value;
 
     onDateSelect?.(selectedDateRef.current);
   };
@@ -45,19 +49,19 @@ export const NepaliDatePicker = ({
   return (
     <div className='relative'>
       <div className='flex flex-col space-y-2'>
-        <NepaliDatePickerInput
-          icon={
-            <Date
-              width='36'
-              height='36'
-              onClick={handleOnInputDateClick}
-              className='rounded-full hover:bg-gray-100 focus:outline-none focus:bg-gray-100 p-1'
-            />
-          }
+        <NepaliDateInput
           lang={lang}
           value={selectedDate}
-          onChange={handleOnChange}
-          placeholder={lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD'}
+          input={{
+            onChange: handleOnChange,
+            placeholder: lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD',
+          }}
+          icon={{
+            onClick: handleOnInputDateClick,
+          }}
+          error={{
+            message: 'Please enter a valid date',
+          }}
         />
       </div>
 
