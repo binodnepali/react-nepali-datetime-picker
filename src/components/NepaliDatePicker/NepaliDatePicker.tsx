@@ -64,7 +64,7 @@ export const NepaliDatePicker = ({
       {showModal && (
         <Modal
           onClose={() => setShowModal(() => false)}
-          className='mt-11 rounded-md'
+          className='md:mt-11 rounded-md'
         >
           <NepaliCalendar
             onDateSelect={handleOnSelectDate}
