@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.1](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **datepicker:** margin top in mobile ([e686860](https://github.com/binodnepali/react-nepali-datetime-picker/commit/e686860521aa073382c990fc16dc9fcbfe43c3e9))
+* getting current nepali date in mobile ([a4d2756](https://github.com/binodnepali/react-nepali-datetime-picker/commit/a4d27560b5617611824bc7558a88132803d337fd))
+* **nepalicalendar:** incorrect month view for selected date ([9bd8dcc](https://github.com/binodnepali/react-nepali-datetime-picker/commit/9bd8dcc5ff6f0d25646f67929ddec7469b9066ec))
+
 ## 1.0.0-alpha.0 (2023-07-17)
 
 
