@@ -34,6 +34,13 @@ export const NepaliDatePicker = ({
   dateInput = {},
   calendar = {},
 }: NepaliDatePickerProps) => {
+  const {
+    input: dateInputInput = {},
+    icon: dateInputIcon = {},
+    error: dateInputError = {},
+    ...dateInputRest
+  } = dateInput
+
   const { className: modalClassName = '', onClose: onCloseModal } = modal
 
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -76,16 +83,17 @@ export const NepaliDatePicker = ({
         input={{
           onChange: handleOnChange,
           placeholder: lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD',
-          ...dateInput.input,
+          ...dateInputInput,
         }}
         icon={{
           onClick: handleOnInputDateClick,
-          ...dateInput.icon,
+          ...dateInputIcon,
         }}
         error={{
           message: 'Please enter a valid date',
-          ...dateInput.error,
+          ...dateInputError,
         }}
+        {...dateInputRest}
       />
 
       {showModal && (

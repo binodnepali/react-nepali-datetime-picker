@@ -1,6 +1,8 @@
 import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker'
 import { NepaliDate } from './types/NepaliDate'
 import { useState } from 'react'
+import { NepaliTimeInput } from './components/NepaliTimeInput/NepaliTimeInput'
+import { NepaliTime } from './components/NepaliTime/NepaliTime'
 
 export default function App() {
   const [selectedDate, setSelectedDate] = useState<NepaliDate>()
@@ -49,7 +51,13 @@ export default function App() {
           </p>
         </div>
 
-        <div className="flex flex-col max-w-lg mt-4 md:mt-6"></div>
+        <div className="flex flex-col max-w-lg mt-4 md:mt-6">
+          <NepaliTimeInput />
+
+          <NepaliTime className="mb-8" />
+
+          <input type="time" />
+        </div>
       </main>
     </>
   )
