@@ -54,6 +54,7 @@
     "release:ci:minor": "standard-version --release-as minor --dry-run",
     "release:ci:major": "standard-version --release-as major --dry-run",
     "release:ci:patch": "standard-version --release-as patch --dry-run",
+    "build:link": "pnpm build && echo '{\"name\": \"react-nepali-datetime-picker\",\"version\":\"1.0.0\"}' > dist/package.json",
     "npm:prepublish": "pnpm lint && pnpm test:unit && pnpm build",
     "npm:publish": "pnpm npm:prepublish && npm publish --access public"
   },
