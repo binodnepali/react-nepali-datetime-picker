@@ -1,7 +1,7 @@
 interface ModalProps {
-  children: React.ReactNode;
-  className?: string;
-  onClose?: () => void;
+  children: React.ReactNode
+  className?: string
+  onClose?: () => void
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -12,7 +12,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <>
       <div
-        className='hidden md:block fixed top-0 left-0 w-full h-full opactiy-0 border'
+        className="hidden md:block fixed top-0 left-0 w-full h-full opactiy-0 border"
         onClick={onClose}
       />
 
@@ -21,15 +21,15 @@ export const Modal: React.FC<ModalProps> = ({
           className || ''
         }`}
       >
-        <div className='md:hidden'>
+        <div className="md:hidden">
           <div
-            className='fixed top-0 left-0 w-full h-full opactiy-0 z-[999]'
+            className="fixed top-0 left-0 w-full h-full opactiy-0 z-[999]"
             onClick={onClose}
           />
         </div>
 
-        <div className='z-[1000]'>{children}</div>
+        <div className="z-[1000]">{children}</div>
       </div>
     </>
-  );
-};
+  )
+}

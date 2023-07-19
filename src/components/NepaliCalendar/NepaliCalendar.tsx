@@ -9,7 +9,7 @@ import { useNepaliCalendar } from '@hooks/useNepaliCalendar'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
-interface NepaliCalendarProps {
+export interface NepaliCalendarProps {
   className?: string
   lang?: Language
   separator?: string
