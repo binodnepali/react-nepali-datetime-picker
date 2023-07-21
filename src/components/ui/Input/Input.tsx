@@ -1,19 +1,19 @@
-interface Props {
-  className?: string
-  children?: React.ReactNode
-  input?: InputProps
-  icon?: IconProps
-}
-
-type InputProps = React.HTMLAttributes<HTMLInputElement> & {
+export type InputProps = React.HTMLAttributes<HTMLInputElement> & {
   className?: string
   value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-type IconProps = React.HTMLAttributes<HTMLDivElement> & {
+export type IconProps = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
   onClick?: () => void
+}
+
+interface Props {
+  className?: string
+  children?: React.ReactNode
+  input?: InputProps
+  icon?: IconProps
 }
 
 export const Input = ({

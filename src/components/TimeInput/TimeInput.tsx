@@ -1,17 +1,21 @@
 import TimeIcon from '@/assets/Time.svg'
-import { Input } from '../ui/Input/Input'
+import { IconProps, Input, InputProps } from '../ui/Input/Input'
 import { useState } from 'react'
 import { Language } from '@/types/Language'
 
-interface NepaliTimeInputProps {
+interface TimeInputProps {
   className?: string
   lang?: Language
+  input?: InputProps
+  icon?: IconProps
 }
 
-export const NepaliTimeInput = ({
+export const TimeInput = ({
   className = '',
   lang = 'ne',
-}: NepaliTimeInputProps) => {
+  input = {},
+  icon = {},
+}: TimeInputProps) => {
   const [val, setVal] = useState<string>('')
   const [error, setError] = useState<string>('')
 
@@ -45,7 +49,9 @@ export const NepaliTimeInput = ({
           placeholder,
           value: val,
           onChange: handleOnInputChange,
+          ...input,
         }}
+        icon={icon}
       >
         <TimeIcon width={'36'} height={'36'} />
       </Input>
