@@ -21,7 +21,10 @@ export const DesktopTimePicker = ({
       />
 
       {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
+        <Modal
+          onClose={() => setShowModal(false)}
+          className="md:mt-11 md:bg-transparent"
+        >
           <DesktopTime />
         </Modal>
       )}
