@@ -3,7 +3,7 @@ import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { Language } from '@/types/Language'
 import { TimeFormat } from '@/types/TimeFormat'
 import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Button } from '@/components/ui/Button/Button'
 
 const MINUTE_CONTENT = 'MINUTE_CONTENT'
@@ -91,24 +91,20 @@ function HourList({
 
   useEffect(() => {
     const hourCurrentRef = hourRef.current
-
     hourCurrentRef?.addEventListener('scroll', handleOnHourScroll)
-
-    const hourToScroll = hourCurrentRef?.children[1].children[
-      hour
-    ] as HTMLLIElement
-
-    hourToScroll?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
 
     return () => {
       hourCurrentRef?.removeEventListener('scroll', handleOnHourScroll)
     }
-  }, [hour])
+  }, [])
 
-  const hours = format === 12 ? generate12Hours(lang) : generate24Hours(lang)
+  const hours = useMemo(
+    () =>
+      format === 12
+        ? sortValuesByCurrentValue(hour, generate12Hours(lang))
+        : sortValuesByCurrentValue(hour, generate24Hours(lang)),
+    [format, hour, lang],
+  )
 
   return (
     <div className="overflow-y-auto" ref={hourRef}>
@@ -175,24 +171,15 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
 
     minuteCurrentRef?.addEventListener('scroll', handleOnMinuteScroll)
 
-    const minuteToScroll = minuteCurrentRef?.children[1].children[
-      minute
-    ] as HTMLLIElement
-
-    const timeout = setTimeout(() => {
-      minuteToScroll?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
-    }, 1000)
-
     return () => {
       minuteCurrentRef?.removeEventListener('scroll', handleOnMinuteScroll)
-      clearTimeout(timeout)
     }
-  }, [minute])
+  }, [])
 
-  const minutes = generateMinutes(lang)
+  const minutes = useMemo(
+    () => sortValuesByCurrentValue(minute, generateMinutes(lang)),
+    [lang, minute],
+  )
 
   return (
     <div className="overflow-y-auto" ref={minuteRef}>
@@ -270,4 +257,17 @@ function generateMinutes(lang: Language) {
   }
 
   return minutes
+}
+
+function sortValuesByCurrentValue(
+  currentValue: number,
+  values: { value: number; label: string }[],
+) {
+  const foundIndex = values.findIndex((item) => item.value === currentValue)
+
+  if (foundIndex !== -1) {
+    return values.slice(foundIndex).concat(values.slice(0, foundIndex))
+  }
+
+  return values
 }
