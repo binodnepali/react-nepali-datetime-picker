@@ -1,11 +1,11 @@
-import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker'
-import { NepaliDate } from './types/NepaliDate'
-import { useState } from 'react'
-import { DesktopTime } from './components/DesktopTimePicker/DesktopTime/DesktopTime'
+// import { NepaliDatePicker } from '@components/NepaliDatePicker/NepaliDatePicker'
+// import { NepaliDate } from './types/NepaliDate'
+// import { useState } from 'react'
+// import { DesktopTime } from './components/DesktopTimePicker/DesktopTime/DesktopTime'
 import { DesktopTimePicker } from './components/DesktopTimePicker'
 
 export default function App() {
-  const [selectedDate, setSelectedDate] = useState<NepaliDate>()
+  // const [selectedDate, setSelectedDate] = useState<NepaliDate>()
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function App() {
           A simple and reusable date time picker component for React.
         </p>
 
-        <div className="flex flex-col max-w-lg mt-4 md:mt-6">
+        {/* <div className="flex flex-col max-w-lg mt-4 md:mt-6">
           <label htmlFor="date-picker" className="text-lg">
             Date Picker
           </label>
@@ -49,16 +49,16 @@ export default function App() {
             Selected Date:{' '}
             {selectedDate ? JSON.stringify(selectedDate, null, 2) : 'None'}
           </p>
-        </div>
+        </div> */}
 
         <div className="flex flex-col max-w-lg mt-4 md:mt-6">
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <label htmlFor="desktoptime" className="text-lg">
               Desktop Time
             </label>
 
             <DesktopTime />
-          </div>
+          </div> */}
 
           <div className="mb-8">
             <label htmlFor="desktoptimepicker" className="text-lg">

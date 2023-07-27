@@ -1,10 +1,12 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/Button/Button'
 import { timeDays } from '@/constants/timeDays'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { Language } from '@/types/Language'
+import { NepaliTime, Time } from '@/types/NepaliTime'
 import { TimeFormat } from '@/types/TimeFormat'
 import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
-import { useEffect, useMemo, useRef } from 'react'
-import { Button } from '@/components/ui/Button/Button'
 
 const MINUTE_CONTENT = 'MINUTE_CONTENT'
 const MINUTE_CLONED_CONTENT = 'MINUTE_CLONED_CONTENT'
@@ -14,7 +16,8 @@ const HOUR_CLONED_CONTENT = 'HOUR_CLONED_CONTENT'
 interface DesktopTimeProps {
   className?: string
   lang?: Language
-  onTimeSelect?: (selectedTime?: string) => void
+  selectedTime?: NepaliTime
+  onTimeSelect?: (time: NepaliTime) => void
   format?: TimeFormat
 }
 
@@ -22,10 +25,71 @@ export const DesktopTime = ({
   className = '',
   format = 12,
   lang = 'ne',
+  selectedTime,
+  onTimeSelect,
 }: DesktopTimeProps) => {
-  const { value } = useNepaliTime(lang)
+  const {
+    time: { value },
+    selectedHour,
+    setSelectedHour,
+    selectedMinute,
+    setSelectedMinute,
+    selectedDay,
+    setSelectedDay,
+  } = useNepaliTime({
+    lang,
+    selectedTime,
+  })
 
   const is12HourFormat = format === 12
+
+  const handleOnHourClick = (time: Time) => {
+    setSelectedHour(() => time)
+    onTimeSelect?.({
+      value: {
+        hour: time.value,
+        minute: selectedMinute.value,
+        day: selectedDay.value,
+      },
+      label: {
+        hour: time.label,
+        minute: selectedMinute.label,
+        day: selectedDay.label,
+      },
+    })
+  }
+
+  const handleOnMinuteClick = (time: Time) => {
+    setSelectedMinute(() => time)
+    onTimeSelect?.({
+      value: {
+        hour: selectedHour.value,
+        minute: time.value,
+        day: selectedDay.value,
+      },
+      label: {
+        hour: selectedHour.label,
+        minute: time.label,
+        day: selectedDay.label,
+      },
+    })
+  }
+
+  const handleOnDayClick = (day: { value: string; label: string }) => {
+    setSelectedDay(() => day)
+    onTimeSelect?.({
+      value: {
+        hour: selectedHour.value,
+        minute: selectedMinute.value,
+        day: day.value,
+      },
+      label: {
+        hour: selectedHour.label,
+        minute: selectedMinute.label,
+        day: day.label,
+      },
+    })
+  }
 
   return (
     <div
@@ -34,17 +98,32 @@ export const DesktopTime = ({
       } rounded gap-2
        w-fit h-60 overflow-hidden py-1 px-2 shadow-md  ${className}`}
     >
-      <HourList format={format} hour={value.hour} lang={lang} />
+      <HourList
+        format={format}
+        hour={value.hour}
+        lang={lang}
+        onTimeSelect={handleOnHourClick}
+      />
 
-      <MinuteList minute={value.minute} lang={lang} />
+      <MinuteList
+        minute={value.minute}
+        lang={lang}
+        onTimeSelect={handleOnMinuteClick}
+      />
 
       {is12HourFormat && (
         <div className="flex flex-col gap-2 justify-start">
           {timeDays.map((day) => (
             <Button
               variant="outline"
-              selected={day.value === value.day}
+              selected={day.value === selectedDay.value}
               key={day.value}
+              onClick={() =>
+                handleOnDayClick({
+                  value: day.value,
+                  label: day.label[lang],
+                })
+              }
             >
               {day.label[lang]}
             </Button>
@@ -59,11 +138,12 @@ function HourList({
   format,
   hour,
   lang,
+  onTimeSelect,
 }: {
   format: TimeFormat
   hour: number
-
   lang: Language
+  onTimeSelect?: (time: Time) => void
 }) {
   const hourRef = useRef<HTMLDivElement>(null)
 
@@ -88,7 +168,6 @@ function HourList({
       hourCurrentRef.scrollTop += clonedContent.offsetHeight
     }
   }
-
   useEffect(() => {
     const hourCurrentRef = hourRef.current
     hourCurrentRef?.addEventListener('scroll', handleOnHourScroll)
@@ -98,12 +177,19 @@ function HourList({
     }
   }, [])
 
+  const [selectedHour, setSelectedHour] = useState<number>(hour)
+  const handleOnHourClick = (time: Time) => {
+    setSelectedHour(() => time.value)
+    onTimeSelect?.(time)
+  }
+
   const hours = useMemo(
     () =>
       format === 12
         ? sortValuesByCurrentValue(hour, generate12Hours(lang))
         : sortValuesByCurrentValue(hour, generate24Hours(lang)),
-    [format, hour, lang],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [format, lang],
   )
 
   return (
@@ -114,7 +200,8 @@ function HourList({
             id={`h-${h.value}`}
             key={`h-${h.value}`}
             variant="outline"
-            selected={h.value === hour}
+            selected={h.value === selectedHour}
+            onClick={() => handleOnHourClick(h)}
           >
             {h.label}
           </Button>
@@ -131,7 +218,8 @@ function HourList({
             id={`h-cloned-${h.value}`}
             key={`h-cloned-${h.value}`}
             variant="outline"
-            selected={h.value === hour}
+            selected={h.value === selectedHour}
+            onClick={() => handleOnHourClick(h)}
           >
             {h.label}
           </Button>
@@ -141,7 +229,15 @@ function HourList({
   )
 }
 
-function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
+function MinuteList({
+  minute,
+  lang,
+  onTimeSelect,
+}: {
+  minute: number
+  lang: Language
+  onTimeSelect?: (time: Time) => void
+}) {
   const minuteRef = useRef<HTMLDivElement>(null)
 
   const handleOnMinuteScroll = () => {
@@ -165,7 +261,6 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
       minuteCurrentRef.scrollTop += clonedContent.offsetHeight
     }
   }
-
   useEffect(() => {
     const minuteCurrentRef = minuteRef.current
 
@@ -176,9 +271,17 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
     }
   }, [])
 
+  const [selectedMinute, setSelectedMinute] = useState<number>(minute)
+
+  const handleOnMinuteClick = (time: Time) => {
+    setSelectedMinute(() => time.value)
+    onTimeSelect?.(time)
+  }
+
   const minutes = useMemo(
     () => sortValuesByCurrentValue(minute, generateMinutes(lang)),
-    [lang, minute],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [lang],
   )
 
   return (
@@ -193,7 +296,8 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
             id={`m-${m.value}`}
             key={`m-${m.value}`}
             variant="outline"
-            selected={m.value === minute}
+            selected={m.value === selectedMinute}
+            onClick={() => handleOnMinuteClick(m)}
           >
             {m.label}
           </Button>
@@ -210,7 +314,8 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
             id={`m-cloned-${m.value}`}
             key={`m-cloned-${m.value}`}
             variant="outline"
-            selected={m.value === minute}
+            selected={m.value === selectedMinute}
+            onClick={() => handleOnMinuteClick(m)}
           >
             {m.label}
           </Button>
@@ -220,7 +325,7 @@ function MinuteList({ minute, lang }: { minute: number; lang: Language }) {
   )
 }
 
-function generate12Hours(lang: Language) {
+function generate12Hours(lang: Language): Time[] {
   const hours = []
 
   for (let i = 0; i <= 11; i++) {
@@ -233,7 +338,7 @@ function generate12Hours(lang: Language) {
   return hours
 }
 
-function generate24Hours(lang: Language) {
+function generate24Hours(lang: Language): Time[] {
   const hours = []
 
   for (let i = 0; i <= 23; i++) {
@@ -246,7 +351,7 @@ function generate24Hours(lang: Language) {
   return hours
 }
 
-function generateMinutes(lang: Language) {
+function generateMinutes(lang: Language): Time[] {
   const minutes = []
 
   for (let i = 0; i <= 59; i++) {
@@ -259,10 +364,7 @@ function generateMinutes(lang: Language) {
   return minutes
 }
 
-function sortValuesByCurrentValue(
-  currentValue: number,
-  values: { value: number; label: string }[],
-) {
+function sortValuesByCurrentValue(currentValue: number, values: Time[]) {
   const foundIndex = values.findIndex((item) => item.value === currentValue)
 
   if (foundIndex !== -1) {

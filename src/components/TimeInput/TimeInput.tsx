@@ -1,7 +1,24 @@
+import { useEffect, useState } from 'react'
+
 import TimeIcon from '@/assets/Time.svg'
-import { IconProps, Input, InputProps } from '../ui/Input/Input'
-import { useState } from 'react'
 import { Language } from '@/types/Language'
+import { validateTime } from '@/utils/nepaliTime'
+
+import { IconProps, Input, InputProps } from '../ui/Input/Input'
+
+export type TimeInputTargetValue = {
+  valid: boolean
+  label?: {
+    hour: string
+    minute: string
+    day: string
+  }
+  value?: {
+    hour: number
+    minute: number
+    day: string
+  }
+}
 
 interface TimeInputProps {
   className?: string
@@ -9,14 +26,15 @@ interface TimeInputProps {
   input?: InputProps
   icon?: IconProps
 }
-
 export const TimeInput = ({
   className = '',
   lang = 'ne',
   input = {},
   icon = {},
 }: TimeInputProps) => {
-  const [val, setVal] = useState<string>('')
+  const { value, onChange, ...inputRest } = input
+
+  const [val, setVal] = useState<string>(value || '')
   const [error, setError] = useState<string>('')
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,20 +43,40 @@ export const TimeInput = ({
     if (value === '') {
       setVal(() => value)
       setError(() => '')
-
+      onChange?.(e)
       return
     }
 
     setVal(() => value)
 
-    const { valid } = validateTime(value)
+    const { valid, label, value: validatedValue } = validateTime(value, lang)
 
     if (!valid) {
       setError(() => 'Invalid time')
     } else {
       setError(() => '')
     }
+
+    e.target.value = JSON.stringify({
+      valid,
+      ...({ label } ?? {}),
+      ...({ value: validatedValue } ?? {}),
+    })
+
+    onChange?.(e)
   }
+
+  useEffect(() => {
+    if (value) {
+      const { valid } = validateTime(value, lang)
+
+      console.log(valid, value)
+
+      if (valid) {
+        setVal(() => value)
+      }
+    }
+  }, [lang, value])
 
   const placeholder = lang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
 
@@ -49,7 +87,7 @@ export const TimeInput = ({
           placeholder,
           value: val,
           onChange: handleOnInputChange,
-          ...input,
+          ...inputRest,
         }}
         icon={icon}
       >
@@ -58,24 +96,4 @@ export const TimeInput = ({
       <div className="text-red-500">{error}</div>
     </div>
   )
-}
-
-function validateTime(time: string) {
-  const time12Regex = /^(0[1-9]|1[0-2]):([0-5][0-9])$/
-
-  const time24Regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
-
-  if (time12Regex.test(time) || time24Regex.test(time)) {
-    return {
-      valid: true,
-      value: {
-        hour: parseInt(time.split(':')[0]),
-        minute: parseInt(time.split(':')[1]),
-      },
-    }
-  }
-
-  return {
-    valid: false,
-  }
 }

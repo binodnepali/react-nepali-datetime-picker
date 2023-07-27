@@ -1,42 +1,50 @@
-import { dayjs } from '@/plugins/dayjs'
+import { useState } from 'react'
+
 import { Language } from '@/types/Language'
+import { NepaliTime } from '@/types/NepaliTime'
+import { getCurrentNepaliTime } from '@/utils/nepaliTime'
 
-import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
-import { timeDays } from '@/constants/timeDays'
-
-export type NepaliTime = {
-  value: {
-    hour: number
-    minute: number
-    day: string
-  }
-  label: {
-    hour: string
-    minute: string
-    day: string
-  }
+interface NepaliTimeParams {
+  selectedTime?: NepaliTime
+  lang?: Language
 }
 
-export const useNepaliTime = (lang: Language) => {
-  const date = dayjs().tz('Asia/Kathmandu')
+export const useNepaliTime = (params?: NepaliTimeParams) => {
+  const { selectedTime, lang = 'ne' } = params ?? {}
 
-  const hour = date.hour()
-  const minute = date.minute()
-  const day = date.format('A')
-  const dayLabel =
-    timeDays.find((timeDay) => timeDay.value === day)?.label[lang] ?? ''
+  const currentTime = getCurrentNepaliTime(lang)
+
+  const [selectedHour, setSelectedHour] = useState<{
+    value: number
+    label: string
+  }>({
+    value: selectedTime?.value.hour ?? currentTime.value.hour,
+    label: selectedTime?.label.hour ?? currentTime.label.hour,
+  })
+  const [selectedMinute, setSelectedMinute] = useState<{
+    value: number
+    label: string
+  }>({
+    value: selectedTime?.value.minute ?? currentTime.value.minute,
+    label: selectedTime?.label.minute ?? currentTime.label.minute,
+  })
+
+  const [selectedDay, setSelectedDay] = useState<{
+    value: string
+    label: string
+  }>({
+    value: selectedTime?.value.day ?? currentTime.value.day,
+    label: selectedTime?.label.day ?? currentTime.label.day,
+  })
 
   return {
-    value: {
-      hour,
-      minute,
-      day,
-    },
-    label: {
-      hour: lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
-      minute:
-        lang === 'ne' ? addLeadingNepaliZero(minute) : addLeadingZero(minute),
-      day: dayLabel,
-    },
-  } as NepaliTime
+    time: selectedTime ?? currentTime,
+    selectedHour,
+    selectedMinute,
+    setSelectedHour,
+    setSelectedMinute,
+    selectedDay,
+    setSelectedDay,
+    currentTime,
+  }
 }
