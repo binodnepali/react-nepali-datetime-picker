@@ -115,6 +115,7 @@ export const DesktopTimePicker = ({
         <Modal
           onClose={() => setShowModal(false)}
           className="md:mt-11 md:bg-transparent"
+          variant="desktop"
           {...modal}
         >
           <DesktopTime
