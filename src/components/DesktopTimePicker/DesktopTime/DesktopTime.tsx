@@ -3,9 +3,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button/Button'
 import { timeDays } from '@/constants/timeDays'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime, Time } from '@/types/NepaliTime'
-import { TimeFormat } from '@/types/TimeFormat'
 import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
 
 const MINUTE_CONTENT = 'MINUTE_CONTENT'
@@ -13,17 +13,17 @@ const MINUTE_CLONED_CONTENT = 'MINUTE_CLONED_CONTENT'
 const HOUR_CONTENT = 'HOUR_CONTENT'
 const HOUR_CLONED_CONTENT = 'HOUR_CLONED_CONTENT'
 
-interface DesktopTimeProps {
+export interface DesktopTimeProps {
   className?: string
+  hourFormat?: HourFormat
   lang?: Language
-  selectedTime?: NepaliTime
   onTimeSelect?: (time: NepaliTime) => void
-  format?: TimeFormat
+  selectedTime?: NepaliTime
 }
 
 export const DesktopTime = ({
   className = '',
-  format = 12,
+  hourFormat = 12,
   lang = 'ne',
   selectedTime,
   onTimeSelect,
@@ -41,7 +41,7 @@ export const DesktopTime = ({
     selectedTime,
   })
 
-  const is12HourFormat = format === 12
+  const is12HourFormat = hourFormat === 12
 
   const handleOnHourClick = (time: Time) => {
     setSelectedHour(() => time)
@@ -99,7 +99,7 @@ export const DesktopTime = ({
        w-fit h-60 overflow-hidden py-1 px-2 shadow-md  ${className}`}
     >
       <HourList
-        format={format}
+        format={hourFormat}
         hour={value.hour}
         lang={lang}
         onTimeSelect={handleOnHourClick}
@@ -140,7 +140,7 @@ function HourList({
   lang,
   onTimeSelect,
 }: {
-  format: TimeFormat
+  format: HourFormat
   hour: number
   lang: Language
   onTimeSelect?: (time: Time) => void

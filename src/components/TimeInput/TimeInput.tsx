@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import TimeIcon from '@/assets/Time.svg'
+import { IconProps, Input, NativeInputProps } from '@/components/ui/Input/Input'
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { validateTime } from '@/utils/nepaliTime'
-
-import { IconProps, Input, InputProps } from '../ui/Input/Input'
 
 export type TimeInputTargetValue = {
   valid: boolean
@@ -20,17 +20,19 @@ export type TimeInputTargetValue = {
   }
 }
 
-interface TimeInputProps {
+export interface TimeInputProps {
   className?: string
-  lang?: Language
-  input?: InputProps
   icon?: IconProps
+  input?: NativeInputProps
+  lang?: Language
+  hourFormat?: HourFormat
 }
 export const TimeInput = ({
   className = '',
   lang = 'ne',
   input = {},
   icon = {},
+  hourFormat = 12,
 }: TimeInputProps) => {
   const { value, onChange, ...inputRest } = input
 
@@ -68,14 +70,13 @@ export const TimeInput = ({
 
   useEffect(() => {
     if (value) {
-      const { valid } = validateTime(value, lang)
-
-      console.log(valid, value)
+      const { valid } = validateTime(value, lang, hourFormat)
 
       if (valid) {
         setVal(() => value)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang, value])
 
   const placeholder = lang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'

@@ -1,5 +1,6 @@
 import { timeDays } from '@/constants/timeDays'
 import { dayjs } from '@/plugins/dayjs'
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { EnglishAMOrPM, NepaliAMOrPM, NepaliTime } from '@/types/NepaliTime'
 import {
@@ -31,11 +32,17 @@ export const getCurrentNepaliTime = (lang: Language): NepaliTime => {
 
 const TIME_12_REGEX = /^(0[1-9]|1[0-2]):([0-5][0-9])$/
 const TIME_24_REGEX = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
-const NEPALI_COLON_CHARACTER = 'ः'
-export const validateTime = (time: string, lang: Language = 'ne') => {
+export const NEPALI_COLON_CHARACTER = 'ः'
+export const validateTime = (
+  time: string,
+  lang: Language = 'ne',
+  hourFormat: HourFormat = 12,
+) => {
+  const is12HourFormat = hourFormat === 12
+
   const [hourAndMinute, dayPart] = time.split(' ').map((t) => t)
 
-  if (!hourAndMinute || !dayPart) {
+  if (!hourAndMinute || (!dayPart && is12HourFormat)) {
     return {
       valid: false,
     }
@@ -44,7 +51,31 @@ export const validateTime = (time: string, lang: Language = 'ne') => {
   if (
     lang === 'en' &&
     (TIME_12_REGEX.test(hourAndMinute) || TIME_24_REGEX.test(hourAndMinute)) &&
+    is12HourFormat &&
     (dayPart === EnglishAMOrPM.AM || dayPart === EnglishAMOrPM.PM)
+  ) {
+    const [hour, minute] = hourAndMinute.split(':').map((t) => t)
+
+    const day = dayPart === EnglishAMOrPM.AM ? 'AM' : 'PM'
+    return {
+      valid: true,
+      value: {
+        hour: parseInt(hour),
+        minute: parseInt(minute),
+        day,
+      },
+      label: {
+        hour,
+        minute,
+        day,
+      },
+    }
+  }
+
+  if (
+    lang === 'en' &&
+    (TIME_12_REGEX.test(hourAndMinute) || TIME_24_REGEX.test(hourAndMinute)) &&
+    !is12HourFormat
   ) {
     const [hour, minute] = hourAndMinute.split(':').map((t) => t)
 
@@ -53,14 +84,11 @@ export const validateTime = (time: string, lang: Language = 'ne') => {
       value: {
         hour: parseInt(hour),
         minute: parseInt(minute),
-        day: dayPart === EnglishAMOrPM.AM ? 'AM' : 'PM',
       },
       label: {
         hour,
         minute,
-        day: dayPart,
       },
-      day: dayPart.toString(),
     }
   }
 
@@ -76,9 +104,11 @@ export const validateTime = (time: string, lang: Language = 'ne') => {
 
   const hourPart = addLeadingZero(convertNepaliDigitToEnglishDigit(hour))
   const minutePart = addLeadingZero(convertNepaliDigitToEnglishDigit(minute))
+
   if (
     (TIME_12_REGEX.test(`${hourPart}:${minutePart}`) ||
       TIME_24_REGEX.test(`${hourPart}:${minutePart}`)) &&
+    is12HourFormat &&
     (dayPart === NepaliAMOrPM.AM || dayPart === NepaliAMOrPM.PM)
   ) {
     return {
@@ -96,6 +126,24 @@ export const validateTime = (time: string, lang: Language = 'ne') => {
     }
   }
 
+  if (
+    (TIME_12_REGEX.test(`${hourPart}:${minutePart}`) ||
+      TIME_24_REGEX.test(`${hourPart}:${minutePart}`)) &&
+    !is12HourFormat
+  ) {
+    return {
+      valid: true,
+      value: {
+        hour: parseInt(hourPart),
+        minute: parseInt(minutePart),
+      },
+      label: {
+        hour,
+        minute,
+      },
+    }
+  }
+
   return {
     valid: false,
   }
@@ -106,6 +154,7 @@ export const formatTime = (
   minute: number,
   day: string,
   lang: Language = 'ne',
+  hourFormat: HourFormat = 12,
 ) => {
   const hourString =
     lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour)
@@ -116,5 +165,9 @@ export const formatTime = (
 
   const separator = lang === 'ne' ? NEPALI_COLON_CHARACTER : ':'
 
-  return `${hourString}${separator}${minuteString} ${dayString}`
+  const format = `${hourString}${separator}${minuteString} ${
+    hourFormat === 12 ? dayString : ''
+  }`
+
+  return format
 }

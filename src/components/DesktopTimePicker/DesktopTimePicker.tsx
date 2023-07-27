@@ -2,21 +2,38 @@ import { useState } from 'react'
 
 import {
   TimeInput,
+  TimeInputProps,
   TimeInputTargetValue,
 } from '@/components/TimeInput/TimeInput'
-import { Modal } from '@/components/ui/Modal/Modal'
+import { Modal, ModalProps } from '@/components/ui/Modal/Modal'
+import { HourFormat } from '@/types/HourFormat'
+import { Language } from '@/types/Language'
 import { NepaliTime } from '@/types/NepaliTime'
 import { formatTime } from '@/utils/nepaliTime'
 
-import { DesktopTime } from './DesktopTime/DesktopTime'
+import { DesktopTime, DesktopTimeProps } from './DesktopTime/DesktopTime'
 
 interface DesktopTimePickerProps {
   className?: string
+  desktopTime?: DesktopTimeProps
+  hourFormat?: HourFormat
+  lang?: Language
+  modal?: ModalProps
+  onTimeSelect?: (time: NepaliTime) => void
+  timeInput?: TimeInputProps
 }
 
 export const DesktopTimePicker = ({
   className = '',
+  onTimeSelect,
+  modal = {},
+  timeInput = {},
+  desktopTime = {},
+  lang = 'ne',
+  hourFormat = 12,
 }: DesktopTimePickerProps) => {
+  const { icon = {}, input = {}, ...timeInputRest } = timeInput
+
   const [showModal, setShowModal] = useState<boolean>(false)
 
   const [valid, setValid] = useState<boolean>(true)
@@ -24,6 +41,7 @@ export const DesktopTimePicker = ({
 
   const handleOnTimeSelect = (time: NepaliTime) => {
     setTime(() => time)
+    onTimeSelect?.(time)
   }
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +61,7 @@ export const DesktopTimePicker = ({
       }
 
       setValid(() => valid)
-      setTime(() => ({
+      const time = {
         value: {
           hour: val.hour,
           minute: val.minute,
@@ -54,7 +72,10 @@ export const DesktopTimePicker = ({
           minute: label.minute,
           day: label.day,
         },
-      }))
+      }
+      setTime(() => time)
+
+      onTimeSelect?.(time)
     } else {
       setValid(() => true)
     }
@@ -70,21 +91,39 @@ export const DesktopTimePicker = ({
             }
             setShowModal(true)
           },
+          ...icon,
         }}
         input={{
           value: time?.value
-            ? formatTime(time.value.hour, time.value.minute, time.value.day)
+            ? formatTime(
+                time.value.hour,
+                time.value.minute,
+                time.value.day,
+                lang,
+                hourFormat,
+              )
             : '',
           onChange: handleOnInputChange,
+          ...input,
         }}
+        lang={lang}
+        hourFormat={hourFormat}
+        {...timeInputRest}
       />
 
       {showModal && valid && (
         <Modal
           onClose={() => setShowModal(false)}
           className="md:mt-11 md:bg-transparent"
+          {...modal}
         >
-          <DesktopTime onTimeSelect={handleOnTimeSelect} selectedTime={time} />
+          <DesktopTime
+            onTimeSelect={handleOnTimeSelect}
+            selectedTime={time}
+            lang={lang}
+            hourFormat={hourFormat}
+            {...desktopTime}
+          />
         </Modal>
       )}
     </div>

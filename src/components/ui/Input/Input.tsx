@@ -1,7 +1,7 @@
-export type InputProps = React.HTMLAttributes<HTMLInputElement> & {
+export type NativeInputProps = React.HTMLAttributes<HTMLInputElement> & {
   className?: string
-  value?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string
 }
 
 export type IconProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -9,11 +9,11 @@ export type IconProps = React.HTMLAttributes<HTMLDivElement> & {
   onClick?: () => void
 }
 
-interface Props {
-  className?: string
+interface InputProps {
   children?: React.ReactNode
-  input?: InputProps
+  className?: string
   icon?: IconProps
+  input?: NativeInputProps
 }
 
 export const Input = ({
@@ -21,7 +21,7 @@ export const Input = ({
   input = {},
   icon = {},
   children,
-}: Props) => {
+}: InputProps) => {
   const { className: inputClassName = '', ...inputRest } = input
 
   const { className: iconClassName = '', ...iconRest } = icon
