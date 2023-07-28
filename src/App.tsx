@@ -1,4 +1,4 @@
-import { DesktopTimePicker } from './components/DesktopTimePicker'
+import { DesktopTimePicker } from '.'
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
             DesktopTime Picker
           </label>
 
-          <DesktopTimePicker lang="en" />
+          <DesktopTimePicker />
         </div>
       </div>
     </div>
