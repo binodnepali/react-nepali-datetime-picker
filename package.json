@@ -1,6 +1,10 @@
 {
   "name": "react-nepali-datetime-picker",
   "description": "A simple and reusable Nepali calendar, date and time picker components for React.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binodnepali/react-nepali-datetime-picker"
+  },
   "keywords": [
     "nepali-calendar",
     "nepali-datepicker",
