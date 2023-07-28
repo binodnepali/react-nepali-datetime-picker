@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { Day, NepaliTime, Time } from '@/types/NepaliTime'
 import { getCurrentNepaliTime } from '@/utils/nepaliTime'
@@ -7,12 +8,13 @@ import { getCurrentNepaliTime } from '@/utils/nepaliTime'
 interface NepaliTimeParams {
   selectedTime?: NepaliTime
   lang?: Language
+  hourFormat?: HourFormat
 }
 
 export const useNepaliTime = (params?: NepaliTimeParams) => {
-  const { selectedTime, lang = 'ne' } = params ?? {}
+  const { selectedTime, lang = 'ne', hourFormat = 12 } = params ?? {}
 
-  const currentTime = getCurrentNepaliTime(lang)
+  const currentTime = getCurrentNepaliTime(lang, hourFormat)
 
   const [selectedHour, setSelectedHour] = useState<Time>({
     value: selectedTime?.value.hour ?? currentTime.value.hour,

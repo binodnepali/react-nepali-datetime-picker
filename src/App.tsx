@@ -1,4 +1,4 @@
-import { DesktopTimePicker } from '.'
+import { DesktopTimePicker, NepaliDatePicker } from '.'
 
 export default function App() {
   return (
@@ -13,7 +13,9 @@ export default function App() {
             DesktopTime Picker
           </label>
 
-          <DesktopTimePicker />
+          <DesktopTimePicker lang="en" hourFormat={24} />
+
+          <NepaliDatePicker />
         </div>
       </div>
     </div>

@@ -6,7 +6,12 @@ import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime, Time } from '@/types/NepaliTime'
-import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
+import {
+  generate12Hours,
+  generate24Hours,
+  generateMinutes,
+  sortValuesByCurrentValue,
+} from '@/utils/nepaliTime'
 
 const MINUTE_CONTENT = 'MINUTE_CONTENT'
 const MINUTE_CLONED_CONTENT = 'MINUTE_CLONED_CONTENT'
@@ -39,6 +44,7 @@ export const DesktopTime = ({
   } = useNepaliTime({
     lang,
     selectedTime,
+    hourFormat,
   })
 
   const is12HourFormat = hourFormat === 12
@@ -323,53 +329,4 @@ function MinuteList({
       </div>
     </div>
   )
-}
-
-function generate12Hours(lang: Language): Time[] {
-  const hours = []
-
-  for (let i = 0; i <= 11; i++) {
-    hours.push({
-      value: i,
-      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
-    })
-  }
-
-  return hours
-}
-
-function generate24Hours(lang: Language): Time[] {
-  const hours = []
-
-  for (let i = 0; i <= 23; i++) {
-    hours.push({
-      value: i,
-      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
-    })
-  }
-
-  return hours
-}
-
-function generateMinutes(lang: Language): Time[] {
-  const minutes = []
-
-  for (let i = 0; i <= 59; i++) {
-    minutes.push({
-      value: i,
-      label: lang === 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
-    })
-  }
-
-  return minutes
-}
-
-function sortValuesByCurrentValue(currentValue: number, values: Time[]) {
-  const foundIndex = values.findIndex((item) => item.value === currentValue)
-
-  if (foundIndex !== -1) {
-    return values.slice(foundIndex).concat(values.slice(0, foundIndex))
-  }
-
-  return values
 }

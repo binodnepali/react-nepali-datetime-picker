@@ -2,18 +2,30 @@ import { timeDays } from '@/constants/timeDays'
 import { dayjs } from '@/plugins/dayjs'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
-import { EnglishAMOrPM, NepaliAMOrPM, NepaliTime } from '@/types/NepaliTime'
+import {
+  EnglishAMOrPM,
+  NepaliAMOrPM,
+  NepaliTime,
+  Time,
+} from '@/types/NepaliTime'
 import {
   addLeadingNepaliZero,
   addLeadingZero,
   convertNepaliDigitToEnglishDigit,
 } from '@/utils/digit'
 
-export const getCurrentNepaliTime = (lang: Language): NepaliTime => {
+export const getCurrentNepaliTime = (
+  lang: Language = 'ne',
+  hourFormat: HourFormat = 12,
+): NepaliTime => {
   const date = dayjs().tz('Asia/Kathmandu')
-  const hour = date.hour()
-  const minute = date.minute()
-  const day = date.format('A')
+
+  const formatDate =
+    hourFormat === 12 ? date.format('hh:mm A') : date.format('HH:mm A')
+
+  const hour = parseInt(formatDate.split(':')[0])
+  const minute = parseInt(formatDate.split(':')[1])
+  const day = formatDate.split(' ')[1]
 
   return {
     value: {
@@ -25,7 +37,9 @@ export const getCurrentNepaliTime = (lang: Language): NepaliTime => {
       hour: lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
       minute:
         lang === 'ne' ? addLeadingNepaliZero(minute) : addLeadingZero(minute),
-      day: timeDays.find((timeDay) => timeDay.value === day)?.label[lang] ?? '',
+      day: timeDays.find((timeDay) => timeDay.value === day)?.label[
+        lang
+      ] as string,
     },
   }
 }
@@ -147,6 +161,58 @@ export const validateTime = (
   return {
     valid: false,
   }
+}
+
+export const generate12Hours = (lang: Language): Time[] => {
+  const hours = []
+
+  for (let i = 0; i <= 11; i++) {
+    hours.push({
+      value: i,
+      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
+    })
+  }
+
+  return hours
+}
+
+export const generate24Hours = (lang: Language): Time[] => {
+  const hours = []
+
+  for (let i = 0; i <= 23; i++) {
+    hours.push({
+      value: i,
+      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
+    })
+  }
+
+  return hours
+}
+
+export const generateMinutes = (lang: Language): Time[] => {
+  const minutes = []
+
+  for (let i = 0; i <= 59; i++) {
+    minutes.push({
+      value: i,
+      label: lang === 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
+    })
+  }
+
+  return minutes
+}
+
+export const sortValuesByCurrentValue = (
+  currentValue: number,
+  values: Time[],
+) => {
+  const foundIndex = values.findIndex((item) => item.value === currentValue)
+
+  if (foundIndex !== -1) {
+    return values.slice(foundIndex).concat(values.slice(0, foundIndex))
+  }
+
+  return values
 }
 
 export const formatTime = (
