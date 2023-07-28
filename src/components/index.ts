@@ -1,7 +1,14 @@
-import { NepaliDateInput } from '@/components/NepaliDateInput/NepaliDateInput';
+import { DesktopTime, DesktopTimePicker } from '@/components/DesktopTimePicker'
+import { NepaliCalendar } from '@/components/NepaliCalendar/NepaliCalendar'
+import { NepaliDateInput } from '@/components/NepaliDateInput/NepaliDateInput'
+import { NepaliDatePicker } from '@/components/NepaliDatePicker/NepaliDatePicker'
+import { TimeInput } from '@/components/TimeInput/TimeInput'
 
-import { NepaliCalendar } from '@/components/NepaliCalendar/NepaliCalendar';
-
-import { NepaliDatePicker } from '@/components/NepaliDatePicker/NepaliDatePicker';
-
-export { NepaliDateInput, NepaliCalendar, NepaliDatePicker };
+export {
+  DesktopTime,
+  DesktopTimePicker,
+  NepaliCalendar,
+  NepaliDateInput,
+  NepaliDatePicker,
+  TimeInput,
+}

@@ -1,4 +1,17 @@
-import digitMap from '@/constants/digit.json'
+const DIGIT_MAP: {
+  [key: string]: string
+} = {
+  '०': '0',
+  '१': '1',
+  '२': '2',
+  '३': '3',
+  '४': '4',
+  '५': '5',
+  '६': '6',
+  '७': '7',
+  '८': '8',
+  '९': '9',
+} as const
 
 export const convertToNepaliDigit = (number: number): string => {
   const nepaliDigits: string[] = [
@@ -37,10 +50,8 @@ export const addLeadingZero = (number: number): string => {
 export const convertNepaliDigitToEnglishDigit = (number: string): number => {
   let englishNumber = ''
 
-  const map: { [key: string]: string } = digitMap as { [key: string]: string }
-
   for (let i = 0; i < number.length; i++) {
-    englishNumber += map[number[i]]
+    englishNumber += DIGIT_MAP[number[i]]
   }
 
   return parseInt(englishNumber)

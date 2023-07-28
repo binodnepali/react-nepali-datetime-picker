@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Language } from '@/types/Language'
-import { NepaliTime } from '@/types/NepaliTime'
+import { Day, NepaliTime, Time } from '@/types/NepaliTime'
 import { getCurrentNepaliTime } from '@/utils/nepaliTime'
 
 interface NepaliTimeParams {
@@ -14,25 +14,16 @@ export const useNepaliTime = (params?: NepaliTimeParams) => {
 
   const currentTime = getCurrentNepaliTime(lang)
 
-  const [selectedHour, setSelectedHour] = useState<{
-    value: number
-    label: string
-  }>({
+  const [selectedHour, setSelectedHour] = useState<Time>({
     value: selectedTime?.value.hour ?? currentTime.value.hour,
     label: selectedTime?.label.hour ?? currentTime.label.hour,
   })
-  const [selectedMinute, setSelectedMinute] = useState<{
-    value: number
-    label: string
-  }>({
+  const [selectedMinute, setSelectedMinute] = useState<Time>({
     value: selectedTime?.value.minute ?? currentTime.value.minute,
     label: selectedTime?.label.minute ?? currentTime.label.minute,
   })
 
-  const [selectedDay, setSelectedDay] = useState<{
-    value: string
-    label: string
-  }>({
+  const [selectedDay, setSelectedDay] = useState<Day>({
     value: selectedTime?.value.day ?? currentTime.value.day,
     label: selectedTime?.label.day ?? currentTime.label.day,
   })

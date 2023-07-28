@@ -25,3 +25,8 @@ export type Time = {
   value: number
   label: string
 }
+
+export type Day = {
+  value: string
+  label: string
+}
