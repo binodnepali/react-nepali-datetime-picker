@@ -24,17 +24,23 @@ pnpm add react-nepali-datetime-picker
 ## Usage
 
 ```jsx
-import React from 'react';
-import { NepaliCalendar, DatePicker, TimePicker, DatetimePicker } from 'react-nepali-datetime-picker';
+import {
+  NepaliCalendar,
+  NepaliDatePicker,
+  DesktopTime,
+  DesktopTimePicker,
+} from 'react-nepali-datetime-picker';
+
+import 'react-nepali-datetime-picker/dist/style.css';
 
 const MyComponent = () => {
   return (
-    <div>
+    <>
       <NepaliCalendar />
-      <DatePicker />
-      <TimePicker />
-      <DatetimePicker />
-    </div>
+      <NepaliDatePicker />
+      <DesktopTime />
+      <DesktopTimePicker />
+    </>
   );
 };
 
