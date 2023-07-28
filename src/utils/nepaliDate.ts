@@ -1,16 +1,16 @@
-import { dayjs } from '@/plugins/dayjs'
-
-import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth'
 import { months } from '@/constants/months'
 import { weekDays } from '@/constants/weekDays'
+import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth'
+import { dayjs } from '@/plugins/dayjs'
 import { Language } from '@/types/Language'
+import { Day, Month, NepaliDate, Year } from '@/types/NepaliDate'
+import { WeekDay } from '@/types/WeekDay'
+
 import {
   addLeadingNepaliZero,
   addLeadingZero,
   convertToNepaliDigit,
 } from './digit'
-import { WeekDay } from '@/types/WeekDay'
-import { Day, Month, NepaliDate, Year } from '@/types/NepaliDate'
 
 const GREGORIAN_START_YEAR = 1943 // Start year of the Gregorian calendar
 const NEPALI_START_YEAR = 2000 // Start year of the Nepali calendar

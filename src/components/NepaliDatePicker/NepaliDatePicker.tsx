@@ -6,11 +6,10 @@ import {
 } from '@/components/NepaliCalendar/NepaliCalendar'
 import {
   NepaliDateInput,
-  TargetValue,
   NepaliDateInputProps,
+  TargetValue,
 } from '@/components/NepaliDateInput/NepaliDateInput'
 import { Modal } from '@/components/ui/Modal/Modal'
-
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 

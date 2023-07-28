@@ -39,6 +39,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest watch",
     "prepare": "npm run build && husky install",

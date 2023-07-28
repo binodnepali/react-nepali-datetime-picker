@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import DateIcon from '@/assets/Date.svg'
+import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
-import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { formatNepaliDate } from '@/utils/nepaliDate'
-
-import DateIcon from '@/assets/Date.svg'
 
 export interface NepaliDateInputProps {
   className?: string

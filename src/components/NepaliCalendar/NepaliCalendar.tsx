@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
-
 import ExpandMoreIcon from '@assets/More.svg'
 import NextIcon from '@assets/Next.svg'
 import PrevIcon from '@assets/Prev.svg'
-
-import { Button } from '@ui/Button/Button'
 import { useNepaliCalendar } from '@hooks/useNepaliCalendar'
+import { Button } from '@ui/Button/Button'
+import { useEffect, useState } from 'react'
+
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
@@ -62,8 +61,6 @@ export const NepaliCalendar = ({
   const handleOnYearClick = (year: number) => {
     const selectedYear = years.find((y) => y.value === year)
     if (!selectedYear) {
-      console.warn('Year not found')
-
       return
     }
 
@@ -82,13 +79,11 @@ export const NepaliCalendar = ({
     if (prevMonth < 0 && years.find((y) => y.value === prevYear)) {
       const foundPrevYear = years.find((y) => y.value === prevYear)
       if (!foundPrevYear) {
-        console.warn('Year not found')
         return
       }
 
       const foundPrevMonth = months.find((m) => m.value === 11)
       if (!foundPrevMonth) {
-        console.warn('Month not found')
         return
       }
 
@@ -104,7 +99,6 @@ export const NepaliCalendar = ({
 
     const foundPrevMonth = months.find((m) => m.value === prevMonth)
     if (!foundPrevMonth) {
-      console.warn('Month not found')
       return
     }
 
@@ -125,13 +119,11 @@ export const NepaliCalendar = ({
     ) {
       const foundNextYear = years.find((y) => y.value === nextYear)
       if (!foundNextYear) {
-        console.warn('Year not found')
         return
       }
 
       const foundNextMonth = months.find((m) => m.value === 0)
       if (!foundNextMonth) {
-        console.warn('Month not found')
         return
       }
 
@@ -146,7 +138,6 @@ export const NepaliCalendar = ({
 
     const foundNextMonth = months.find((m) => m.value === nextMonth)
     if (!foundNextMonth) {
-      console.warn('Month not found')
       return
     }
 
@@ -158,7 +149,6 @@ export const NepaliCalendar = ({
 
     const foundYear = years.find((y) => y.value === selectedDate.year.value)
     if (!foundYear) {
-      console.warn('Year not found')
       return
     }
 
@@ -166,7 +156,6 @@ export const NepaliCalendar = ({
       (m) => m.value === selectedDate.month.value - 1,
     )
     if (!foundMonth) {
-      console.warn('Month not found')
       return
     }
 

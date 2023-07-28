@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { days } from '@/constants/days'
 import { Language } from '@/types/Language'
-import { NepaliDate, Month, Year } from '@/types/NepaliDate'
+import { Month, NepaliDate, Year } from '@/types/NepaliDate'
+import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
 import {
   getCurrentNepaliDate,
   getMonthDatesByYear,
-  getWeekDays,
   getMonths,
+  getWeekDays,
   getYears,
   YEAR_MONTH_DATE_SEPARATOR,
 } from '@/utils/nepaliDate'
-import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
-import { days } from '@/constants/days'
 
 interface UseNepaliCalendarParams {
   lang?: Language
@@ -153,13 +153,11 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
   useEffect(() => {
     const foundCurrentYear = years.find((y) => y.value === currentYear)
     if (!foundCurrentYear) {
-      console.log('No current year found')
       return
     }
 
     const foundCurrentMonth = months.find((m) => m.value === currentMonth)
     if (!foundCurrentMonth) {
-      console.log('No current month found')
       return
     }
 
