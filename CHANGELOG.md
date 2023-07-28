@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.2](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2023-07-28)
+
+
+### Features
+
+* add desktop time picker ([a7a3258](https://github.com/binodnepali/react-nepali-datetime-picker/commit/a7a3258cfe6450acf31fc8e1f84b759b74c8e8d4))
+
+
+### Bug Fixes
+
+* **datepicker:** incorrect month view when date valid after correction ([ac2613b](https://github.com/binodnepali/react-nepali-datetime-picker/commit/ac2613b33f7c366e55c9ac388bd651618e0b2584))
+* **desktoptime:** current time not appear in first list ([cdf6890](https://github.com/binodnepali/react-nepali-datetime-picker/commit/cdf6890bce7a22d4e4826c61d5cf67c6390d8661))
+
 ## [1.0.0-alpha.1](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2023-07-18)
 
 
