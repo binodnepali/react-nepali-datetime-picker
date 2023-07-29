@@ -75,7 +75,7 @@ export const NepaliDatePicker = ({
   }
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`ne-dt-relative ${className}`}>
       <NepaliDateInput
         lang={lang}
         value={selectedDate}
@@ -98,7 +98,7 @@ export const NepaliDatePicker = ({
       {showModal && (
         <Modal
           onClose={handleOnModalClose}
-          className={`md:mt-11 md:bg-transparent ${modalClassName}`}
+          className={`md:ne-dt-mt-11 md:ne-dt-bg-transparent ${modalClassName}`}
         >
           <NepaliCalendar
             onDateSelect={handleOnSelectDate}

@@ -94,9 +94,9 @@ export const NepaliDateInput = ({
   }, [lang, value])
 
   return (
-    <div className={`relative w-fit ${className}`}>
+    <div className={`ne-dt-relative ne-dt-w-fit ${className}`}>
       <input
-        className={`border border-gray-300 rounded-md px-2 py-2 ${inputClassName}`}
+        className={`ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-px-2 ne-dt-py-2 ${inputClassName}`}
         type="text"
         autoComplete="off"
         onChange={handleOnChange}
@@ -105,7 +105,7 @@ export const NepaliDateInput = ({
       />
 
       <div
-        className={`absolute inset-y-0 right-0 mr-1 flex items-center cursor-pointer ${iconClassName}`}
+        className={`ne-dt-absolute ne-dt-inset-y-0 ne-dt-right-0 ne-dt-mr-1 ne-dt-flex ne-dt-items-center ne-dt-cursor-pointer ${iconClassName}`}
         {...(iconChildren && {
           onClick: handleOnIconClick,
         })}
@@ -115,15 +115,15 @@ export const NepaliDateInput = ({
           <DateIcon
             width="36"
             height="36"
-            className="rounded-full hover:bg-gray-100 focus:outline-none focus:bg-gray-100 p-1"
+            className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
             onClick={handleOnIconClick}
           />
         )}
       </div>
 
       {!isValid && (
-        <div className="absolute bottom-0 left-0 translate-y-full">
-          <p className={`text-xs text-red-500 ${errorClassName}`}>
+        <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+          <p className={`ne-dt-text-xs ne-dt-text-red-500 ${errorClassName}`}>
             {errorMessage}
           </p>
         </div>

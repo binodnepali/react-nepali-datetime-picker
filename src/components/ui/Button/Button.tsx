@@ -23,7 +23,7 @@ export const Button: React.FC<IconButtonProps> = ({
     const inactiveClass = inactive ? 'ne-dt-text-gray-400' : ''
 
     const selectedClass = selected
-      ? 'ne-dt-border ne-dt-border-gray-900 ne-dt-bg-gray-900 ne-dt-text-white ne-dt-hover:bg-gray-800 ne-dt-focus:bg-gray-800'
+      ? 'ne-dt-border ne-dt-border-gray-900 ne-dt-bg-gray-900 ne-dt-text-white hover:ne-dt-bg-gray-800 focus:ne-dt-bg-gray-800'
       : ''
 
     switch (variant) {
@@ -45,7 +45,7 @@ export const Button: React.FC<IconButtonProps> = ({
       {...rest}
       disabled={inactive}
       type="button"
-      className={`ne-dt-flex ne-dt-items-center ne-dt-justify-center ne-dt-hover:bg-gray-100 ne-dt-focus:outline-none ne-dt-focus:bg-gray-100 ${getButtonClass()} ${
+      className={`ne-dt-flex ne-dt-items-center ne-dt-justify-center hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ${getButtonClass()} ${
         className ?? ''
       }`}
     >
