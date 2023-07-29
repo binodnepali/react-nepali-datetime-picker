@@ -5,4 +5,9 @@ export default {
     extend: {},
   },
   plugins: [],
+  corePlugins: {
+    // eslint-disable-next-line no-undef
+    preflight: process.env.NODE_ENV !== 'production',
+  },
+  prefix: 'ne-dt-',
 }

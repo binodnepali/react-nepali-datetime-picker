@@ -85,7 +85,7 @@ export const DesktopTimePicker = ({
   }
 
   return (
-    <div className={`relative flex flex-col ${className}`}>
+    <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
       <TimeInput
         input={{
           nativeInput: {
@@ -120,8 +120,7 @@ export const DesktopTimePicker = ({
       {showModal && valid && (
         <Modal
           onClose={() => setShowModal(false)}
-          className="md:mt-11 md:bg-transparent"
-          variant="desktop"
+          className="md:ne-dt-mt-11 md:ne-dt-bg-transparent"
           {...modal}
         >
           <DesktopTime

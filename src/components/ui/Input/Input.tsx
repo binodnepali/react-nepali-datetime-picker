@@ -13,16 +13,16 @@ export const Input = ({
   const { className: iconClassName = '', children, ...iconRest } = icon
 
   return (
-    <div className={`relative w-fit ${className}`}>
+    <div className={`ne-dt-relative ne-dt-w-fit ${className}`}>
       <input
-        className={`border border-gray-300 rounded-md px-2 py-2 ${inputClassName}`}
+        className={`ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-px-2 ne-dt-py-2 ${inputClassName}`}
         type="text"
         autoComplete="off"
         {...nativeInputRest}
       />
 
       <div
-        className={`absolute inset-y-0 right-0 mr-1 flex items-center cursor-pointer ${iconClassName}`}
+        className={`ne-dt-absolute ne-dt-inset-y-0 ne-dt-right-0 ne-dt-mr-1 ne-dt-flex ne-dt-items-center ne-dt-cursor-pointer ${iconClassName}`}
         {...iconRest}
       >
         {children}

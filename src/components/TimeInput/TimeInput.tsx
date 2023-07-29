@@ -90,14 +90,14 @@ export const TimeInput = ({
   const placeholder = lang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
 
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className={`ne-dt-flex ne-dt-flex-col ${className}`}>
       <Input
-        className={fullWidth ? 'w-full' : ''}
+        className={fullWidth ? 'ne-dt-w-full' : ''}
         nativeInput={{
           placeholder,
           value: val,
           onChange: handleOnInputChange,
-          className: `${fullWidth ? 'w-full' : ''}`,
+          className: `${fullWidth ? 'ne-dt-w-full' : ''}`,
           ...nativeInputRest,
         }}
         icon={{
@@ -107,7 +107,7 @@ export const TimeInput = ({
         {...inputRest}
       />
 
-      <div className="text-red-500">{error}</div>
+      {error && <div className="ne-dt-text-red-500">{error}</div>}
     </div>
   )
 }

@@ -16,22 +16,24 @@ export const Button: React.FC<IconButtonProps> = ({
   ...rest
 }: IconButtonProps) => {
   const getButtonClass = () => {
-    const activeClass = active ? 'border border-gray-500 bg-gray-100' : ''
+    const activeClass = active
+      ? 'ne-dt-border ne-dt-border-gray-500 ne-dt-bg-gray-100'
+      : ''
 
-    const inactiveClass = inactive ? 'text-gray-400' : ''
+    const inactiveClass = inactive ? 'ne-dt-text-gray-400' : ''
 
     const selectedClass = selected
-      ? 'border border-gray-900 bg-gray-900 text-white hover:bg-gray-800 focus:bg-gray-800'
+      ? 'ne-dt-border ne-dt-border-gray-900 ne-dt-bg-gray-900 ne-dt-text-white ne-dt-hover:bg-gray-800 ne-dt-focus:bg-gray-800'
       : ''
 
     switch (variant) {
       case 'circle':
-        return `p-1 rounded-full ${activeClass} ${selectedClass} ${inactiveClass}`
+        return `ne-dt-p-1 ne-dt-rounded-full ${activeClass} ${selectedClass} ${inactiveClass}`
       case 'pilled':
-        return `px-4 py-2 rounded-full ${activeClass} ${selectedClass}`
+        return `ne-dt-px-4 ne-dt-py-2 ne-dt-rounded-full ${activeClass} ${selectedClass}`
 
       case 'outline':
-        return `px-2 py-1 rounded-md border border-gray-500 ${selectedClass}`
+        return `ne-dt-px-2 ne-dt-py-1 ne-dt-rounded-md ne-dt-border ne-dt-border-gray-500 ${selectedClass}`
 
       default:
         throw new Error(`Invalid variant: ${variant}`)
@@ -43,7 +45,7 @@ export const Button: React.FC<IconButtonProps> = ({
       {...rest}
       disabled={inactive}
       type="button"
-      className={`flex items-center justify-center hover:bg-gray-100 focus:outline-none focus:bg-gray-100 ${getButtonClass()} ${
+      className={`ne-dt-flex ne-dt-items-center ne-dt-justify-center ne-dt-hover:bg-gray-100 ne-dt-focus:outline-none ne-dt-focus:bg-gray-100 ${getButtonClass()} ${
         className ?? ''
       }`}
     >
