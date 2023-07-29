@@ -2,12 +2,12 @@ export type NepaliTime = {
   value: {
     hour: number
     minute: number
-    day: string
+    day?: string
   }
   label: {
     hour: string
     minute: string
-    day: string
+    day?: string
   }
 }
 

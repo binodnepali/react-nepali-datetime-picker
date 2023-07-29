@@ -11,12 +11,12 @@ export type TimeInputTargetValue = {
   label?: {
     hour: string
     minute: string
-    day: string
+    day?: string
   }
   value?: {
     hour: number
     minute: number
-    day: string
+    day?: string
   }
 }
 
@@ -55,7 +55,11 @@ export const TimeInput = ({
 
     setVal(() => value)
 
-    const { valid, label, value: validatedValue } = validateTime(value, lang)
+    const {
+      valid,
+      label,
+      value: validatedValue,
+    } = validateTime(value, lang, hourFormat)
 
     if (!valid) {
       setError(() => 'Invalid time')

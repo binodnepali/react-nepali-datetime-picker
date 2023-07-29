@@ -91,6 +91,12 @@ export const validateTime = (
     (TIME_12_REGEX.test(hourAndMinute) || TIME_24_REGEX.test(hourAndMinute)) &&
     !is12HourFormat
   ) {
+    if (dayPart?.length >= 0) {
+      return {
+        valid: false,
+      }
+    }
+
     const [hour, minute] = hourAndMinute.split(':').map((t) => t)
 
     return {
@@ -218,7 +224,7 @@ export const sortValuesByCurrentValue = (
 export const formatTime = (
   hour: number,
   minute: number,
-  day: string,
+  day?: string,
   lang: Language = 'ne',
   hourFormat: HourFormat = 12,
 ) => {
@@ -231,8 +237,8 @@ export const formatTime = (
 
   const separator = lang === 'ne' ? NEPALI_COLON_CHARACTER : ':'
 
-  const format = `${hourString}${separator}${minuteString} ${
-    hourFormat === 12 ? dayString : ''
+  const format = `${hourString}${separator}${minuteString}${
+    hourFormat === 12 ? ` ${dayString}` : ''
   }`
 
   return format

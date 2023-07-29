@@ -68,12 +68,12 @@ export const DesktopTimePicker = ({
         value: {
           hour: val.hour,
           minute: val.minute,
-          day: val.day,
+          ...(val.day ? { day: val.day } : {}),
         },
         label: {
           hour: label.hour,
           minute: label.minute,
-          day: label.day,
+          ...(label.day ? { day: label.day } : {}),
         },
       }
       setTime(() => time)

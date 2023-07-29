@@ -55,12 +55,12 @@ export const DesktopTime = ({
       value: {
         hour: time.value,
         minute: selectedMinute.value,
-        day: selectedDay.value,
+        ...(is12HourFormat ? { day: selectedDay.value } : {}),
       },
       label: {
         hour: time.label,
         minute: selectedMinute.label,
-        day: selectedDay.label,
+        ...(is12HourFormat ? { day: selectedDay.label } : {}),
       },
     })
   }
@@ -71,12 +71,12 @@ export const DesktopTime = ({
       value: {
         hour: selectedHour.value,
         minute: time.value,
-        day: selectedDay.value,
+        ...(is12HourFormat ? { day: selectedDay.value } : {}),
       },
       label: {
         hour: selectedHour.label,
         minute: time.label,
-        day: selectedDay.label,
+        ...(is12HourFormat ? { day: selectedDay.label } : {}),
       },
     })
   }
@@ -87,12 +87,12 @@ export const DesktopTime = ({
       value: {
         hour: selectedHour.value,
         minute: selectedMinute.value,
-        day: day.value,
+        ...(is12HourFormat ? { day: day.value } : {}),
       },
       label: {
         hour: selectedHour.label,
         minute: selectedMinute.label,
-        day: day.label,
+        ...(is12HourFormat ? { day: day.label } : {}),
       },
     })
   }

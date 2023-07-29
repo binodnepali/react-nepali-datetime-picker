@@ -8,7 +8,7 @@ export default function App() {
       </p>
 
       <div className="flex flex-col max-w-lg mt-4 md:mt-6">
-        <div className="mb-8 border border-red-500">
+        <div className="mb-8">
           <label htmlFor="desktoptimepicker" className="text-lg">
             DesktopTime Picker
           </label>
