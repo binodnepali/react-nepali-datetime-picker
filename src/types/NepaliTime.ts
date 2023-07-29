@@ -27,6 +27,6 @@ export type Time = {
 }
 
 export type Day = {
-  value: string
-  label: string
+  value?: string
+  label?: string
 }
