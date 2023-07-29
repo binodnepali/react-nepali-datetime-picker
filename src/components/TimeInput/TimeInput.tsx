@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import TimeIcon from '@/assets/Time.svg'
-import { IconProps, Input, NativeInputProps } from '@/components/ui/Input/Input'
+import { Input, InputProps } from '@/components/ui/Input/Input'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { validateTime } from '@/utils/nepaliTime'
@@ -22,19 +22,23 @@ export type TimeInputTargetValue = {
 
 export interface TimeInputProps {
   className?: string
-  icon?: IconProps
-  input?: NativeInputProps
+  input?: InputProps
   lang?: Language
+  fullWidth?: boolean
   hourFormat?: HourFormat
 }
 export const TimeInput = ({
   className = '',
   lang = 'ne',
   input = {},
-  icon = {},
+  fullWidth = false,
   hourFormat = 12,
 }: TimeInputProps) => {
-  const { value, onChange, ...inputRest } = input
+  const {
+    nativeInput: { value, onChange, ...nativeInputRest } = {},
+    icon: inputIcon = {},
+    ...inputRest
+  } = input
 
   const [val, setVal] = useState<string>(value || '')
   const [error, setError] = useState<string>('')
@@ -84,16 +88,21 @@ export const TimeInput = ({
   return (
     <div className={`flex flex-col ${className}`}>
       <Input
-        input={{
+        className={fullWidth ? 'w-full' : ''}
+        nativeInput={{
           placeholder,
           value: val,
           onChange: handleOnInputChange,
-          ...inputRest,
+          className: `${fullWidth ? 'w-full' : ''}`,
+          ...nativeInputRest,
         }}
-        icon={icon}
-      >
-        <TimeIcon width={'36'} height={'36'} />
-      </Input>
+        icon={{
+          children: <TimeIcon width={'36'} height={'36'} />,
+          ...inputIcon,
+        }}
+        {...inputRest}
+      />
+
       <div className="text-red-500">{error}</div>
     </div>
   )

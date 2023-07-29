@@ -1,30 +1,16 @@
-export type NativeInputProps = React.HTMLAttributes<HTMLInputElement> & {
-  className?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  value?: string
-}
-
-export type IconProps = React.HTMLAttributes<HTMLDivElement> & {
-  className?: string
-  onClick?: () => void
-}
-
-interface InputProps {
-  children?: React.ReactNode
+export interface InputProps {
   className?: string
   icon?: IconProps
-  input?: NativeInputProps
+  nativeInput?: NativeInputProps
 }
-
 export const Input = ({
   className = '',
-  input = {},
+  nativeInput = {},
   icon = {},
-  children,
 }: InputProps) => {
-  const { className: inputClassName = '', ...inputRest } = input
+  const { className: inputClassName = '', ...nativeInputRest } = nativeInput
 
-  const { className: iconClassName = '', ...iconRest } = icon
+  const { className: iconClassName = '', children, ...iconRest } = icon
 
   return (
     <div className={`relative w-fit ${className}`}>
@@ -32,7 +18,7 @@ export const Input = ({
         className={`border border-gray-300 rounded-md px-2 py-2 ${inputClassName}`}
         type="text"
         autoComplete="off"
-        {...inputRest}
+        {...nativeInputRest}
       />
 
       <div
@@ -43,4 +29,16 @@ export const Input = ({
       </div>
     </div>
   )
+}
+
+type NativeInputProps = React.HTMLAttributes<HTMLInputElement> & {
+  className?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string
+}
+
+type IconProps = React.HTMLAttributes<HTMLDivElement> & {
+  className?: string
+  onClick?: () => void
+  children?: React.ReactNode
 }

@@ -1,4 +1,4 @@
-import { DesktopTimePicker, NepaliDatePicker } from '.'
+import { DesktopTimePicker } from '.'
 
 export default function App() {
   return (
@@ -8,14 +8,19 @@ export default function App() {
       </p>
 
       <div className="flex flex-col max-w-lg mt-4 md:mt-6">
-        <div className="mb-8">
+        <div className="mb-8 border border-red-500">
           <label htmlFor="desktoptimepicker" className="text-lg">
             DesktopTime Picker
           </label>
 
-          <DesktopTimePicker lang="en" hourFormat={24} />
-
-          <NepaliDatePicker />
+          <DesktopTimePicker
+            lang="en"
+            hourFormat={24}
+            className="m-2"
+            timeInput={{
+              fullWidth: true,
+            }}
+          />
         </div>
       </div>
     </div>

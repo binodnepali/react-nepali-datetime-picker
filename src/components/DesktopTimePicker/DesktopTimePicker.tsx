@@ -32,7 +32,10 @@ export const DesktopTimePicker = ({
   lang = 'ne',
   hourFormat = 12,
 }: DesktopTimePickerProps) => {
-  const { icon = {}, input = {}, ...timeInputRest } = timeInput
+  const {
+    input: { nativeInput = {}, icon: inputIcon = {}, ...inputRest } = {},
+    ...timeInputRest
+  } = timeInput
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -84,27 +87,30 @@ export const DesktopTimePicker = ({
   return (
     <div className={`relative flex flex-col ${className}`}>
       <TimeInput
-        icon={{
-          onClick: () => {
-            if (!valid) {
-              return
-            }
-            setShowModal(true)
-          },
-          ...icon,
-        }}
         input={{
-          value: time?.value
-            ? formatTime(
-                time.value.hour,
-                time.value.minute,
-                time.value.day,
-                lang,
-                hourFormat,
-              )
-            : '',
-          onChange: handleOnInputChange,
-          ...input,
+          nativeInput: {
+            value: time?.value
+              ? formatTime(
+                  time.value.hour,
+                  time.value.minute,
+                  time.value.day,
+                  lang,
+                  hourFormat,
+                )
+              : '',
+            onChange: handleOnInputChange,
+            ...nativeInput,
+          },
+          icon: {
+            onClick: () => {
+              if (!valid) {
+                return
+              }
+              setShowModal(true)
+            },
+            ...inputIcon,
+          },
+          ...inputRest,
         }}
         lang={lang}
         hourFormat={hourFormat}
