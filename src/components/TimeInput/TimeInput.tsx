@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import TimeIcon from '@/assets/Time.svg'
+import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
+import { clsx } from '@/plugins/clsx'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { validateTime } from '@/utils/nepaliTime'
@@ -26,6 +28,7 @@ export interface TimeInputProps {
   lang?: Language
   fullWidth?: boolean
   hourFormat?: HourFormat
+  hint?: HintProps
 }
 export const TimeInput = ({
   className = '',
@@ -33,22 +36,29 @@ export const TimeInput = ({
   input = {},
   fullWidth = false,
   hourFormat = 12,
+  hint = {},
 }: TimeInputProps) => {
   const {
-    nativeInput: { value, onChange, ...nativeInputRest } = {},
+    nativeInput: {
+      value,
+      onChange,
+      className: nativeInputClassName = '',
+      ...nativeInputRest
+    } = {},
     icon: inputIcon = {},
+    className: inputClassName = '',
     ...inputRest
   } = input
 
   const [val, setVal] = useState<string>(value || '')
-  const [error, setError] = useState<string>('')
+  const [isValid, setIsValid] = useState<boolean>(true)
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
     if (value === '') {
       setVal(() => value)
-      setError(() => '')
+      setIsValid(() => true)
       onChange?.(e)
       return
     }
@@ -62,9 +72,9 @@ export const TimeInput = ({
     } = validateTime(value, lang, hourFormat)
 
     if (!valid) {
-      setError(() => 'Invalid time')
+      setIsValid(() => false)
     } else {
-      setError(() => '')
+      setIsValid(() => true)
     }
 
     e.target.value = JSON.stringify({
@@ -87,17 +97,14 @@ export const TimeInput = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang, value])
 
-  const placeholder = lang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
-
   return (
     <div className={`ne-dt-flex ne-dt-flex-col ${className}`}>
       <Input
-        className={fullWidth ? 'ne-dt-w-full' : ''}
+        className={clsx(inputClassName, fullWidth && 'ne-dt-w-full')}
         nativeInput={{
-          placeholder,
           value: val,
           onChange: handleOnInputChange,
-          className: `${fullWidth ? 'ne-dt-w-full' : ''}`,
+          className: clsx(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
           ...nativeInputRest,
         }}
         icon={{
@@ -112,8 +119,14 @@ export const TimeInput = ({
         }}
         {...inputRest}
       />
-
-      {error && <div className="ne-dt-text-red-500">{error}</div>}
+      {(hint.error || hint.success) && (
+        <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+          <Hint
+            error={isValid ? undefined : hint.error}
+            success={isValid && val.length > 0 ? hint.success : undefined}
+          />
+        </div>
+      )}
     </div>
   )
 }

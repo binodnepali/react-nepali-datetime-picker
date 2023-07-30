@@ -8,6 +8,11 @@ export default function App() {
   const datePlaceholder =
     selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
 
+  const timePlaceholder = selectLang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
+
+  const timeErrorText =
+    selectLang === 'en' ? 'Enter valid time' : 'समय दिनुहोस्'
+
   return (
     <div className="ne-dt-bg-gray-100  ne-dt-p-4 ne-dt-md:p-8 ne-dt-min-h-screen">
       <p className="ne-dt-text-lg ne-dt-text-gray-600">
@@ -19,7 +24,7 @@ export default function App() {
           Choose Language
         </label>
         <select
-          className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm ne-dt-focus:ne-dt-outline-none ne-dt-focus:ne-dt-ring-1 ne-dt-focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+          className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
           onChange={(e) => setSelectLang(e.target.value as Language)}
         >
           <option value="ne">Nepali</option>
@@ -36,6 +41,7 @@ export default function App() {
           <NepaliDatePicker
             lang={selectLang}
             dateInput={{
+              fullWidth: true,
               input: {
                 nativeInput: {
                   placeholder: datePlaceholder,
@@ -50,7 +56,23 @@ export default function App() {
             DesktopTime Picker
           </label>
 
-          <DesktopTimePicker />
+          <DesktopTimePicker
+            lang={selectLang}
+            timeInput={{
+              fullWidth: true,
+              input: {
+                nativeInput: {
+                  className: 'ne-dt-border-red-500',
+                  placeholder: timePlaceholder,
+                },
+              },
+              hint: {
+                error: {
+                  message: timeErrorText,
+                },
+              },
+            }}
+          />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import DateIcon from '@/assets/Date.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
+import { clsx } from '@/plugins/clsx'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 import { formatNepaliDate } from '@/utils/nepaliDate'
@@ -14,6 +15,7 @@ export interface DateInputProps {
   value?: NepaliDate
   input?: InputProps
   hint?: HintProps
+  fullWidth?: boolean
 }
 
 export const DateInput = ({
@@ -21,11 +23,17 @@ export const DateInput = ({
   hint = {},
   input = {},
   lang = 'ne',
+  fullWidth = false,
   value,
 }: DateInputProps): JSX.Element => {
   const {
-    nativeInput: { onChange: onInputChange, ...nativeInputRest } = {},
+    nativeInput: {
+      onChange: onInputChange,
+      className: nativeInputClassName = '',
+      ...nativeInputRest
+    } = {},
     icon: inputIcon = {},
+    className: inputClassName = '',
     ...inputRest
   } = input
 
@@ -66,11 +74,13 @@ export const DateInput = ({
   }, [lang, value])
 
   return (
-    <div className={`ne-dt-relative ne-dt-w-fit ${className}`}>
+    <div className={`ne-dt-flex ne-dt-flex-col ${className}`}>
       <Input
+        className={clsx(inputClassName, fullWidth && 'ne-dt-w-full')}
         nativeInput={{
           onChange: handleOnChange,
           value: val,
+          className: clsx(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
           ...nativeInputRest,
         }}
         icon={{

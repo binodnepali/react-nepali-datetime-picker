@@ -15,7 +15,7 @@ export const Input = ({
   return (
     <div className={`ne-dt-relative ne-dt-w-fit ${className}`}>
       <input
-        className={`ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-px-2 ne-dt-py-2 ${inputClassName}`}
+        className={`ne-dt-border ne-dt-rounded-md ne-dt-px-2 ne-dt-py-2 ne-dt-outline-none ne-dt-border-gray-500 focus:ne-dt-border-gray-500 ${inputClassName}`}
         type="text"
         autoComplete="off"
         {...nativeInputRest}

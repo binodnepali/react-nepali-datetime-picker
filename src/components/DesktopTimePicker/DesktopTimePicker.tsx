@@ -19,7 +19,7 @@ interface DesktopTimePickerProps {
   hourFormat?: HourFormat
   lang?: Language
   modal?: ModalProps
-  onTimeSelect?: (time: NepaliTime) => void
+  onTimeSelect?: (time?: NepaliTime) => void
   timeInput?: TimeInputProps
 }
 
@@ -60,6 +60,7 @@ export const DesktopTimePicker = ({
         setValid(() => valid)
         setTime(() => undefined)
 
+        onTimeSelect?.(undefined)
         return
       }
 
