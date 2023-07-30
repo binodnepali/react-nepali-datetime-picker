@@ -101,7 +101,13 @@ export const TimeInput = ({
           ...nativeInputRest,
         }}
         icon={{
-          children: <TimeIcon width={'36'} height={'36'} />,
+          children: (
+            <TimeIcon
+              width={'36'}
+              height={'36'}
+              className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
+            />
+          ),
           ...inputIcon,
         }}
         {...inputRest}

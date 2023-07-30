@@ -4,14 +4,15 @@ import {
   NepaliCalendar,
   NepaliCalendarProps,
 } from '@/components/NepaliCalendar/NepaliCalendar'
-import {
-  NepaliDateInput,
-  NepaliDateInputProps,
-  TargetValue,
-} from '@/components/NepaliDateInput/NepaliDateInput'
 import { Modal } from '@/components/ui/Modal/Modal'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
+
+import {
+  DateInput,
+  DateInputProps,
+  DateInputTargetValue,
+} from '../DateInput/DateInput'
 
 interface NepaliDatePickerProps {
   className?: string
@@ -21,10 +22,9 @@ interface NepaliDatePickerProps {
     className?: string
     onClose?: () => void
   }
-  dateInput?: NepaliDateInputProps
+  dateInput?: DateInputProps
   calendar?: NepaliCalendarProps
 }
-
 export const NepaliDatePicker = ({
   className = '',
   lang = 'ne',
@@ -34,9 +34,8 @@ export const NepaliDatePicker = ({
   calendar = {},
 }: NepaliDatePickerProps) => {
   const {
-    input: dateInputInput = {},
-    icon: dateInputIcon = {},
-    error: dateInputError = {},
+    input: { nativeInput, icon: inputIcon, ...inputRest } = {},
+    hint = {},
     ...dateInputRest
   } = dateInput
 
@@ -62,7 +61,9 @@ export const NepaliDatePicker = ({
     const { value } = e.target
 
     const targetValue =
-      value !== 'undefined' ? (JSON.parse(value) as TargetValue) : undefined
+      value !== 'undefined'
+        ? (JSON.parse(value) as DateInputTargetValue)
+        : undefined
 
     selectedDateRef.current = targetValue?.value
 
@@ -76,22 +77,21 @@ export const NepaliDatePicker = ({
 
   return (
     <div className={`ne-dt-relative ${className}`}>
-      <NepaliDateInput
+      <DateInput
         lang={lang}
         value={selectedDate}
         input={{
-          onChange: handleOnChange,
-          placeholder: lang === 'ne' ? 'बर्ष/महिना/दिन' : 'YYYY/MM/DD',
-          ...dateInputInput,
+          nativeInput: {
+            onChange: handleOnChange,
+            ...nativeInput,
+          },
+          icon: {
+            onClick: handleOnInputDateClick,
+            ...inputIcon,
+          },
+          ...inputRest,
         }}
-        icon={{
-          onClick: handleOnInputDateClick,
-          ...dateInputIcon,
-        }}
-        error={{
-          message: 'Please enter a valid date',
-          ...dateInputError,
-        }}
+        hint={hint}
         {...dateInputRest}
       />
 

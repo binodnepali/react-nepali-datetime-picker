@@ -259,7 +259,10 @@ export const formatNepaliDate = (date: NepaliDate, lang: Language) => {
   const format = `YYYY${YEAR_MONTH_DATE_SEPARATOR}MM${YEAR_MONTH_DATE_SEPARATOR}DD`
 
   const formattedDate = format
-    .replace('YYYY', date.year.label)
+    .replace(
+      'YYYY',
+      lang === 'ne' ? date.year.label : date.year.value.toString(),
+    )
     .replace(
       'MM',
       lang == 'ne'
