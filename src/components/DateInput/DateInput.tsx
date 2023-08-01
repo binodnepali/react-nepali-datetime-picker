@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import DateIcon from '@/assets/Date.svg'
+import CalendarMonth from '@/assets/CalendarMonth.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
@@ -85,7 +85,7 @@ export const DateInput = ({
         }}
         icon={{
           children: (
-            <DateIcon
+            <CalendarMonth
               width="36"
               height="36"
               className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"

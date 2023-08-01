@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import TimeIcon from '@/assets/Time.svg'
+import ClockOutlineIcon from '@/assets/ClockOutline.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { clsx } from '@/plugins/clsx'
@@ -109,7 +109,7 @@ export const TimeInput = ({
         }}
         icon={{
           children: (
-            <TimeIcon
+            <ClockOutlineIcon
               width={'36'}
               height={'36'}
               className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
