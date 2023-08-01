@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha.4](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2023-08-01)
+
+
+### Features
+
+* add customisation in date and time picker ([9016aa9](https://github.com/binodnepali/react-nepali-datetime-picker/commit/9016aa9875e0150885c1f48c21f0e49282c0a028))
+* add customization in timepicker ([f0b8744](https://github.com/binodnepali/react-nepali-datetime-picker/commit/f0b87442d7fc7c13d9f5571dac9b6ff9847c79b4))
+
 ## [1.0.0-alpha.3](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2023-07-29)
 
 
