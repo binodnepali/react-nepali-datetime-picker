@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { DesktopTimePicker, Language, NepaliDatePicker } from '.'
+import { DatePicker, DesktopTimePicker, Language } from '.'
 
 export default function App() {
   const { toggleTheme } = useThemeToggle()
@@ -54,7 +54,7 @@ export default function App() {
             Date Picker
           </label>
 
-          <NepaliDatePicker
+          <DatePicker
             lang={selectLang}
             dateInput={{
               fullWidth: true,
