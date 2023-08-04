@@ -1,6 +1,10 @@
 import { useState } from 'react'
 
 import {
+  DesktopTime,
+  DesktopTimeProps,
+} from '@/components/DesktopTime/DesktopTime'
+import {
   TimeInput,
   TimeInputProps,
   TimeInputTargetValue,
@@ -10,8 +14,6 @@ import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime } from '@/types/NepaliTime'
 import { formatTime } from '@/utils/nepaliTime'
-
-import { DesktopTime, DesktopTimeProps } from './DesktopTime/DesktopTime'
 
 interface DesktopTimePickerProps {
   className?: string

@@ -1,15 +1,16 @@
+import { forwardRef } from 'react'
+
 export interface ModalProps {
   children?: React.ReactNode
   className?: string
   onClose?: () => void
-  variant?: 'desktop' | 'mobile' | 'responsive'
+  style?: React.CSSProperties
 }
 
-export const Modal: React.FC<ModalProps> = ({
-  children,
-  onClose,
-  className,
-}: ModalProps) => {
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
+  { children, onClose, className, style = {} },
+  ref,
+) {
   return (
     <>
       <div
@@ -18,9 +19,11 @@ export const Modal: React.FC<ModalProps> = ({
       />
 
       <div
-        className={`ne-dt-fixed md:ne-dt-absolute ne-dt-h-full ne-dt-w-full ne-dt-inset-0 ne-dt-bg-black ne-dt-bg-opacity-50 ne-dt-flex md:ne-dt-block ne-dt-items-center ne-dt-justify-center ne-dt-z-[1000] ${
+        className={`ne-dt-fixed md:ne-dt-absolute ne-dt-h-full ne-dt-w-full md:ne-dt-h-fit md:ne-dt-w-fit ne-dt-inset-0 ne-dt-bg-black ne-dt-bg-opacity-50 md:ne-dt-bg-opacity-0 ne-dt-flex md:ne-dt-block ne-dt-items-center ne-dt-justify-center ne-dt-z-[1000] ${
           className || ''
         }`}
+        style={style}
+        ref={ref}
       >
         <div className="md:ne-dt-hidden">
           <div
@@ -33,4 +36,4 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </>
   )
-}
+})

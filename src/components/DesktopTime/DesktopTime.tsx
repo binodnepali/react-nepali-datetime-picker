@@ -200,7 +200,10 @@ function HourList({
   )
 
   return (
-    <div className="ne-dt-overflow-y-auto" ref={hourRef}>
+    <div
+      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
+      ref={hourRef}
+    >
       <div
         className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
         id={HOUR_CONTENT}
@@ -296,7 +299,10 @@ function MinuteList({
   )
 
   return (
-    <div className="ne-dt-overflow-y-auto" ref={minuteRef}>
+    <div
+      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
+      ref={minuteRef}
+    >
       <div
         className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
         id={MINUTE_CONTENT}
