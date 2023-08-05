@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import CalendarMonth from '@/assets/CalendarMonth.svg'
@@ -18,6 +18,8 @@ import { Modal } from '@/components/ui/Modal/Modal'
 import { useDevice } from '@/hooks/useDevice'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
+
+import { useModalPosition } from '../DesktopTimePicker/useModalPosition'
 
 interface DesktopDateTimePickerProps {
   className?: string
@@ -43,85 +45,25 @@ export const DesktopDateTimePicker = ({
     hint = {},
     ...dateInputRest
   } = dateInput
-
   const { className: modalClassName = '', onClose: onCloseModal } = modal
 
-  const dateInputRef = useRef<HTMLInputElement>(null)
   const [showModal, setShowModal] = useState<boolean>(false)
-
-  const [selectedDate, setSelectedDate] = useState<NepaliDate>()
-  const selectedDateRef = useRef<NepaliDate>()
-
-  const modalRef = useRef<HTMLDivElement>(null)
-  const [modalPosition, setModalPosition] = useState<{
-    x: number
-    y: number
-  }>({
-    x: 0,
-    y: 0,
-  })
-
   const handleOnInputDateClick = () => {
     setShowModal(() => true)
   }
+  const handleOnModalClose = () => {
+    setShowModal(() => false)
+    onCloseModal?.()
+  }
 
-  const { isMobile } = useDevice()
-  const calculateModalPosition = useCallback(() => {
-    if (
-      !modalRef.current ||
-      !dateInputRef.current ||
-      typeof window === 'undefined'
-    ) {
-      return
-    }
-
-    const { scrollY, innerHeight } = window
-    const {
-      x: dateInputX,
-      y: dateInputY,
-      height: dateInputHeight,
-    } = dateInputRef.current.getBoundingClientRect()
-
-    const { height: modalHeight } = modalRef.current.getBoundingClientRect()
-
-    if (dateInputY + modalHeight > innerHeight) {
-      setModalPosition(() => ({
-        x: dateInputX,
-        y: dateInputY - modalHeight + scrollY,
-      }))
-    } else {
-      setModalPosition(() => ({
-        x: dateInputX,
-        y: dateInputY + dateInputHeight + scrollY,
-      }))
-    }
-  }, [])
-
-  const handleOnScroll = useCallback(() => {
-    calculateModalPosition()
-  }, [calculateModalPosition])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    window.addEventListener('scroll', handleOnScroll)
-
-    calculateModalPosition()
-
-    return () => {
-      window.removeEventListener('scroll', handleOnScroll)
-    }
-  }, [calculateModalPosition, handleOnScroll, showModal, isMobile])
-
+  const [selectedDate, setSelectedDate] = useState<NepaliDate>()
+  const selectedDateRef = useRef<NepaliDate>()
   const handleOnSelectDate = (date: NepaliDate) => {
     selectedDateRef.current = date
     onDateSelect?.(date)
     setSelectedDate(() => date)
     setShowModal(() => false)
   }
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
@@ -135,10 +77,15 @@ export const DesktopDateTimePicker = ({
     onDateSelect?.(targetValue?.value)
   }
 
-  const handleOnModalClose = () => {
-    setShowModal(() => false)
-    onCloseModal?.()
-  }
+  const dateInputRef = useRef<HTMLInputElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+  const { isMobile } = useDevice()
+  const { x: modalPositionX, y: modalPositionY } = useModalPosition({
+    dateInputRef,
+    modalRef,
+    isMobile,
+    showModal,
+  })
 
   const [currentView, setCurrentView] = useState<'calendar' | 'time'>(
     'calendar',
@@ -175,7 +122,7 @@ export const DesktopDateTimePicker = ({
                 transform: `${
                   isMobile
                     ? 'none'
-                    : `translate3d(${modalPosition.x}px, ${modalPosition.y}px, 0px)`
+                    : `translate3d(${modalPositionX}px, ${modalPositionY}px, 0px)`
                 }`,
               }}
             >
