@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/Button/Button'
 import { Modal } from '@/components/ui/Modal/Modal'
 import { useDevice } from '@/hooks/useDevice'
+import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { clsx } from '@/plugins/clsx'
 import { HourFormat } from '@/types/HourFormat'
@@ -134,6 +135,14 @@ export const DesktopDateTimePicker = ({
     lang,
   })
 
+  const {
+    selectedLocalisedYear,
+    selectedLocalisedMonth,
+    currentLocalisedDate,
+  } = useNepaliCalendar({
+    lang,
+  })
+
   return (
     <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
       <DateInput
@@ -193,7 +202,7 @@ export const DesktopDateTimePicker = ({
                                 'ne-dt-text-neutral-900',
                             )}
                           >
-                            2022
+                            {selectedLocalisedYear.label}
                           </span>
                         </Button>
 
@@ -208,7 +217,7 @@ export const DesktopDateTimePicker = ({
                                 'ne-dt-text-neutral-900',
                             )}
                           >
-                            Apr 12
+                            {`${selectedLocalisedMonth.label} ${currentLocalisedDate?.label}`}
                           </span>
                         </Button>
                       </div>
