@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/Button/Button'
 import { Modal } from '@/components/ui/Modal/Modal'
 import { useDevice } from '@/hooks/useDevice'
+import { clsx } from '@/plugins/clsx'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
@@ -55,6 +56,10 @@ export const DesktopDateTimePicker = ({
     setShowModal(() => false)
     onCloseModal?.()
   }
+  const handleOnCancel = () => {
+    setShowModal(() => false)
+    onCloseModal?.()
+  }
 
   const [selectedDate, setSelectedDate] = useState<NepaliDate>()
   const selectedDateRef = useRef<NepaliDate>()
@@ -76,6 +81,10 @@ export const DesktopDateTimePicker = ({
 
     onDateSelect?.(targetValue?.value)
   }
+  const handleOnConfirm = () => {
+    onDateSelect?.(selectedDateRef.current)
+    setShowModal(() => false)
+  }
 
   const dateInputRef = useRef<HTMLInputElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
@@ -90,6 +99,28 @@ export const DesktopDateTimePicker = ({
   const [currentView, setCurrentView] = useState<'calendar' | 'time'>(
     'calendar',
   )
+  const [userClickedOn, setUserClickedOn] = useState<
+    'year' | 'monthdate' | 'hour' | 'minute' | 'am' | 'pm'
+  >()
+  const handleOnUserClickedOn = (
+    userClickedOn: 'year' | 'monthdate' | 'hour' | 'minute' | 'am' | 'pm',
+  ) => {
+    switch (userClickedOn) {
+      case 'year':
+      case 'monthdate':
+        setCurrentView(() => 'calendar')
+        break
+      case 'hour':
+      case 'minute':
+      case 'am':
+      case 'pm':
+        setCurrentView(() => 'time')
+        break
+      default:
+        break
+    }
+    setUserClickedOn(() => userClickedOn)
+  }
 
   return (
     <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
@@ -133,26 +164,108 @@ export const DesktopDateTimePicker = ({
               >
                 <>
                   <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
-                    <p>SELECT DATE & TIME </p>
+                    <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
+                      SELECT DATE & TIME
+                    </p>
 
                     <div className="ne-dt-grid ne-dt-grid-cols-2">
                       <div>
-                        <Button>2022</Button>
+                        <Button
+                          variant="text"
+                          onClick={() => handleOnUserClickedOn('year')}
+                        >
+                          <span
+                            className={clsx(
+                              'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-normal',
+                              userClickedOn === 'year' &&
+                                'ne-dt-text-neutral-900',
+                            )}
+                          >
+                            2022
+                          </span>
+                        </Button>
 
-                        <Button>Apr 12</Button>
+                        <Button
+                          variant="text"
+                          onClick={() => handleOnUserClickedOn('monthdate')}
+                        >
+                          <span
+                            className={clsx(
+                              'ne-dt-text-neutral-500 ne-dt-text-4xl ne-dt-font-normal',
+                              userClickedOn === 'monthdate' &&
+                                'ne-dt-text-neutral-900',
+                            )}
+                          >
+                            Apr 12
+                          </span>
+                        </Button>
                       </div>
 
                       <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4">
                         <div className="ne-dt-flex ne-dt-flex-row  ne-dt-items-center">
-                          <Button>23</Button>
-                          <span>:</span>
-                          <Button>00</Button>
+                          <Button
+                            variant="text"
+                            onClick={() => handleOnUserClickedOn('hour')}
+                          >
+                            <span
+                              className={clsx(
+                                'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
+                                userClickedOn === 'hour' &&
+                                  'ne-dt-text-neutral-900',
+                              )}
+                            >
+                              23
+                            </span>
+                          </Button>
+                          <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
+                            :
+                          </span>
+                          <Button
+                            variant="text"
+                            onClick={() => handleOnUserClickedOn('minute')}
+                          >
+                            <span
+                              className={clsx(
+                                'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
+                                userClickedOn === 'minute' &&
+                                  'ne-dt-text-neutral-900',
+                              )}
+                            >
+                              00
+                            </span>
+                          </Button>
                         </div>
 
-                        <div>
-                          <Button>AM</Button>
+                        <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center">
+                          <Button
+                            variant="text"
+                            onClick={() => handleOnUserClickedOn('am')}
+                          >
+                            <span
+                              className={clsx(
+                                'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
+                                userClickedOn === 'am' &&
+                                  'ne-dt-text-neutral-900',
+                              )}
+                            >
+                              AM
+                            </span>
+                          </Button>
 
-                          <Button>PM</Button>
+                          <Button
+                            variant="text"
+                            onClick={() => handleOnUserClickedOn('pm')}
+                          >
+                            <span
+                              className={clsx(
+                                'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
+                                userClickedOn === 'pm' &&
+                                  'ne-dt-text-neutral-900',
+                              )}
+                            >
+                              PM
+                            </span>
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -203,11 +316,11 @@ export const DesktopDateTimePicker = ({
                   )}
 
                   <div className="ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden">
-                    <Button variant="outline" className="ne-dt-w-16">
+                    <Button variant="outline" onClick={handleOnCancel}>
                       Cancel
                     </Button>
 
-                    <Button variant="outline" className="ne-dt-w-16">
+                    <Button variant="outline" onClick={handleOnConfirm}>
                       Ok
                     </Button>
                   </div>
