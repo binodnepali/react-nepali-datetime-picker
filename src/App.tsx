@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import {
-  DatePicker,
+  //DatePicker,
   DesktopDateTimePicker,
-  DesktopTimePicker,
+  // DesktopTimePicker,
   Language,
 } from '.'
 
@@ -11,8 +11,8 @@ export default function App() {
   const { toggleTheme } = useThemeToggle()
   const [selectLang, setSelectLang] = useState<Language>('ne')
 
-  const datePlaceholder =
-    selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
+  // const datePlaceholder =
+  //   selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
 
   const timePlaceholder = selectLang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
 
@@ -54,7 +54,7 @@ export default function App() {
       </div>
 
       <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
-        <div className="ne-dt-mb-8">
+        {/* <div className="ne-dt-mb-8">
           <label htmlFor="datepicker" className="ne-dt-text-lg">
             Date Picker
           </label>
@@ -70,8 +70,8 @@ export default function App() {
               },
             }}
           />
-        </div>
-
+        </div> */}
+        {/* 
         <div className="ne-dt-mb-8">
           <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
             DesktopTime Picker
@@ -93,8 +93,8 @@ export default function App() {
               },
             }}
           />
-        </div>
-
+        </div> */}
+        {/* 
         {[1, 2, 3, 4, 5, 6].map((key) => (
           <div className="ne-dt-mb-8" key={key}>
             <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
@@ -118,15 +118,16 @@ export default function App() {
               }}
             />
           </div>
-        ))}
+        ))} */}
 
         <div className="ne-dt-mb1-8">
-          {/* <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
-            DesktopTime Picker
-          </label> */}
+          <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
+            Desktop Datetime Picker
+          </label>
 
           <DesktopDateTimePicker
-            lang={selectLang}
+            // lang={'en'}
+            // hourFormat={24}
             dateInput={{
               // fullWidth: true,
               input: {
@@ -143,7 +144,7 @@ export default function App() {
           />
         </div>
 
-        {[1, 2, 3, 4, 5, 6].map((key) => (
+        {/* {[1, 2, 3, 4, 5, 6].map((key) => (
           <div className="ne-dt-mb-8" key={key}>
             <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
               DesktopTime Picker
@@ -166,7 +167,7 @@ export default function App() {
               }}
             />
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   )

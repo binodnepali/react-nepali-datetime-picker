@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { timeDays } from '@/constants/timeDays'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { Day, NepaliTime, Time } from '@/types/NepaliTime'
@@ -39,5 +40,12 @@ export const useNepaliTime = (params?: NepaliTimeParams) => {
     selectedDay,
     setSelectedDay,
     currentTime,
+    timeDays:
+      hourFormat === 12
+        ? timeDays.map((timeDay) => ({
+            label: timeDay.label[lang],
+            value: timeDay.value,
+          }))
+        : [],
   }
 }

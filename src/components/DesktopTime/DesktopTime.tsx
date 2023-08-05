@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/Button/Button'
-import { timeDays } from '@/constants/timeDays'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
@@ -41,6 +40,7 @@ export const DesktopTime = ({
     setSelectedMinute,
     selectedDay,
     setSelectedDay,
+    timeDays,
   } = useNepaliTime({
     lang,
     selectedTime,
@@ -128,11 +128,11 @@ export const DesktopTime = ({
               onClick={() =>
                 handleOnDayClick({
                   value: day.value,
-                  label: day.label[lang],
+                  label: day.label,
                 })
               }
             >
-              {day.label[lang]}
+              {day.label}
             </Button>
           ))}
         </div>

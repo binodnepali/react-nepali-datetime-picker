@@ -16,7 +16,9 @@ import {
 import { Button } from '@/components/ui/Button/Button'
 import { Modal } from '@/components/ui/Modal/Modal'
 import { useDevice } from '@/hooks/useDevice'
+import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { clsx } from '@/plugins/clsx'
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
@@ -30,6 +32,7 @@ interface DesktopDateTimePickerProps {
     className?: string
     onClose?: () => void
   }
+  hourFormat?: HourFormat
   dateInput?: DateInputProps
   calendar?: NepaliCalendarProps
 }
@@ -39,6 +42,7 @@ export const DesktopDateTimePicker = ({
   modal = {},
   onDateSelect,
   dateInput = {},
+  hourFormat = 12,
   calendar = {},
 }: DesktopDateTimePickerProps) => {
   const {
@@ -100,10 +104,10 @@ export const DesktopDateTimePicker = ({
     'calendar',
   )
   const [userClickedOn, setUserClickedOn] = useState<
-    'year' | 'monthdate' | 'hour' | 'minute' | 'am' | 'pm'
+    'year' | 'monthdate' | 'hour' | 'minute' | 'AM' | 'PM'
   >()
   const handleOnUserClickedOn = (
-    userClickedOn: 'year' | 'monthdate' | 'hour' | 'minute' | 'am' | 'pm',
+    userClickedOn: 'year' | 'monthdate' | 'hour' | 'minute' | 'AM' | 'PM',
   ) => {
     switch (userClickedOn) {
       case 'year':
@@ -112,8 +116,8 @@ export const DesktopDateTimePicker = ({
         break
       case 'hour':
       case 'minute':
-      case 'am':
-      case 'pm':
+      case 'AM':
+      case 'PM':
         setCurrentView(() => 'time')
         break
       default:
@@ -121,6 +125,14 @@ export const DesktopDateTimePicker = ({
     }
     setUserClickedOn(() => userClickedOn)
   }
+
+  const {
+    currentTime: { label: currentTimeLabel },
+    timeDays,
+  } = useNepaliTime({
+    hourFormat,
+    lang,
+  })
 
   return (
     <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
@@ -214,7 +226,7 @@ export const DesktopDateTimePicker = ({
                                   'ne-dt-text-neutral-900',
                               )}
                             >
-                              23
+                              {currentTimeLabel.hour}
                             </span>
                           </Button>
                           <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
@@ -231,42 +243,34 @@ export const DesktopDateTimePicker = ({
                                   'ne-dt-text-neutral-900',
                               )}
                             >
-                              00
+                              {currentTimeLabel.minute}
                             </span>
                           </Button>
                         </div>
 
-                        <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center">
-                          <Button
-                            variant="text"
-                            onClick={() => handleOnUserClickedOn('am')}
-                          >
-                            <span
-                              className={clsx(
-                                'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
-                                userClickedOn === 'am' &&
-                                  'ne-dt-text-neutral-900',
-                              )}
-                            >
-                              AM
-                            </span>
-                          </Button>
-
-                          <Button
-                            variant="text"
-                            onClick={() => handleOnUserClickedOn('pm')}
-                          >
-                            <span
-                              className={clsx(
-                                'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
-                                userClickedOn === 'pm' &&
-                                  'ne-dt-text-neutral-900',
-                              )}
-                            >
-                              PM
-                            </span>
-                          </Button>
-                        </div>
+                        {timeDays.length > 0 && (
+                          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center">
+                            {timeDays.map((timeDay, index) => (
+                              <Button
+                                variant="text"
+                                onClick={() =>
+                                  handleOnUserClickedOn(timeDay.value)
+                                }
+                                key={index}
+                              >
+                                <span
+                                  className={clsx(
+                                    'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
+                                    userClickedOn === timeDay.value &&
+                                      'ne-dt-text-neutral-900',
+                                  )}
+                                >
+                                  {timeDay.label}
+                                </span>
+                              </Button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
