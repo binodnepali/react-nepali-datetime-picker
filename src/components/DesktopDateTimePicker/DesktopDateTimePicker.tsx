@@ -8,7 +8,10 @@ import {
   DateInputProps,
   DateInputTargetValue,
 } from '@/components/DateTimeInput/DateTimeInput'
-import { DesktopTime } from '@/components/DesktopTime/DesktopTime'
+import {
+  DesktopTime,
+  DesktopTimeProps,
+} from '@/components/DesktopTime/DesktopTime'
 import {
   NepaliCalendar,
   NepaliCalendarProps,
@@ -18,6 +21,7 @@ import { Modal } from '@/components/ui/Modal/Modal'
 import { useDevice } from '@/hooks/useDevice'
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
+import { useTranslation } from '@/hooks/useTranslation'
 import { clsx } from '@/plugins/clsx'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
@@ -36,6 +40,12 @@ interface DesktopDateTimePickerProps {
   hourFormat?: HourFormat
   dateInput?: DateInputProps
   calendar?: NepaliCalendarProps
+  time?: DesktopTimeProps
+  trans?: {
+    title?: string
+    cancel?: string
+    confirm?: string
+  }
 }
 export const DesktopDateTimePicker = ({
   className = '',
@@ -45,6 +55,8 @@ export const DesktopDateTimePicker = ({
   dateInput = {},
   hourFormat = 12,
   calendar = {},
+  time = {},
+  trans = {},
 }: DesktopDateTimePickerProps) => {
   const {
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
@@ -143,6 +155,13 @@ export const DesktopDateTimePicker = ({
     lang,
   })
 
+  const { t } = useTranslation('DesktopDateTimePicker', lang)
+  const {
+    title = t('title'),
+    cancel = t('cancel'),
+    confirm = t('confirm'),
+  } = trans
+
   return (
     <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
       <DateInput
@@ -186,7 +205,7 @@ export const DesktopDateTimePicker = ({
                 <>
                   <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
                     <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
-                      SELECT DATE & TIME
+                      {title}
                     </p>
 
                     <div className="ne-dt-grid ne-dt-grid-cols-2">
@@ -217,7 +236,11 @@ export const DesktopDateTimePicker = ({
                                 'ne-dt-text-neutral-900',
                             )}
                           >
-                            {`${selectedLocalisedMonth.label} ${currentLocalisedDate?.label}`}
+                            {`${
+                              lang === 'ne'
+                                ? selectedLocalisedMonth.label
+                                : selectedLocalisedMonth.label.slice(0, 4)
+                            } ${currentLocalisedDate?.label}`}
                           </span>
                         </Button>
                       </div>
@@ -324,23 +347,28 @@ export const DesktopDateTimePicker = ({
                     />
                   ) : (
                     <div className="ne-dt-block md:ne-dt-hidden">
-                      <DesktopTime className="!ne-dt-rounded-none !ne-dt-w-full" />
+                      <DesktopTime
+                        className="!ne-dt-rounded-none !ne-dt-w-full"
+                        lang={lang}
+                        hourFormat={hourFormat}
+                        {...time}
+                      />
                     </div>
                   )}
 
                   <div className="ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden">
                     <Button variant="outline" onClick={handleOnCancel}>
-                      Cancel
+                      {cancel}
                     </Button>
 
                     <Button variant="outline" onClick={handleOnConfirm}>
-                      Ok
+                      {confirm}
                     </Button>
                   </div>
                 </>
 
                 <div className="ne-dt-hidden md:ne-dt-block">
-                  <DesktopTime />
+                  <DesktopTime lang={lang} hourFormat={hourFormat} {...time} />
                 </div>
               </div>
             </Modal>

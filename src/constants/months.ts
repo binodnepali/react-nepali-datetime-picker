@@ -120,4 +120,4 @@ export const months = [
       ne: '१२',
     },
   },
-] as const;
+] as const
