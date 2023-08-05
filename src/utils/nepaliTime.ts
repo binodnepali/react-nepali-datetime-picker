@@ -172,10 +172,11 @@ export const validateTime = (
 export const generate12Hours = (lang: Language): Time[] => {
   const hours = []
 
-  for (let i = 0; i <= 11; i++) {
+  for (let i = 1; i <= 12; i++) {
+    const hour = i < 12 ? i : 0
     hours.push({
       value: i,
-      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
+      label: lang == 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
     })
   }
 
