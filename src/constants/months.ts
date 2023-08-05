@@ -1,8 +1,14 @@
 export const months = [
   {
     label: {
-      en: 'Baishakh',
-      ne: 'बैशाख',
+      en: {
+        long: 'Baishakh',
+        short: 'Bai',
+      },
+      ne: {
+        long: 'बैशाख',
+        short: 'बैशा',
+      },
     },
     value: {
       en: 0,
@@ -11,8 +17,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Jestha',
-      ne: 'जेठ',
+      en: {
+        long: 'Jestha',
+        short: 'Jes',
+      },
+      ne: {
+        long: 'जेठ',
+        short: 'जेठ',
+      },
     },
     value: {
       en: 1,
@@ -21,8 +33,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Ashadh',
-      ne: 'असार',
+      en: {
+        long: 'Ashad',
+        short: 'Ash',
+      },
+      ne: {
+        long: 'असार',
+        short: 'असा',
+      },
     },
     value: {
       en: 2,
@@ -31,8 +49,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Shrawan',
-      ne: 'श्रावण',
+      en: {
+        long: 'Shrawan',
+        short: 'Shra',
+      },
+      ne: {
+        long: 'साउन',
+        short: 'साउ',
+      },
     },
     value: {
       en: 3,
@@ -41,8 +65,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Bhadra',
-      ne: 'भाद्र',
+      en: {
+        long: 'Bhadra',
+        short: 'Bha',
+      },
+      ne: {
+        long: 'भदौ',
+        short: 'भदौ',
+      },
     },
 
     value: {
@@ -52,8 +82,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Ashwin',
-      ne: 'असोज',
+      en: {
+        long: 'Ashwin',
+        short: 'Ash',
+      },
+      ne: {
+        long: 'असोज',
+        short: 'असो',
+      },
     },
     value: {
       en: 5,
@@ -62,8 +98,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Kartik',
-      ne: 'कार्तिक',
+      en: {
+        long: 'Kartik',
+        short: 'Kar',
+      },
+      ne: {
+        long: 'कार्तिक',
+        short: 'कार्ति',
+      },
     },
     value: {
       en: 6,
@@ -72,8 +114,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Mangsir',
-      ne: 'मंसिर',
+      en: {
+        long: 'Mangsir',
+        short: 'Man',
+      },
+      ne: {
+        long: 'मंसिर',
+        short: 'मंसि',
+      },
     },
     value: {
       en: 7,
@@ -82,8 +130,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Poush',
-      ne: 'पौष',
+      en: {
+        long: 'Poush',
+        short: 'Pou',
+      },
+      ne: {
+        long: 'पौष',
+        short: 'पौष',
+      },
     },
     value: {
       en: 8,
@@ -92,8 +146,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Magh',
-      ne: 'माघ',
+      en: {
+        long: 'Magh',
+        short: 'Mag',
+      },
+      ne: {
+        long: 'माघ',
+        short: 'माघ',
+      },
     },
     value: {
       en: 9,
@@ -102,8 +162,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Falgun',
-      ne: 'फाल्गुन',
+      en: {
+        long: 'Falgun',
+        short: 'Fal',
+      },
+      ne: {
+        long: 'फाल्गुन',
+        short: 'फाल्गु',
+      },
     },
     value: {
       en: 10,
@@ -112,8 +178,14 @@ export const months = [
   },
   {
     label: {
-      en: 'Chaitra',
-      ne: 'चैत्र',
+      en: {
+        long: 'Chaitra',
+        short: 'Cha',
+      },
+      ne: {
+        long: 'चैत्र',
+        short: 'चैत्र',
+      },
     },
     value: {
       en: 11,

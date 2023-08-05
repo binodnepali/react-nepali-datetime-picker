@@ -125,18 +125,18 @@ function generateYears(startYear: number, endYear: number) {
   return years
 }
 
-export const getMonths = (lang: Language): Month[] => {
+export const getMonths = (lang: Language, short = false): Month[] => {
   return months.map((month) => {
     if (lang === 'ne') {
       return {
         value: month.value.en,
-        label: month.label.ne,
+        label: short ? month.label.ne.short : month.label.ne.long,
       }
     }
 
     return {
       value: month.value.en,
-      label: month.label.en,
+      label: short ? month.label.en.short : month.label.en.long,
     }
   })
 }

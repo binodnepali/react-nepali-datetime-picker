@@ -15,9 +15,13 @@ import {
 
 interface UseNepaliCalendarParams {
   lang?: Language
+  shortMonth?: boolean
 }
 
-export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
+export const useNepaliCalendar = ({
+  lang = 'ne',
+  shortMonth = false,
+}: UseNepaliCalendarParams) => {
   const {
     date: currentDate,
     month: currentMonth,
@@ -25,7 +29,7 @@ export const useNepaliCalendar = ({ lang = 'ne' }: UseNepaliCalendarParams) => {
   } = getCurrentNepaliDate()
 
   const years = useMemo(() => getYears(lang), [lang])
-  const months = useMemo(() => getMonths(lang), [lang])
+  const months = useMemo(() => getMonths(lang, shortMonth), [lang, shortMonth])
   const weekDays = useMemo(() => getWeekDays(lang), [lang])
 
   const [selectedLocalisedYear, setSelectedLocalisedYear] = useState<Year>(

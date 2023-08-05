@@ -153,6 +153,7 @@ export const DesktopDateTimePicker = ({
     currentLocalisedDate,
   } = useNepaliCalendar({
     lang,
+    shortMonth: true,
   })
 
   const { t } = useTranslation('DesktopDateTimePicker', lang)
@@ -198,7 +199,7 @@ export const DesktopDateTimePicker = ({
               }}
             >
               <div
-                className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row md:ne-dt-gap-0 ne-dt-max-h-screen ne-dt-overflow-y-auto"
+                className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row md:ne-dt-gap-0 ne-dt-px-4 md:ne-dt-px-0 ne-dt-max-h-screen ne-dt-overflow-y-auto"
                 data-testid="modalcontent"
                 ref={modalRef}
               >
