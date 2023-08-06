@@ -13,6 +13,7 @@ export interface NepaliCalendarProps {
   lang?: Language
   separator?: string
   selectedDate?: NepaliDate
+  openYearSelector?: boolean
   onDateSelect?: (date: NepaliDate) => void
 }
 
@@ -21,8 +22,12 @@ export const NepaliCalendar = ({
   lang = 'ne',
   selectedDate,
   onDateSelect,
+  openYearSelector = false,
 }: NepaliCalendarProps) => {
   const [showYearSelector, setShowYearSelector] = useState(false)
+  useEffect(() => {
+    setShowYearSelector(() => openYearSelector)
+  }, [openYearSelector])
 
   const {
     selectedLocalisedYear,
@@ -31,7 +36,6 @@ export const NepaliCalendar = ({
     setSelectedLocalisedMonth,
     selectedLocalisedDates,
     currentLocalisedDate,
-
     years,
     months,
     days,

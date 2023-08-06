@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .ne-dt-h-full-svh {
+    height: 100svh;
+
+    @apply md:ne-dt-h-auto;
+  }
+}

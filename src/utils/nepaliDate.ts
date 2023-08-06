@@ -141,6 +141,23 @@ export const getMonths = (lang: Language, short = false): Month[] => {
   })
 }
 
+export const getMonthLabel = (
+  lang: Language,
+  month?: number,
+  short = false,
+): string | null => {
+  if (typeof month === 'undefined') {
+    return null
+  }
+
+  const m = month > 0 ? month - 1 : month
+  if (lang === 'ne') {
+    return short ? months[m].label.ne.short : months[m].label.ne.long
+  }
+
+  return short ? months[m].label.en.short : months[m].label.en.long
+}
+
 export const getMonthDatesByYear = ({
   year,
   month,

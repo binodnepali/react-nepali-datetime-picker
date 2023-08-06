@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import CalendarMonth from '@/assets/CalendarMonth.svg'
@@ -23,9 +23,11 @@ import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
 import { useTranslation } from '@/hooks/useTranslation'
 import { clsx } from '@/plugins/clsx'
+import { NepaliTime } from '@/types'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
+import { getMonthLabel } from '@/utils/nepaliDate'
 
 import { useModalPosition } from '../DesktopTimePicker/useModalPosition'
 
@@ -84,7 +86,6 @@ export const DesktopDateTimePicker = ({
     selectedDateRef.current = date
     onDateSelect?.(date)
     setSelectedDate(() => date)
-    setShowModal(() => false)
   }
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
@@ -119,6 +120,7 @@ export const DesktopDateTimePicker = ({
   const [userClickedOn, setUserClickedOn] = useState<
     'year' | 'monthdate' | 'hour' | 'minute' | 'AM' | 'PM'
   >()
+  const [timeDay, setTimeDay] = useState<'AM' | 'PM'>()
   const handleOnUserClickedOn = (
     userClickedOn: 'year' | 'monthdate' | 'hour' | 'minute' | 'AM' | 'PM',
   ) => {
@@ -129,8 +131,6 @@ export const DesktopDateTimePicker = ({
         break
       case 'hour':
       case 'minute':
-      case 'AM':
-      case 'PM':
         setCurrentView(() => 'time')
         break
       default:
@@ -139,6 +139,23 @@ export const DesktopDateTimePicker = ({
     setUserClickedOn(() => userClickedOn)
   }
 
+  const handleOnTimeDaySelect = (timeDay: 'AM' | 'PM') => {
+    setCurrentView(() => 'time')
+
+    setTimeDay(() => timeDay)
+  }
+
+  const [selectedTime, setSelectedTime] = useState<NepaliTime>()
+  useEffect(() => {
+    if (!selectedTime?.value.day) {
+      return
+    }
+    setTimeDay(() => selectedTime?.value.day as 'AM' | 'PM')
+  }, [selectedTime?.value.day])
+  const handleOnTimeSelect = (time: NepaliTime) => {
+    setSelectedTime(() => time)
+    //onTimeSelect?.(time)
+  }
   const {
     currentTime: { label: currentTimeLabel },
     timeDays,
@@ -189,27 +206,40 @@ export const DesktopDateTimePicker = ({
           <div data-testid="desktopdatetimepicker">
             <Modal
               onClose={handleOnModalClose}
-              className={`ne-dt-transition-transform ne-dt-ease-out ${modalClassName}`}
+              className={clsx(
+                'ne-dt-transition-transform ne-dt-ease-out',
+                modalClassName,
+              )}
               style={{
-                transform: `${
-                  isMobile
-                    ? 'none'
-                    : `translate3d(${modalPositionX}px, ${modalPositionY}px, 0px)`
-                }`,
+                transform: clsx(
+                  isMobile && 'none',
+                  !isMobile &&
+                    `translate3d(${modalPositionX}px, ${modalPositionY}px, 0px)`,
+                ),
               }}
             >
               <div
-                className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row md:ne-dt-gap-0 ne-dt-px-4 md:ne-dt-px-0 ne-dt-max-h-screen ne-dt-overflow-y-auto"
+                className={clsx(
+                  'ne-dt-flex ne-dt-flex-col ne-dt-justify-center md:ne-dt-flex-row md:ne-dt-gap-0 ne-dt-px-4 md:ne-dt-px-0 ne-dt-h-full-svh ne-dt-overflow-y-auto',
+                )}
                 data-testid="modalcontent"
                 ref={modalRef}
               >
                 <>
-                  <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
-                    <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
+                  <div
+                    className={clsx(
+                      'ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden',
+                    )}
+                  >
+                    <p
+                      className={clsx(
+                        'ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal',
+                      )}
+                    >
                       {title}
                     </p>
 
-                    <div className="ne-dt-grid ne-dt-grid-cols-2">
+                    <div className={clsx('ne-dt-grid ne-dt-grid-cols-2')}>
                       <div>
                         <Button
                           variant="text"
@@ -222,7 +252,8 @@ export const DesktopDateTimePicker = ({
                                 'ne-dt-text-neutral-900',
                             )}
                           >
-                            {selectedLocalisedYear.label}
+                            {selectedDate?.year.label ??
+                              selectedLocalisedYear.label}
                           </span>
                         </Button>
 
@@ -238,16 +269,29 @@ export const DesktopDateTimePicker = ({
                             )}
                           >
                             {`${
-                              lang === 'ne'
-                                ? selectedLocalisedMonth.label
-                                : selectedLocalisedMonth.label.slice(0, 4)
-                            } ${currentLocalisedDate?.label}`}
+                              getMonthLabel(
+                                lang,
+                                selectedDate?.month.value,
+                                true,
+                              ) ?? selectedLocalisedMonth.label
+                            } ${
+                              selectedDate?.date?.label ??
+                              currentLocalisedDate?.label
+                            }`}
                           </span>
                         </Button>
                       </div>
 
-                      <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4">
-                        <div className="ne-dt-flex ne-dt-flex-row  ne-dt-items-center">
+                      <div
+                        className={clsx(
+                          'ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4',
+                        )}
+                      >
+                        <div
+                          className={clsx(
+                            'ne-dt-flex ne-dt-flex-row  ne-dt-items-center',
+                          )}
+                        >
                           <Button
                             variant="text"
                             onClick={() => handleOnUserClickedOn('hour')}
@@ -259,10 +303,15 @@ export const DesktopDateTimePicker = ({
                                   'ne-dt-text-neutral-900',
                               )}
                             >
-                              {currentTimeLabel.hour}
+                              {selectedTime?.label.hour ??
+                                currentTimeLabel.hour}
                             </span>
                           </Button>
-                          <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
+                          <span
+                            className={clsx(
+                              'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
+                            )}
+                          >
                             :
                           </span>
                           <Button
@@ -276,29 +325,34 @@ export const DesktopDateTimePicker = ({
                                   'ne-dt-text-neutral-900',
                               )}
                             >
-                              {currentTimeLabel.minute}
+                              {selectedTime?.label?.minute ??
+                                currentTimeLabel.minute}
                             </span>
                           </Button>
                         </div>
 
                         {timeDays.length > 0 && (
-                          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center">
-                            {timeDays.map((timeDay, index) => (
+                          <div
+                            className={clsx(
+                              'ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center',
+                            )}
+                          >
+                            {timeDays.map((td, index) => (
                               <Button
                                 variant="text"
-                                onClick={() =>
-                                  handleOnUserClickedOn(timeDay.value)
-                                }
+                                onClick={() => handleOnTimeDaySelect(td.value)}
+                                selected={timeDay === td.value}
                                 key={index}
                               >
                                 <span
+                                  key={userClickedOn}
                                   className={clsx(
                                     'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
-                                    userClickedOn === timeDay.value &&
+                                    timeDay === td.value &&
                                       'ne-dt-text-neutral-900',
                                   )}
                                 >
-                                  {timeDay.label}
+                                  {td.label}
                                 </span>
                               </Button>
                             ))}
@@ -308,13 +362,17 @@ export const DesktopDateTimePicker = ({
                     </div>
                   </div>
 
-                  <div className="ne-dt-grid ne-dt-grid-cols-2 ne-dt-bg-neutral-50 ne-dt-place-items-center ne-dt-pt-2 md:ne-dt-hidden">
+                  <div
+                    className={clsx(
+                      'ne-dt-grid ne-dt-grid-cols-2 ne-dt-bg-neutral-50 ne-dt-place-items-center ne-dt-pt-2 md:ne-dt-hidden',
+                    )}
+                  >
                     <div
-                      className={`ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full ${
-                        currentView === 'calendar'
-                          ? 'ne-dt-border-b-2 ne-dt-border-gray-500'
-                          : ''
-                      }`}
+                      className={clsx(
+                        'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
+                        currentView === 'calendar' &&
+                          'ne-dt-border-b-2 ne-dt-border-gray-500',
+                      )}
                     >
                       <CalendarMonth
                         width="36"
@@ -324,11 +382,11 @@ export const DesktopDateTimePicker = ({
                     </div>
 
                     <div
-                      className={`ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full ${
-                        currentView === 'time'
-                          ? 'ne-dt-border-b-2 ne-dt-border-gray-500'
-                          : ''
-                      }`}
+                      className={clsx(
+                        'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
+                        currentView === 'time' &&
+                          'ne-dt-border-b-2 ne-dt-border-gray-500',
+                      )}
                     >
                       <ClockOutlineIcon
                         width="36"
@@ -343,13 +401,16 @@ export const DesktopDateTimePicker = ({
                       onDateSelect={handleOnSelectDate}
                       lang={lang}
                       selectedDate={selectedDateRef.current}
-                      className="!ne-dt-rounded-none"
+                      openYearSelector={userClickedOn === 'year'}
+                      className={clsx('!ne-dt-rounded-none')}
                       {...calendar}
                     />
                   ) : (
-                    <div className="ne-dt-block md:ne-dt-hidden">
+                    <div className={clsx('ne-dt-block md:ne-dt-hidden')}>
                       <DesktopTime
-                        className="!ne-dt-rounded-none !ne-dt-w-full"
+                        className={clsx('!ne-dt-rounded-none !ne-dt-w-full')}
+                        onTimeSelect={handleOnTimeSelect}
+                        selectedTime={selectedTime}
                         lang={lang}
                         hourFormat={hourFormat}
                         {...time}
@@ -357,7 +418,11 @@ export const DesktopDateTimePicker = ({
                     </div>
                   )}
 
-                  <div className="ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden">
+                  <div
+                    className={clsx(
+                      'ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden',
+                    )}
+                  >
                     <Button variant="outline" onClick={handleOnCancel}>
                       {cancel}
                     </Button>
@@ -368,8 +433,14 @@ export const DesktopDateTimePicker = ({
                   </div>
                 </>
 
-                <div className="ne-dt-hidden md:ne-dt-block">
-                  <DesktopTime lang={lang} hourFormat={hourFormat} {...time} />
+                <div className={clsx('ne-dt-hidden md:ne-dt-block')}>
+                  <DesktopTime
+                    onTimeSelect={handleOnTimeSelect}
+                    selectedTime={selectedTime}
+                    lang={lang}
+                    hourFormat={hourFormat}
+                    {...time}
+                  />
                 </div>
               </div>
             </Modal>
