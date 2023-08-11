@@ -28,30 +28,36 @@ export const getCurrentNepaliTime = (
   const day = formatDate.split(' ')[1]
 
   return {
-    value: {
-      hour,
-      minute,
-      day,
+    hour: {
+      value: hour,
+      label: lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
     },
-    label: {
-      hour: lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
-      minute:
+    minute: {
+      value: minute,
+      label:
         lang === 'ne' ? addLeadingNepaliZero(minute) : addLeadingZero(minute),
-      day: timeDays.find((timeDay) => timeDay.value === day)?.label[
-        lang
-      ] as string,
+    },
+    day: {
+      value: day,
+      label:
+        lang === 'ne'
+          ? NepaliAMOrPM[day as keyof typeof NepaliAMOrPM]
+          : EnglishAMOrPM[day as keyof typeof EnglishAMOrPM],
     },
   }
 }
 
 const TIME_12_REGEX = /^(0[1-9]|1[0-2]):([0-5][0-9])$/
-const TIME_24_REGEX = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/
+const TIME_24_REGEX = /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/
 export const NEPALI_COLON_CHARACTER = 'ः'
 export const validateTime = (
   time: string,
   lang: Language = 'ne',
   hourFormat: HourFormat = 12,
-) => {
+): {
+  valid: boolean
+  value?: NepaliTime
+} => {
   const is12HourFormat = hourFormat === 12
 
   const [hourAndMinute, dayPart] = time.split(' ').map((t) => t)
@@ -64,7 +70,7 @@ export const validateTime = (
 
   if (
     lang === 'en' &&
-    (TIME_12_REGEX.test(hourAndMinute) || TIME_24_REGEX.test(hourAndMinute)) &&
+    TIME_12_REGEX.test(hourAndMinute) &&
     is12HourFormat &&
     (dayPart === EnglishAMOrPM.AM || dayPart === EnglishAMOrPM.PM)
   ) {
@@ -74,23 +80,23 @@ export const validateTime = (
     return {
       valid: true,
       value: {
-        hour: parseInt(hour),
-        minute: parseInt(minute),
-        day,
-      },
-      label: {
-        hour,
-        minute,
-        day,
+        hour: {
+          value: parseInt(hour),
+          label: hour,
+        },
+        minute: {
+          value: parseInt(minute),
+          label: minute,
+        },
+        day: {
+          value: day,
+          label: day,
+        },
       },
     }
   }
 
-  if (
-    lang === 'en' &&
-    (TIME_12_REGEX.test(hourAndMinute) || TIME_24_REGEX.test(hourAndMinute)) &&
-    !is12HourFormat
-  ) {
+  if (lang === 'en' && TIME_24_REGEX.test(hourAndMinute) && !is12HourFormat) {
     if (dayPart?.length >= 0) {
       return {
         valid: false,
@@ -102,12 +108,14 @@ export const validateTime = (
     return {
       valid: true,
       value: {
-        hour: parseInt(hour),
-        minute: parseInt(minute),
-      },
-      label: {
-        hour,
-        minute,
+        hour: {
+          value: parseInt(hour),
+          label: hour,
+        },
+        minute: {
+          value: parseInt(minute),
+          label: minute,
+        },
       },
     }
   }
@@ -126,40 +134,41 @@ export const validateTime = (
   const minutePart = addLeadingZero(convertNepaliDigitToEnglishDigit(minute))
 
   if (
-    (TIME_12_REGEX.test(`${hourPart}:${minutePart}`) ||
-      TIME_24_REGEX.test(`${hourPart}:${minutePart}`)) &&
+    TIME_12_REGEX.test(`${hourPart}:${minutePart}`) &&
     is12HourFormat &&
     (dayPart === NepaliAMOrPM.AM || dayPart === NepaliAMOrPM.PM)
   ) {
     return {
       valid: true,
       value: {
-        hour: parseInt(hourPart),
-        minute: parseInt(minutePart),
-        day: dayPart === NepaliAMOrPM.AM ? 'AM' : 'PM',
-      },
-      label: {
-        hour,
-        minute,
-        day: dayPart,
+        hour: {
+          value: parseInt(hourPart),
+          label: hour,
+        },
+        minute: {
+          value: parseInt(minutePart),
+          label: minute,
+        },
+        day: {
+          value: dayPart === NepaliAMOrPM.AM ? 'AM' : 'PM',
+          label: dayPart,
+        },
       },
     }
   }
 
-  if (
-    (TIME_12_REGEX.test(`${hourPart}:${minutePart}`) ||
-      TIME_24_REGEX.test(`${hourPart}:${minutePart}`)) &&
-    !is12HourFormat
-  ) {
+  if (TIME_24_REGEX.test(`${hourPart}:${minutePart}`) && !is12HourFormat) {
     return {
       valid: true,
       value: {
-        hour: parseInt(hourPart),
-        minute: parseInt(minutePart),
-      },
-      label: {
-        hour,
-        minute,
+        hour: {
+          value: parseInt(hourPart),
+          label: hour,
+        },
+        minute: {
+          value: parseInt(minutePart),
+          label: minute,
+        },
       },
     }
   }

@@ -6,6 +6,7 @@ import {
   // DesktopTimePicker,
   Language,
 } from '.'
+import { NepaliDateTime } from './types/NepaliDateTime'
 
 export default function App() {
   const { toggleTheme } = useThemeToggle()
@@ -14,10 +15,22 @@ export default function App() {
   // const datePlaceholder =
   //   selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
 
-  const timePlaceholder = selectLang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
+  // const timePlaceholder = selectLang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
 
-  const timeErrorText =
-    selectLang === 'en' ? 'Enter valid time' : 'समय दिनुहोस्'
+  // const timeErrorText =
+  //   selectLang === 'en' ? 'Enter valid time' : 'समय दिनुहोस्'
+
+  const [dateTime, setDateTime] = useState<NepaliDateTime>()
+  const handleOnDateTimeSelect = (date: NepaliDateTime) => {
+    // console.log(date)
+
+    if (!date.valid) {
+      setDateTime(undefined)
+      return
+    }
+
+    setDateTime(date)
+  }
 
   return (
     <div className="ne-dt-p-4 ne-dt-min-h-screen">
@@ -126,22 +139,15 @@ export default function App() {
           </label>
 
           <DesktopDateTimePicker
-            // lang={'en'}
+            lang={selectLang}
             // hourFormat={24}
             dateInput={{
-              // fullWidth: true,
-              input: {
-                nativeInput: {
-                  placeholder: timePlaceholder,
-                },
-              },
-              hint: {
-                error: {
-                  message: timeErrorText,
-                },
-              },
+              fullWidth: true,
             }}
+            onDateTimeSelect={handleOnDateTimeSelect}
           />
+
+          {dateTime && <p>{JSON.stringify(dateTime)}</p>}
         </div>
 
         {/* {[1, 2, 3, 4, 5, 6].map((key) => (

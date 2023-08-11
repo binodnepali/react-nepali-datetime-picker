@@ -1,3 +1,4 @@
+import { days } from '@/constants/days'
 import { months } from '@/constants/months'
 import { weekDays } from '@/constants/weekDays'
 import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth'
@@ -270,6 +271,107 @@ export const getWeekDays = (lang: Language, short = true): WeekDay[] => {
       label: short ? day.label.en.short : day.label.en.long,
     }
   })
+}
+
+export const validateDate = (
+  value: string,
+  lang = 'ne',
+  shortMonth = false,
+): {
+  valid: boolean
+  value?: NepaliDate
+} => {
+  if (lang === 'ne') {
+    const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
+
+    if (!year || !month || !date) {
+      return {
+        valid: false,
+      }
+    }
+
+    const foundYear = years.find((y) => y.label[lang] === year)
+
+    if (!foundYear) {
+      return {
+        valid: false,
+      }
+    }
+
+    const foundMonth = months.find(
+      (m) => addLeadingNepaliZero(m.value.en + 1) === month,
+    )
+    if (!foundMonth) {
+      return {
+        valid: false,
+      }
+    }
+
+    const foundDate = days.find((d) => d.label.ne === date)
+
+    if (!foundDate) {
+      return {
+        valid: false,
+      }
+    }
+
+    return {
+      valid: true,
+      value: {
+        year: {
+          label: foundYear.label.ne,
+          value: foundYear.value,
+        },
+        month: {
+          value: foundMonth.value.en + 1,
+          label: shortMonth
+            ? foundMonth.label.ne.short
+            : foundMonth.label.ne.long,
+        },
+        date: {
+          id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value.en}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
+          value: foundDate.value,
+          label: foundDate.label.ne,
+        },
+      },
+    }
+  }
+
+  const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
+
+  const foundYear = years.find((y) => y.label.en === year)
+  const foundMonth = months.find(
+    (m) => addLeadingZero(m.value.en + 1) === month,
+  )
+
+  const foundDate = days.find((d) => d.label.en === date)
+
+  if (!foundYear || !foundMonth || !foundDate) {
+    return {
+      valid: false,
+    }
+  }
+
+  return {
+    valid: true,
+    value: {
+      year: {
+        label: foundYear.label.en,
+        value: foundYear.value,
+      },
+      month: {
+        value: foundMonth.value.en + 1,
+        label: shortMonth
+          ? foundMonth.label.en.short
+          : foundMonth.label.en.long,
+      },
+      date: {
+        id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value.en}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
+        value: foundDate.value,
+        label: foundDate.label.en,
+      },
+    },
+  }
 }
 
 export const formatNepaliDate = (date: NepaliDate, lang: Language) => {

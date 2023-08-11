@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/Button/Button'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
+import { cn } from '@/plugins/twMerge'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime, Time } from '@/types/NepaliTime'
@@ -33,7 +34,7 @@ export const DesktopTime = ({
   onTimeSelect,
 }: DesktopTimeProps) => {
   const {
-    time: { value },
+    currentTime: { hour, minute, day },
     selectedHour,
     setSelectedHour,
     selectedMinute,
@@ -43,7 +44,6 @@ export const DesktopTime = ({
     timeDays,
   } = useNepaliTime({
     lang,
-    selectedTime,
     hourFormat,
   })
 
@@ -51,88 +51,122 @@ export const DesktopTime = ({
 
   const handleOnHourClick = (time: Time) => {
     setSelectedHour(() => time)
+    if (!selectedMinute) {
+      return
+    }
+
     onTimeSelect?.({
-      value: {
-        hour: time.value,
-        minute: selectedMinute.value,
-        ...(is12HourFormat ? { day: selectedDay.value } : {}),
+      hour: {
+        value: time.value,
+        label: time.label,
       },
-      label: {
-        hour: time.label,
-        minute: selectedMinute.label,
-        ...(is12HourFormat ? { day: selectedDay.label } : {}),
+      minute: {
+        value: selectedMinute.value,
+        label: selectedMinute.label,
       },
+      ...(is12HourFormat && selectedDay?.value && selectedDay?.label
+        ? {
+            day: {
+              value: selectedDay.value,
+              label: selectedDay.label,
+            },
+          }
+        : {}),
     })
   }
 
   const handleOnMinuteClick = (time: Time) => {
     setSelectedMinute(() => time)
+    if (!selectedHour) {
+      return
+    }
+
     onTimeSelect?.({
-      value: {
-        hour: selectedHour.value,
-        minute: time.value,
-        ...(is12HourFormat ? { day: selectedDay.value } : {}),
+      hour: {
+        value: selectedHour.value,
+        label: selectedHour.label,
       },
-      label: {
-        hour: selectedHour.label,
-        minute: time.label,
-        ...(is12HourFormat ? { day: selectedDay.label } : {}),
+      minute: {
+        value: time.value,
+        label: time.label,
       },
+      ...(is12HourFormat && selectedDay?.value && selectedDay?.label
+        ? {
+            day: {
+              value: selectedDay.value,
+              label: selectedDay.label,
+            },
+          }
+        : {}),
     })
   }
 
   const handleOnDayClick = (day: { value: string; label: string }) => {
     setSelectedDay(() => day)
+    if (!selectedHour || !selectedMinute) {
+      return
+    }
+
     onTimeSelect?.({
-      value: {
-        hour: selectedHour.value,
-        minute: selectedMinute.value,
-        ...(is12HourFormat ? { day: day.value } : {}),
+      hour: {
+        value: selectedHour.value,
+        label: selectedHour.label,
       },
-      label: {
-        hour: selectedHour.label,
-        minute: selectedMinute.label,
-        ...(is12HourFormat ? { day: day.label } : {}),
+      minute: {
+        value: selectedMinute.value,
+        label: selectedMinute.label,
       },
+      ...(is12HourFormat && day.value && day.label ? { day } : {}),
     })
   }
 
+  useEffect(() => {
+    setSelectedHour(() => selectedTime?.hour)
+    setSelectedMinute(() => selectedTime?.minute)
+    setSelectedDay(() => selectedTime?.day)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTime])
+
   return (
     <div
-      className={`ne-dt-bg-neutral-50 ne-dt-grid ${
-        is12HourFormat
-          ? 'ne-dt-grid-cols-[64px_64px_64px]'
-          : 'ne-dt-grid-cols-[64px_64px]'
-      } ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2 ne-dt-shadow-md ${className}`}
+      className={cn(
+        'ne-dt-bg-neutral-50 ne-dt-grid ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2 ne-dt-shadow-md',
+        is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
+        !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
+        className,
+      )}
     >
       <HourList
         format={hourFormat}
-        hour={value.hour}
+        hour={hour.value}
+        selectedHour={selectedHour?.value}
         lang={lang}
         onTimeSelect={handleOnHourClick}
       />
 
       <MinuteList
-        minute={value.minute}
+        minute={minute.value}
+        selectedMinute={selectedMinute?.value}
         lang={lang}
         onTimeSelect={handleOnMinuteClick}
       />
 
       {is12HourFormat && (
         <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start">
-          {timeDays.map((day) => (
+          {timeDays.map((d) => (
             <Button
               variant="outline"
-              selected={day.value === selectedDay.value}
-              key={day.value}
+              active={d.value === day?.value}
+              selected={d.value === selectedDay?.value}
+              key={d.value}
               onClick={() =>
                 handleOnDayClick({
-                  value: day.value,
-                  label: day.label,
+                  value: d.value,
+                  label: d.label,
                 })
               }
             >
-              {day.label}
+              {d.label}
             </Button>
           ))}
         </div>
@@ -145,10 +179,12 @@ function HourList({
   format,
   hour,
   lang,
+  selectedHour: initialSelectedHour,
   onTimeSelect,
 }: {
   format: HourFormat
   hour: number
+  selectedHour?: number
   lang: Language
   onTimeSelect?: (time: Time) => void
 }) {
@@ -184,7 +220,9 @@ function HourList({
     }
   }, [])
 
-  const [selectedHour, setSelectedHour] = useState<number>(hour)
+  const [selectedHour, setSelectedHour] = useState<number | undefined>(
+    initialSelectedHour,
+  )
   const handleOnHourClick = (time: Time) => {
     setSelectedHour(() => time.value)
     onTimeSelect?.(time)
@@ -193,11 +231,15 @@ function HourList({
   const hours = useMemo(
     () =>
       format === 12
-        ? sortValuesByCurrentValue(hour, generate12Hours(lang))
-        : sortValuesByCurrentValue(hour, generate24Hours(lang)),
+        ? sortValuesByCurrentValue(selectedHour ?? hour, generate12Hours(lang))
+        : sortValuesByCurrentValue(selectedHour ?? hour, generate24Hours(lang)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [format, lang],
+    [format, lang, selectedHour],
   )
+
+  useEffect(() => {
+    setSelectedHour(() => initialSelectedHour)
+  }, [initialSelectedHour])
 
   return (
     <div
@@ -211,9 +253,10 @@ function HourList({
       >
         {hours.map((h) => (
           <Button
-            id={`h-${h.value}`}
+            id={`h-${h.value === hour}`}
             key={`h-${h.value}`}
             variant="outline"
+            active={h.value === hour}
             selected={h.value === selectedHour}
             onClick={() => handleOnHourClick(h)}
           >
@@ -232,6 +275,7 @@ function HourList({
             id={`h-cloned-${h.value}`}
             key={`h-cloned-${h.value}`}
             variant="outline"
+            active={h.value === hour}
             selected={h.value === selectedHour}
             onClick={() => handleOnHourClick(h)}
           >
@@ -246,10 +290,12 @@ function HourList({
 function MinuteList({
   minute,
   lang,
+  selectedMinute: initialSelectedMinute,
   onTimeSelect,
 }: {
   minute: number
   lang: Language
+  selectedMinute?: number
   onTimeSelect?: (time: Time) => void
 }) {
   const minuteRef = useRef<HTMLDivElement>(null)
@@ -285,7 +331,9 @@ function MinuteList({
     }
   }, [])
 
-  const [selectedMinute, setSelectedMinute] = useState<number>(minute)
+  const [selectedMinute, setSelectedMinute] = useState<number | undefined>(
+    initialSelectedMinute,
+  )
 
   const handleOnMinuteClick = (time: Time) => {
     setSelectedMinute(() => time.value)
@@ -293,10 +341,15 @@ function MinuteList({
   }
 
   const minutes = useMemo(
-    () => sortValuesByCurrentValue(minute, generateMinutes(lang)),
+    () =>
+      sortValuesByCurrentValue(selectedMinute ?? minute, generateMinutes(lang)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [lang],
+    [lang, selectedMinute],
   )
+
+  useEffect(() => {
+    setSelectedMinute(() => initialSelectedMinute)
+  }, [initialSelectedMinute])
 
   return (
     <div
@@ -313,6 +366,7 @@ function MinuteList({
             id={`m-${m.value}`}
             key={`m-${m.value}`}
             variant="outline"
+            active={m.value === minute}
             selected={m.value === selectedMinute}
             onClick={() => handleOnMinuteClick(m)}
           >
@@ -331,6 +385,7 @@ function MinuteList({
             id={`m-cloned-${m.value}`}
             key={`m-cloned-${m.value}`}
             variant="outline"
+            active={m.value === minute}
             selected={m.value === selectedMinute}
             onClick={() => handleOnMinuteClick(m)}
           >

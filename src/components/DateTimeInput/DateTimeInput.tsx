@@ -3,22 +3,27 @@ import { forwardRef, useEffect, useState } from 'react'
 import CalendarClock from '@/assets/CalendarClock.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
-import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
-import { clsx } from '@/plugins/clsx'
+import { cn } from '@/plugins/twMerge'
+import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
-import { formatNepaliDate } from '@/utils/nepaliDate'
+import { NepaliDateTime } from '@/types/NepaliDateTime'
+import { NepaliTime } from '@/types/NepaliTime'
+import { validateDate } from '@/utils/nepaliDate'
+import { formatNepaliDateTime } from '@/utils/nepaliDateTime'
+import { validateTime } from '@/utils/nepaliTime'
 
-export interface DateInputProps {
+export interface DateTimeInputProps {
   className?: string
   lang?: Language
-  value?: NepaliDate
+  hourFormat?: HourFormat
+  value?: NepaliDateTime
   input?: InputProps
   hint?: HintProps
   fullWidth?: boolean
 }
 
-export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
+export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
   function DateInput(
     {
       className = '',
@@ -27,6 +32,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
       lang = 'ne',
       fullWidth = false,
       value,
+      hourFormat = 12,
     },
     ref,
   ) {
@@ -41,10 +47,6 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
       ...inputRest
     } = input
 
-    const { validateDate } = useNepaliCalendar({
-      lang,
-    })
-
     const [val, setVal] = useState<string>('')
 
     const [isValid, setIsValid] = useState<boolean>(true)
@@ -52,15 +54,52 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
 
-      const { valid, value: val } = validateDate(value)
+      const [date, time, timeDay] = value.split(' ')
+
+      const fullTime = timeDay ? `${time} ${timeDay}` : time
+
+      const validatedDate: {
+        valid: boolean
+        value?: NepaliDate
+      } = {
+        valid: false,
+      }
+      if (date !== undefined) {
+        const { valid, value } = validateDate(date, lang)
+
+        validatedDate.valid = valid
+        validatedDate.value = value
+      }
+
+      const validatedTime: {
+        valid: boolean
+        value?: NepaliTime
+      } = {
+        valid: false,
+      }
+      if (fullTime !== undefined) {
+        const { valid, value } = validateTime(fullTime, lang, hourFormat)
+
+        validatedTime.valid = valid
+        validatedTime.value = value
+      }
+
+      const valid = validatedDate.valid && validatedTime.valid
 
       setIsValid(() => valid)
 
       setVal(() => value)
 
       e.target.value = JSON.stringify({
-        isValid: valid,
-        value: val,
+        valid,
+        ...(valid
+          ? {
+              value: {
+                date: validatedDate.value,
+                time: validatedTime.value,
+              },
+            }
+          : {}),
       })
 
       onInputChange?.(e)
@@ -73,22 +112,19 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         return
       }
 
-      setVal(() => formatNepaliDate(value, lang))
+      setVal(() => formatNepaliDateTime(value, lang))
+
       setIsValid(() => true)
     }, [lang, value])
 
     return (
-      <div className={`ne-dt-flex ne-dt-flex-col ${className}`} ref={ref}>
+      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
         <Input
-          className={clsx(inputClassName, fullWidth && 'ne-dt-w-full')}
+          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
-            className: clsx(
-              // 'ne-dt-px-4 ne-dt-py-4',
-              fullWidth && 'ne-dt-w-full',
-              nativeInputClassName,
-            ),
+            className: cn(fullWidth && 'ne-dt-w-full', nativeInputClassName),
             ...nativeInputRest,
           }}
           icon={{
@@ -117,7 +153,10 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
   },
 )
 
-export type DateInputTargetValue = {
-  isValid: boolean
-  value: NepaliDate | undefined
+export type DateTimeInputTargetValue = {
+  valid: boolean
+  value?: {
+    date: NepaliDate
+    time: NepaliTime
+  }
 }

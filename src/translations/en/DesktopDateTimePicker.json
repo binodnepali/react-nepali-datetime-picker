@@ -1,5 +1,8 @@
 {
   "title": "SELECT DATE & TIME",
   "cancel": "Cancel",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "dateTimeInputPlaceholder12HourFormat": "YYYY/MM/DD hh:mm A",
+  "dateTimeInputPlaceholder24HourFormat": "YYYY/MM/DD HH:mm",
+  "dateTimeInputError": "Invalid date or time"
 }
