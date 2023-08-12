@@ -12,6 +12,10 @@ import {
   DesktopTimeProps,
 } from '@/components/DesktopTime/DesktopTime'
 import {
+  ModalPortal,
+  ModalPortalProps,
+} from '@/components/ModalPortal/ModalPortal'
+import {
   NepaliCalendar,
   NepaliCalendarProps,
 } from '@/components/NepaliCalendar/NepaliCalendar'
@@ -27,16 +31,11 @@ import { NepaliDate } from '@/types/NepaliDate'
 import { NepaliDateTime } from '@/types/NepaliDateTime'
 import { getMonthLabel } from '@/utils/nepaliDate'
 
-import { ModalPortal } from '../ModalPortal/ModalPortal'
-
 interface DesktopDateTimePickerProps {
   className?: string
   lang?: Language
   onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
-  modal?: {
-    className?: string
-    onClose?: () => void
-  }
+  modal?: ModalPortalProps
   hourFormat?: HourFormat
   dateInput?: DateTimeInputProps
   calendar?: NepaliCalendarProps
@@ -63,7 +62,7 @@ export const DesktopDateTimePicker = ({
     hint = {},
     ...dateInputRest
   } = dateInput
-  const { className: modalClassName = '', onClose: onCloseModal } = modal
+  const { onClose: onCloseModal, ...modalRest } = modal
 
   const [showModal, setShowModal] = useState<boolean>(false)
   const handleOnInputDateClick = () => {
@@ -248,11 +247,9 @@ export const DesktopDateTimePicker = ({
           onClose={handleOnModalClose}
           showModal={showModal}
           ref={dateInputRef}
+          {...modalRest}
         >
-          <div
-            className="ne-dt-grid ne-dt-grid-cols-1 md:ne-dt-grid-cols-2 ne-dt-content-center ne-dt-p-4 md:ne-dt-p-0 ne-dt-h-full-svh ne-dt-overflow-y-auto"
-            data-testid="modalcontent"
-          >
+          <div className="ne-dt-grid ne-dt-grid-cols-1 md:ne-dt-grid-cols-2 ne-dt-content-center ne-dt-p-4 md:ne-dt-p-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
             <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
               <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
                 {title}
