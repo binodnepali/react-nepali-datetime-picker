@@ -5,6 +5,7 @@ import {
   DesktopDateTimePicker,
   DesktopTimePicker,
   Language,
+  NepaliDate,
   NepaliDateTime,
   NepaliTime,
 } from '.'
@@ -13,11 +14,15 @@ export default function App() {
   const { toggleTheme } = useThemeToggle()
   const [selectLang, setSelectLang] = useState<Language>('ne')
 
-  const datePlaceholder =
-    selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
+  const [selectedDate, setSelectedDate] = useState<NepaliDate>()
+  const handleOnDateSelect = (date?: NepaliDate) => {
+    if (!date) {
+      setSelectedDate(undefined)
+      return
+    }
 
-  // const timeErrorText =
-  //   selectLang === 'en' ? 'Enter valid time' : 'समय दिनुहोस्'
+    setSelectedDate(date)
+  }
 
   const [time, setTime] = useState<NepaliTime>()
   const handleOnTimeSelect = (time?: NepaliTime) => {
@@ -83,13 +88,11 @@ export default function App() {
             lang={selectLang}
             dateInput={{
               fullWidth: true,
-              input: {
-                nativeInput: {
-                  placeholder: datePlaceholder,
-                },
-              },
             }}
+            onDateSelect={handleOnDateSelect}
           />
+
+          {selectedDate && <p>{JSON.stringify(selectedDate)}</p>}
         </div>
 
         <div className="ne-dt-mb-8">

@@ -5,6 +5,7 @@ import { useNepaliCalendar } from '@hooks/useNepaliCalendar'
 import { Button } from '@ui/Button/Button'
 import { useEffect, useState } from 'react'
 
+import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
@@ -175,7 +176,10 @@ export const NepaliCalendar = ({
 
   return (
     <div
-      className={`ne-dt-bg-neutral-50 ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md ${className}`}
+      className={cn(
+        'ne-dt-bg-neutral-50 ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md',
+        className,
+      )}
     >
       <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-between">
         <div className="ne-dt-flex ne-dt-flex-row ne-dt-gap-2 ne-dt-items-center">
@@ -185,17 +189,19 @@ export const NepaliCalendar = ({
             <ExpandMoreIcon
               width="36"
               height="36"
-              className={`ne-dt-transition-transform ne-dt-duration-500
-      ${showYearSelector ? 'ne-dt-transform ne-dt-rotate-180' : ''}
-        `}
+              className={cn(
+                'ne-dt-transition-transform ne-dt-duration-500',
+                showYearSelector && 'ne-dt-transform ne-dt-rotate-180',
+              )}
             />
           </Button>
         </div>
 
         <div
-          className={`ne-dt-grid ne-dt-grid-cols-2 ne-dt-gap-2 ${
-            showYearSelector ? 'ne-dt-hidden' : ''
-          }`}
+          className={cn(
+            'ne-dt-grid ne-dt-grid-cols-2 ne-dt-gap-2',
+            showYearSelector && 'ne-dt-hidden',
+          )}
         >
           <Button onClick={handleOnPrevClick}>
             <PrevIcon width="36" height="36" />
@@ -219,7 +225,7 @@ export const NepaliCalendar = ({
               <Button
                 key={date.id}
                 id={date.id}
-                className={`ne-dt-w-9 ne-dt-h-9 ne-dt-p-2`}
+                className="ne-dt-w-9 ne-dt-h-9 ne-dt-p-2"
                 active={date.id === currentLocalisedDate?.id}
                 inactive={!date.currentMonth}
                 selected={date.id === selectedDate?.date?.id}

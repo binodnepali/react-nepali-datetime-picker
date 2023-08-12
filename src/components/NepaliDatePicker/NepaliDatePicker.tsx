@@ -1,18 +1,19 @@
 import { useRef, useState } from 'react'
 
 import {
-  NepaliCalendar,
-  NepaliCalendarProps,
-} from '@/components/NepaliCalendar/NepaliCalendar'
-import { Modal } from '@/components/ui/Modal/Modal'
-import { Language } from '@/types/Language'
-import { NepaliDate } from '@/types/NepaliDate'
-
-import {
   DateInput,
   DateInputProps,
   DateInputTargetValue,
-} from '../DateInput/DateInput'
+} from '@/components/DateInput/DateInput'
+import { ModalPortal } from '@/components/ModalPortal/ModalPortal'
+import {
+  NepaliCalendar,
+  NepaliCalendarProps,
+} from '@/components/NepaliCalendar/NepaliCalendar'
+import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/plugins/twMerge'
+import { Language } from '@/types/Language'
+import { NepaliDate } from '@/types/NepaliDate'
 
 interface NepaliDatePickerProps {
   className?: string
@@ -39,7 +40,7 @@ export const NepaliDatePicker = ({
     ...dateInputRest
   } = dateInput
 
-  const { className: modalClassName = '', onClose: onCloseModal } = modal
+  const { onClose: onCloseModal, ...modalRest } = modal
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -60,14 +61,11 @@ export const NepaliDatePicker = ({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
 
-    const targetValue =
-      value !== 'undefined'
-        ? (JSON.parse(value) as DateInputTargetValue)
-        : undefined
+    const targetValue = JSON.parse(value) as DateInputTargetValue
 
-    selectedDateRef.current = targetValue?.value
+    selectedDateRef.current = targetValue.value
 
-    onDateSelect?.(targetValue?.value)
+    onDateSelect?.(targetValue.value)
   }
 
   const handleOnModalClose = () => {
@@ -75,14 +73,20 @@ export const NepaliDatePicker = ({
     onCloseModal?.()
   }
 
+  const dateInputRef = useRef<HTMLDivElement>(null)
+
+  const { t } = useTranslation('DatePicker', lang)
+
   return (
-    <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
+    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
       <DateInput
+        ref={dateInputRef}
         lang={lang}
         value={selectedDate}
         input={{
           nativeInput: {
             onChange: handleOnChange,
+            placeholder: t('inputPlaceholder'),
             ...nativeInput,
           },
           icon: {
@@ -91,14 +95,21 @@ export const NepaliDatePicker = ({
           },
           ...inputRest,
         }}
-        hint={hint}
+        hint={{
+          ...hint,
+          error: hint?.error || {
+            message: t('inputError'),
+          },
+        }}
         {...dateInputRest}
       />
 
       {showModal && (
-        <Modal
+        <ModalPortal
           onClose={handleOnModalClose}
-          className={`md:ne-dt-mt-11 md:ne-dt-bg-transparent ${modalClassName}`}
+          showModal={showModal}
+          ref={dateInputRef}
+          {...modalRest}
         >
           <NepaliCalendar
             onDateSelect={handleOnSelectDate}
@@ -106,7 +117,7 @@ export const NepaliDatePicker = ({
             selectedDate={selectedDateRef.current}
             {...calendar}
           />
-        </Modal>
+        </ModalPortal>
       )}
     </div>
   )
