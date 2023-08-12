@@ -1,15 +1,21 @@
-import { useCallback, useEffect, useState } from 'react'
+import {
+  ForwardedRef,
+  RefObject,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 
-interface UseModalPositionProps {
-  modalRef: React.RefObject<HTMLDivElement>
-  dateInputRef: React.RefObject<HTMLDivElement>
+export interface UseModalPositionProps {
+  modalRef: RefObject<HTMLDivElement>
+  ref: ForwardedRef<HTMLDivElement>
   showModal: boolean
   isMobile: boolean
 }
 
 export const useModalPosition = ({
   modalRef,
-  dateInputRef,
+  ref: forwardRef,
   showModal,
   isMobile,
 }: UseModalPositionProps) => {
@@ -21,12 +27,10 @@ export const useModalPosition = ({
     y: 0,
   })
 
+  const ref = forwardRef as RefObject<HTMLDivElement>
+
   const calculateModalPosition = useCallback(() => {
-    if (
-      !modalRef.current ||
-      !dateInputRef.current ||
-      typeof window === 'undefined'
-    ) {
+    if (!modalRef.current || !ref.current || typeof window === 'undefined') {
       return
     }
 
@@ -35,7 +39,7 @@ export const useModalPosition = ({
       x: dateInputX,
       y: dateInputY,
       height: dateInputHeight,
-    } = dateInputRef.current.getBoundingClientRect()
+    } = ref.current.getBoundingClientRect()
 
     const { height: modalHeight } = modalRef.current.getBoundingClientRect()
 
@@ -50,7 +54,7 @@ export const useModalPosition = ({
         y: dateInputY + dateInputHeight + scrollY,
       }))
     }
-  }, [dateInputRef, modalRef])
+  }, [ref, modalRef])
 
   const handleOnScroll = useCallback(() => {
     calculateModalPosition()

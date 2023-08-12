@@ -1,26 +1,30 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import {
   DesktopTime,
   DesktopTimeProps,
 } from '@/components/DesktopTime/DesktopTime'
 import {
+  ModalPortal,
+  ModalPortalProps,
+} from '@/components/ModalPortal/ModalPortal'
+import {
   TimeInput,
   TimeInputProps,
   TimeInputTargetValue,
 } from '@/components/TimeInput/TimeInput'
-import { Modal, ModalProps } from '@/components/ui/Modal/Modal'
+import { useTranslation } from '@/hooks/useTranslation'
+import { cn } from '@/plugins/twMerge'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime } from '@/types/NepaliTime'
-import { formatTime } from '@/utils/nepaliTime'
 
 interface DesktopTimePickerProps {
   className?: string
   desktopTime?: DesktopTimeProps
   hourFormat?: HourFormat
   lang?: Language
-  modal?: ModalProps
+  modal?: ModalPortalProps
   onTimeSelect?: (time?: NepaliTime) => void
   timeInput?: TimeInputProps
 }
@@ -36,104 +40,96 @@ export const DesktopTimePicker = ({
 }: DesktopTimePickerProps) => {
   const {
     input: { nativeInput = {}, icon: inputIcon = {}, ...inputRest } = {},
+    hint = {},
     ...timeInputRest
   } = timeInput
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
-  const [valid, setValid] = useState<boolean>(true)
-  const [time, setTime] = useState<NepaliTime>()
+  const [selectedTime, setSelectedTime] = useState<NepaliTime>()
+  const selectedTimeRef = useRef<NepaliTime>()
 
   const handleOnTimeSelect = (time: NepaliTime) => {
-    setTime(() => time)
+    const isTimeValid =
+      hourFormat === 12 ? time?.day?.value !== undefined : true
+
+    if (!isTimeValid) {
+      return
+    }
+
+    setSelectedTime(() => time)
+    selectedTimeRef.current = time
     onTimeSelect?.(time)
   }
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
 
-    const data =
-      value !== '' ? (JSON.parse(value) as TimeInputTargetValue) : undefined
+    const targetValue = JSON.parse(value) as TimeInputTargetValue
 
-    if (data) {
-      const { valid, value: val, label } = data
-
-      if (!valid || !val || !label) {
-        setValid(() => valid)
-        setTime(() => undefined)
-
-        onTimeSelect?.(undefined)
-        return
-      }
-
-      setValid(() => valid)
-      const time = {
-        value: {
-          hour: val.hour,
-          minute: val.minute,
-          ...(val.day ? { day: val.day } : {}),
-        },
-        label: {
-          hour: label.hour,
-          minute: label.minute,
-          ...(label.day ? { day: label.day } : {}),
-        },
-      }
-      setTime(() => time)
-
-      onTimeSelect?.(time)
-    } else {
-      setValid(() => true)
+    if (!targetValue.valid) {
+      selectedTimeRef.current = undefined
+      return
     }
+
+    selectedTimeRef.current = targetValue.value
+    onTimeSelect?.(targetValue.value)
   }
 
+  const handleOnIconClick = () => {
+    setShowModal(() => !showModal)
+  }
+
+  const { t } = useTranslation('DesktopTimePicker', lang)
+
+  const timeInputRef = useRef<HTMLDivElement>(null)
+
   return (
-    <div className={`ne-dt-relative ne-dt-flex ne-dt-flex-col ${className}`}>
+    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
       <TimeInput
+        selectedTime={selectedTime}
+        ref={timeInputRef}
         input={{
           nativeInput: {
-            value: time?.value
-              ? formatTime(
-                  time.value.hour,
-                  time.value.minute,
-                  time.value.day,
-                  lang,
-                  hourFormat,
-                )
-              : '',
             onChange: handleOnInputChange,
+            placeholder:
+              hourFormat === 12
+                ? t('timeInputPlaceholder12HourFormat')
+                : t('timeInputPlaceholder24HourFormat'),
             ...nativeInput,
           },
           icon: {
-            onClick: () => {
-              if (!valid) {
-                return
-              }
-              setShowModal(true)
-            },
+            onClick: handleOnIconClick,
             ...inputIcon,
           },
           ...inputRest,
+        }}
+        hint={{
+          ...hint,
+          error: hint?.error || {
+            message: t('timeInputError'),
+          },
         }}
         lang={lang}
         hourFormat={hourFormat}
         {...timeInputRest}
       />
 
-      {showModal && valid && (
-        <Modal
+      {showModal && (
+        <ModalPortal
           onClose={() => setShowModal(false)}
-          className="md:ne-dt-mt-11 md:ne-dt-bg-transparent"
+          showModal={showModal}
+          ref={timeInputRef}
           {...modal}
         >
           <DesktopTime
             onTimeSelect={handleOnTimeSelect}
-            selectedTime={time}
+            selectedTime={selectedTimeRef.current}
             lang={lang}
             hourFormat={hourFormat}
             {...desktopTime}
           />
-        </Modal>
+        </ModalPortal>
       )}
     </div>
   )

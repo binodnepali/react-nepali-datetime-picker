@@ -130,6 +130,12 @@ export const validateTime = (
     }
   }
 
+  if (hour.length < 2 || minute.length < 2) {
+    return {
+      valid: false,
+    }
+  }
+
   const hourPart = addLeadingZero(convertNepaliDigitToEnglishDigit(hour))
   const minutePart = addLeadingZero(convertNepaliDigitToEnglishDigit(minute))
 
@@ -232,12 +238,15 @@ export const sortValuesByCurrentValue = (
 }
 
 export const formatTime = (
-  hour: number,
-  minute: number,
-  day?: string,
+  time: NepaliTime,
   lang: Language = 'ne',
   hourFormat: HourFormat = 12,
 ) => {
+  const {
+    hour: { value: hour },
+    minute: { value: minute },
+    day: { value: day } = {},
+  } = time
   const hourString =
     lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour)
   const minuteString =

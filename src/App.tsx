@@ -1,29 +1,36 @@
 import { useEffect, useState } from 'react'
 
 import {
-  //DatePicker,
+  DatePicker,
   DesktopDateTimePicker,
-  // DesktopTimePicker,
+  DesktopTimePicker,
   Language,
+  NepaliDateTime,
+  NepaliTime,
 } from '.'
-import { NepaliDateTime } from './types/NepaliDateTime'
 
 export default function App() {
   const { toggleTheme } = useThemeToggle()
   const [selectLang, setSelectLang] = useState<Language>('ne')
 
-  // const datePlaceholder =
-  //   selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
-
-  // const timePlaceholder = selectLang === 'en' ? 'hh:mm' : 'घण्टा:मिनेट'
+  const datePlaceholder =
+    selectLang === 'ne' ? 'मिति चयन गर्नुहोस्' : 'YYYY-MM-DD'
 
   // const timeErrorText =
   //   selectLang === 'en' ? 'Enter valid time' : 'समय दिनुहोस्'
 
+  const [time, setTime] = useState<NepaliTime>()
+  const handleOnTimeSelect = (time?: NepaliTime) => {
+    if (!time) {
+      setTime(undefined)
+      return
+    }
+
+    setTime(time)
+  }
+
   const [dateTime, setDateTime] = useState<NepaliDateTime>()
   const handleOnDateTimeSelect = (date: NepaliDateTime) => {
-    // console.log(date)
-
     if (!date.valid) {
       setDateTime(undefined)
       return
@@ -67,7 +74,7 @@ export default function App() {
       </div>
 
       <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
-        {/* <div className="ne-dt-mb-8">
+        <div className="ne-dt-mb-8">
           <label htmlFor="datepicker" className="ne-dt-text-lg">
             Date Picker
           </label>
@@ -83,55 +90,23 @@ export default function App() {
               },
             }}
           />
-        </div> */}
-        {/* 
+        </div>
+
         <div className="ne-dt-mb-8">
-          <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
+          <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
             DesktopTime Picker
           </label>
 
-          <DesktopDateTimePicker
+          <DesktopTimePicker
             lang={selectLang}
-            dateInput={{
-              // fullWidth: true,
-              input: {
-                nativeInput: {
-                  placeholder: timePlaceholder,
-                },
-              },
-              hint: {
-                error: {
-                  message: timeErrorText,
-                },
-              },
+            timeInput={{
+              fullWidth: true,
             }}
+            onTimeSelect={handleOnTimeSelect}
           />
-        </div> */}
-        {/* 
-        {[1, 2, 3, 4, 5, 6].map((key) => (
-          <div className="ne-dt-mb-8" key={key}>
-            <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
-              DesktopTime Picker
-            </label>
 
-            <DesktopTimePicker
-              lang={selectLang}
-              timeInput={{
-                fullWidth: true,
-                input: {
-                  nativeInput: {
-                    placeholder: timePlaceholder,
-                  },
-                },
-                hint: {
-                  error: {
-                    message: timeErrorText,
-                  },
-                },
-              }}
-            />
-          </div>
-        ))} */}
+          {time && <p>{JSON.stringify(time)}</p>}
+        </div>
 
         <div className="ne-dt-mb1-8">
           <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
@@ -140,7 +115,6 @@ export default function App() {
 
           <DesktopDateTimePicker
             lang={selectLang}
-            // hourFormat={24}
             dateInput={{
               fullWidth: true,
             }}
@@ -149,31 +123,6 @@ export default function App() {
 
           {dateTime && <p>{JSON.stringify(dateTime)}</p>}
         </div>
-
-        {/* {[1, 2, 3, 4, 5, 6].map((key) => (
-          <div className="ne-dt-mb-8" key={key}>
-            <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
-              DesktopTime Picker
-            </label>
-
-            <DesktopTimePicker
-              lang={selectLang}
-              timeInput={{
-                fullWidth: true,
-                input: {
-                  nativeInput: {
-                    placeholder: timePlaceholder,
-                  },
-                },
-                hint: {
-                  error: {
-                    message: timeErrorText,
-                  },
-                },
-              }}
-            />
-          </div>
-        ))} */}
       </div>
     </div>
   )

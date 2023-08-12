@@ -1,132 +1,123 @@
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 import ClockOutlineIcon from '@/assets/ClockOutline.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
-import { clsx } from '@/plugins/twMerge'
+import { cn } from '@/plugins/twMerge'
+import { NepaliTime } from '@/types'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
-import { validateTime } from '@/utils/nepaliTime'
+import { formatTime, validateTime } from '@/utils/nepaliTime'
 
 export type TimeInputTargetValue = {
   valid: boolean
-  label?: {
-    hour: string
-    minute: string
-    day?: string
-  }
-  value?: {
-    hour: number
-    minute: number
-    day?: string
-  }
+  value?: NepaliTime
 }
 
 export interface TimeInputProps {
   className?: string
+  selectedTime?: NepaliTime
   input?: InputProps
   lang?: Language
   fullWidth?: boolean
   hourFormat?: HourFormat
   hint?: HintProps
 }
-export const TimeInput = ({
-  className = '',
-  lang = 'ne',
-  input = {},
-  fullWidth = false,
-  hourFormat = 12,
-  hint = {},
-}: TimeInputProps) => {
-  const {
-    nativeInput: {
-      value,
-      onChange,
-      className: nativeInputClassName = '',
-      ...nativeInputRest
-    } = {},
-    icon: inputIcon = {},
-    className: inputClassName = '',
-    ...inputRest
-  } = input
-
-  const [val, setVal] = useState<string>(value || '')
-  const [isValid, setIsValid] = useState<boolean>(true)
-
-  const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-
-    if (value === '') {
-      setVal(() => value)
-      setIsValid(() => true)
-      onChange?.(e)
-      return
-    }
-
-    setVal(() => value)
-
+export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
+  function TimeInput(
+    {
+      className = '',
+      lang = 'ne',
+      input = {},
+      fullWidth = false,
+      hourFormat = 12,
+      selectedTime,
+      hint = {},
+    },
+    ref,
+  ) {
     const {
-      valid,
-      label,
-      value: validatedValue,
-    } = validateTime(value, lang, hourFormat)
+      nativeInput: {
+        value,
+        onChange,
+        className: nativeInputClassName = '',
+        ...nativeInputRest
+      } = {},
+      icon: inputIcon = {},
+      className: inputClassName = '',
+      ...inputRest
+    } = input
 
-    if (!valid) {
-      setIsValid(() => false)
-    } else {
-      setIsValid(() => true)
+    const [val, setVal] = useState<string>(value || '')
+    const [isValid, setIsValid] = useState<boolean>(true)
+
+    const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target
+
+      const { valid, value: validatedValue } = validateTime(
+        value,
+        lang,
+        hourFormat,
+      )
+
+      setIsValid(() => valid)
+
+      setVal(() => value)
+
+      e.target.value = JSON.stringify({
+        valid,
+        ...(valid ? { value: validatedValue } : {}),
+      })
+
+      onChange?.(e)
     }
 
-    e.target.value = JSON.stringify({
-      valid,
-      ...({ label } ?? {}),
-      ...({ value: validatedValue } ?? {}),
-    })
+    useEffect(() => {
+      if (!selectedTime) {
+        setVal(() => '')
 
-    onChange?.(e)
-  }
-
-  useEffect(() => {
-    if (value) {
-      const { valid } = validateTime(value, lang, hourFormat)
-
-      if (valid) {
-        setVal(() => value)
+        return
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lang, value])
+      const formattedTime = formatTime(selectedTime, lang, hourFormat)
 
-  return (
-    <div className={`ne-dt-flex ne-dt-flex-col ${className}`}>
-      <Input
-        className={clsx(inputClassName, fullWidth && 'ne-dt-w-full')}
-        nativeInput={{
-          value: val,
-          onChange: handleOnInputChange,
-          className: clsx(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
-          ...nativeInputRest,
-        }}
-        icon={{
-          children: (
-            <ClockOutlineIcon
-              width={'36'}
-              height={'36'}
-              className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
+      const { valid } = validateTime(formattedTime, lang, hourFormat)
+
+      setVal(() => formattedTime)
+
+      setIsValid(() => valid)
+    }, [hourFormat, lang, selectedTime, value])
+
+    return (
+      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
+        <Input
+          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
+          nativeInput={{
+            value: val,
+            onChange: handleOnInputChange,
+            className: cn(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
+            ...nativeInputRest,
+          }}
+          icon={{
+            children: (
+              <ClockOutlineIcon
+                width={'36'}
+                height={'36'}
+                className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
+              />
+            ),
+            ...inputIcon,
+          }}
+          {...inputRest}
+        />
+        {(hint.error || hint.success) && (
+          <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+            <Hint
+              error={isValid ? undefined : hint.error}
+              success={isValid && val.length > 0 ? hint.success : undefined}
             />
-          ),
-          ...inputIcon,
-        }}
-        {...inputRest}
-      />
-      {(hint.error || hint.success) && (
-        <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
-          <Hint
-            error={isValid ? undefined : hint.error}
-            success={isValid && val.length > 0 ? hint.success : undefined}
-          />
-        </div>
-      )}
-    </div>
-  )
-}
+          </div>
+        )}
+      </div>
+    )
+  },
+)

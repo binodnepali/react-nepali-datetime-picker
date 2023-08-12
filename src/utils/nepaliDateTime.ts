@@ -16,19 +16,7 @@ export const formatNepaliDateTime = (
 
   const formattedNepaliDate = formatNepaliDate(nepaliDateTime.date, lang)
 
-  const {
-    hour: { value: hour },
-    minute: { value: minute },
-    day,
-  } = nepaliDateTime.time
-
-  const formattedNepaliTime = formatTime(
-    hour,
-    minute,
-    day?.value,
-    lang,
-    hourFormat,
-  )
+  const formattedNepaliTime = formatTime(nepaliDateTime.time, lang, hourFormat)
 
   return `${formattedNepaliDate} ${formattedNepaliTime}`
 }
