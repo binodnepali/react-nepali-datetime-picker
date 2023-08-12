@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import type { Language, NepaliDate, NepaliDateTime, NepaliTime } from '.'
 import {
   DatePicker,
   DateTimePicker,
-  Language,
-  NepaliDate,
-  NepaliDateTime,
-  NepaliTime,
   StaticCalendar,
   StaticTime,
   TimePicker,

@@ -1,13 +1,16 @@
 # React Nepali Datetime Picker
 
-Welcome to the React Nepali Datetime Picker, an open-source project that aims to provide a comprehensive solution for integrating Nepali calendar functionality into your React applications. This library offers a collection of reusable components that will enable seamless date picking, time picking, and datetime picking capabilities. Please note that some features are currently a work in progress.
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-## Features (Work in Progress)
+This component library is built with React and TailwindCSS, and it is highly customizable to meet the needs of any user. And it aims to provide a comprehensive solution for integrating Nepali calendar functionality into your React applications. It offers a collection of reusable components that will enable seamless date picking, time picking, and datetime picking capabilities.
 
-* **Nepali Calendar**: A fully functional Nepali calendar component that allows users to navigate and select dates in the Nepali language. (Work in Progress)
-* **Date Picker**: An intuitive and customizable date picker component that simplifies the process of selecting Nepali dates. (Work in Progress)
-* **Time Picker**: A user-friendly time picker component that enables effortless selection of precise Nepali times. (Work in Progress)
-* **Datetime Picker**: A combination of the date picker and time picker components, offering a convenient way to select both date and time in the Nepali calendar. (Work in Progress)
+## Available Components
+
+* **Date Picker**: Let's user select nepali calendar date.
+* **Time Picker**: Let's user select nepali time.
+* **DateTime Picker**: Let's user select nepali date and time.
+* **Static Calendar**: Let's user select nepali calendar date without popupover/modal.
+* **Static Time**: Let's user select nepali time without popupover/modal.
 
 ## Installation
 
@@ -25,10 +28,11 @@ pnpm add react-nepali-datetime-picker
 
 ```jsx
 import {
-  Calendar,
   DatePicker,
-  DesktopTime,
-  DesktopTimePicker,
+  DateTimePicker,
+  StaticCalendar,
+  StaticTime,
+  TimePicker,
 } from 'react-nepali-datetime-picker';
 
 import 'react-nepali-datetime-picker/dist/style.css';
@@ -36,10 +40,11 @@ import 'react-nepali-datetime-picker/dist/style.css';
 const MyComponent = () => {
   return (
     <>
-      <Calendar />
       <DatePicker />
-      <DesktopTime />
-      <DesktopTimePicker />
+      <TimePicker />
+      <DateTimePicker />
+      <StaticCalendar />
+      <StaticTime/>
     </>
   );
 };
