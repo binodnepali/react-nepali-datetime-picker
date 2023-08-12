@@ -3,11 +3,10 @@ import { forwardRef, useEffect, useState } from 'react'
 import CalendarMonth from '@/assets/CalendarMonth.svg'
 import { Hint, HintProps } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
-import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
-import { formatNepaliDate } from '@/utils/nepaliDate'
+import { formatNepaliDate, validateDate } from '@/utils/nepaliDate'
 
 export interface DateInputProps {
   className?: string
@@ -41,10 +40,6 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
       ...inputRest
     } = input
 
-    const { validateDate } = useNepaliCalendar({
-      lang,
-    })
-
     const [val, setVal] = useState<string>('')
 
     const [isValid, setIsValid] = useState<boolean>(true)
@@ -52,7 +47,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
 
-      const { valid, value: val } = validateDate(value)
+      const { valid, value: val } = validateDate(value, lang)
 
       setIsValid(() => valid)
 

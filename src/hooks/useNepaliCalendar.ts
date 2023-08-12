@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import { days } from '@/constants/days'
 import { Language } from '@/types/Language'
-import { Month, NepaliDate, Year } from '@/types/NepaliDate'
-import { addLeadingNepaliZero, addLeadingZero } from '@/utils/digit'
+import { Day, Month, Year } from '@/types/NepaliDate'
 import {
   getCurrentNepaliDate,
   getMonthDatesByYear,
@@ -38,6 +36,8 @@ export const useNepaliCalendar = ({
   const [selectedLocalisedMonth, setSelectedLocalisedMonth] = useState<Month>(
     months.find((m) => m.value === currentMonth) as Month,
   )
+  const [selectedLocalisedDate, setSelectedLocalisedDate] = useState<Day>()
+
   const selectedLocalisedDates = useMemo(
     () =>
       getMonthDatesByYear({
@@ -62,98 +62,6 @@ export const useNepaliCalendar = ({
     )
   }, [currentDate, currentMonth, currentYear, lang])
 
-  const validateDate = useCallback(
-    (
-      value: string,
-    ): {
-      valid: boolean
-      value?: NepaliDate
-    } => {
-      if (lang === 'ne') {
-        const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
-
-        if (!year || !month || !date) {
-          return {
-            valid: false,
-          }
-        }
-
-        const foundYear = years.find((y) => y.label === year)
-
-        if (!foundYear) {
-          return {
-            valid: false,
-          }
-        }
-
-        const foundMonth = months.find(
-          (m) => addLeadingNepaliZero(m.value + 1) === month,
-        )
-        if (!foundMonth) {
-          return {
-            valid: false,
-          }
-        }
-
-        const foundDate = days.find((d) => d.label.ne === date)
-
-        if (!foundDate) {
-          return {
-            valid: false,
-          }
-        }
-
-        return {
-          valid: true,
-          value: {
-            year: foundYear,
-            month: {
-              ...foundMonth,
-              value: foundMonth.value + 1,
-            },
-            date: {
-              id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
-              value: foundDate.value,
-              label: foundDate.label.ne,
-            },
-          },
-        }
-      }
-
-      const [year, month, date] = value.split(YEAR_MONTH_DATE_SEPARATOR)
-
-      const foundYear = years.find((y) => y.label === year)
-      const foundMonth = months.find(
-        (m) => addLeadingZero(m.value + 1) === month,
-      )
-
-      const foundDate = days.find((d) => d.label.en === date)
-
-      if (!foundYear || !foundMonth || !foundDate) {
-        return {
-          valid: false,
-        }
-      }
-
-      return {
-        valid: true,
-        value: {
-          year: foundYear,
-          month: {
-            ...foundMonth,
-            value: foundMonth.value + 1,
-          },
-          date: {
-            id: `${foundYear.value}${YEAR_MONTH_DATE_SEPARATOR}${foundMonth.value}${YEAR_MONTH_DATE_SEPARATOR}${foundDate.value}`,
-            value: foundDate.value,
-            label: foundDate.label.en,
-          },
-        },
-      }
-    },
-    [lang, months, years],
-  )
-
   useEffect(() => {
     const foundCurrentYear = years.find((y) => y.value === currentYear)
     if (!foundCurrentYear) {
@@ -174,9 +82,10 @@ export const useNepaliCalendar = ({
     setSelectedLocalisedYear,
     selectedLocalisedMonth,
     setSelectedLocalisedMonth,
+    selectedLocalisedDate,
+    setSelectedLocalisedDate,
     selectedLocalisedDates,
     currentLocalisedDate,
-    validateDate,
     years,
     months,
     days: weekDays,

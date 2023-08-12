@@ -37,6 +37,8 @@ export const NepaliCalendar = ({
     setSelectedLocalisedMonth,
     selectedLocalisedDates,
     currentLocalisedDate,
+    selectedLocalisedDate,
+    setSelectedLocalisedDate,
     years,
     months,
     days,
@@ -52,6 +54,8 @@ export const NepaliCalendar = ({
     if (!selectedLocalisedYear || !selectedLocalisedMonth) {
       return
     }
+
+    setSelectedLocalisedDate(() => date)
 
     onDateSelect?.({
       year: selectedLocalisedYear,
@@ -166,9 +170,11 @@ export const NepaliCalendar = ({
 
     setSelectedLocalisedYear(() => foundYear)
     setSelectedLocalisedMonth(() => foundMonth)
+    setSelectedLocalisedDate(() => selectedDate.date)
   }, [
     months,
     selectedDate,
+    setSelectedLocalisedDate,
     setSelectedLocalisedMonth,
     setSelectedLocalisedYear,
     years,
@@ -228,7 +234,7 @@ export const NepaliCalendar = ({
                 className="ne-dt-w-9 ne-dt-h-9 ne-dt-p-2"
                 active={date.id === currentLocalisedDate?.id}
                 inactive={!date.currentMonth}
-                selected={date.id === selectedDate?.date?.id}
+                selected={date.id === selectedLocalisedDate?.id}
                 onClick={() => handleOnSelectDate(date)}
               >
                 <span>{date.label}</span>
