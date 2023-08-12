@@ -23,26 +23,51 @@ describe('nepaliTime', () => {
         } as unknown as dayjs.Dayjs
       })
 
-      const { label, value } = getCurrentNepaliTime('ne')
+      const {
+        hour: { label: hourLabel, value: hourValue },
+        minute: { label: minuteLabel, value: minuteValue },
+        day: { label: dayLabel, value: dayValue } = {},
+      } = getCurrentNepaliTime('ne')
 
-      expect(label).toMatchObject({
+      expect({
+        hour: hourLabel,
+        minute: minuteLabel,
+        day: dayLabel,
+      }).toMatchObject({
         hour: '०१',
         minute: '३०',
         day: 'बेलुका',
       })
-      expect(value).toMatchObject({
+
+      expect({
+        hour: hourValue,
+        minute: minuteValue,
+        day: dayValue,
+      }).toMatchObject({
         hour: 1,
         minute: 30,
         day: 'PM',
       })
 
-      const { label: enLabel, value: enValue } = getCurrentNepaliTime('en')
-      expect(enLabel).toMatchObject({
+      const {
+        hour: { label: enHourLabel, value: enHourValue },
+        minute: { label: enMinuteLabel, value: enMinuteValue },
+        day: { label: enDayLabel, value: enDayValue } = {},
+      } = getCurrentNepaliTime('en')
+      expect({
+        hour: enHourLabel,
+        minute: enMinuteLabel,
+        day: enDayLabel,
+      }).toMatchObject({
         hour: '01',
         minute: '30',
         day: 'PM',
       })
-      expect(enValue).toMatchObject({
+      expect({
+        hour: enHourValue,
+        minute: enMinuteValue,
+        day: enDayValue,
+      }).toMatchObject({
         hour: 1,
         minute: 30,
         day: 'PM',
@@ -64,25 +89,49 @@ describe('nepaliTime', () => {
         } as unknown as dayjs.Dayjs
       })
 
-      const { label, value } = getCurrentNepaliTime('ne', 24)
-      expect(label).toMatchObject({
+      const {
+        hour: { label: hourLabel, value: hourValue },
+        minute: { label: minuteLabel, value: minuteValue },
+        day: { label: dayLabel, value: dayValue } = {},
+      } = getCurrentNepaliTime('ne', 24)
+      expect({
+        hour: hourLabel,
+        minute: minuteLabel,
+        day: dayLabel,
+      }).toMatchObject({
         hour: '१३',
         minute: '३०',
         day: 'बेलुका',
       })
-      expect(value).toMatchObject({
+      expect({
+        hour: hourValue,
+        minute: minuteValue,
+        day: dayValue,
+      }).toMatchObject({
         hour: 13,
         minute: 30,
         day: 'PM',
       })
 
-      const { label: enLabel, value: enValue } = getCurrentNepaliTime('en', 24)
-      expect(enLabel).toMatchObject({
+      const {
+        hour: { label: enLabel, value: enValue },
+        minute: { label: enMinuteLabel, value: enMinuteValue },
+        day: { label: enDayLabel, value: enDayValue } = {},
+      } = getCurrentNepaliTime('en', 24)
+      expect({
+        hour: enLabel,
+        minute: enMinuteLabel,
+        day: enDayLabel,
+      }).toMatchObject({
         hour: '13',
         minute: '30',
         day: 'PM',
       })
-      expect(enValue).toMatchObject({
+      expect({
+        hour: enValue,
+        minute: enMinuteValue,
+        day: enDayValue,
+      }).toMatchObject({
         hour: 13,
         minute: 30,
         day: 'PM',
@@ -95,53 +144,169 @@ describe('nepaliTime', () => {
   describe('validateTime', () => {
     describe('when time is in 12 hour format', () => {
       it('should return valid true, label and value should be defined when lang is ne', () => {
-        const { valid, label, value } = validateTime(
-          `१२${NEPALI_COLON_CHARACTER}३० विहानी`,
-          'ne',
-          12,
-        )
+        const {
+          valid,
+          value: {
+            hour: { label: hourLabel, value: hourValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            minute: { label: minuteLabel, value: minuteValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            day: { label: dayLabel, value: dayValue } = {
+              label: undefined,
+              value: undefined,
+            },
+          } = {},
+        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३० विहानी`, 'ne', 12)
 
         expect(valid).toBe(true)
-        expect(label).toBeDefined()
-        expect(label?.day).toBeDefined()
-        expect(value).toBeDefined()
-        expect(value?.day).toBeDefined()
+        expect({
+          hour: hourLabel,
+          minute: minuteLabel,
+          day: dayLabel,
+        }).toMatchObject({
+          hour: '१२',
+          minute: '३०',
+          day: 'विहानी',
+        })
+
+        expect({
+          hour: hourValue,
+          minute: minuteValue,
+          day: dayValue,
+        }).toMatchObject({
+          hour: 12,
+          minute: 30,
+          day: 'AM',
+        })
       })
 
       it('should return valid true, label and value should be defined when lang is en', () => {
-        const { valid, label, value } = validateTime(`12:30 AM`, 'en', 12)
+        const {
+          valid,
+          value: {
+            hour: { label: hourLabel, value: hourValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            minute: { label: minuteLabel, value: minuteValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            day: { label: dayLabel, value: dayValue } = {
+              label: undefined,
+              value: undefined,
+            },
+          } = {},
+        } = validateTime(`12:30 AM`, 'en', 12)
 
         expect(valid).toBe(true)
-        expect(label).toBeDefined()
-        expect(label?.day).toBeDefined()
-        expect(value).toBeDefined()
-        expect(value?.day).toBeDefined()
+        expect({
+          hour: hourLabel,
+          minute: minuteLabel,
+          day: dayLabel,
+        }).toMatchObject({
+          hour: '12',
+          minute: '30',
+          day: 'AM',
+        })
+        expect({
+          hour: hourValue,
+
+          minute: minuteValue,
+          day: dayValue,
+        }).toMatchObject({
+          hour: 12,
+          minute: 30,
+          day: 'AM',
+        })
       })
     })
 
     describe('when time is in 24 hour format', () => {
       it('should return valid true, label and value should be defined when lang is ne', () => {
-        const { valid, label, value } = validateTime(
-          `१२${NEPALI_COLON_CHARACTER}३०`,
-          'ne',
-          24,
-        )
+        const {
+          valid,
+          value: {
+            hour: { label: hourLabel, value: hourValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            minute: { label: minuteLabel, value: minuteValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            day: { label: dayLabel, value: dayValue } = {
+              label: undefined,
+              value: undefined,
+            },
+          } = {},
+        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३०`, 'ne', 24)
 
         expect(valid).toBe(true)
-        expect(label).toBeDefined()
-        expect(label?.day).toBeUndefined()
-        expect(value).toBeDefined()
-        expect(value?.day).toBeUndefined()
+        expect({
+          hour: hourLabel,
+          minute: minuteLabel,
+          day: dayLabel,
+        }).toMatchObject({
+          hour: '१२',
+          minute: '३०',
+          day: undefined,
+        })
+
+        expect({
+          hour: hourValue,
+          minute: minuteValue,
+          day: dayValue,
+        }).toMatchObject({
+          hour: 12,
+          minute: 30,
+          day: undefined,
+        })
       })
 
       it('should return valid true, label and value should be defined when lang is en', () => {
-        const { valid, label, value } = validateTime(`12:30`, 'en', 24)
+        const {
+          valid,
+          value: {
+            hour: { label: hourLabel, value: hourValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            minute: { label: minuteLabel, value: minuteValue } = {
+              label: undefined,
+              value: undefined,
+            },
+            day: { label: dayLabel, value: dayValue } = {
+              label: undefined,
+              value: undefined,
+            },
+          } = {},
+        } = validateTime(`12:30`, 'en', 24)
 
         expect(valid).toBe(true)
-        expect(label).toBeDefined()
-        expect(label?.day).toBeUndefined()
-        expect(value).toBeDefined()
-        expect(value?.day).toBeUndefined()
+        expect({
+          hour: hourLabel,
+          minute: minuteLabel,
+          day: dayLabel,
+        }).toMatchObject({
+          hour: '12',
+          minute: '30',
+          day: undefined,
+        })
+
+        expect({
+          hour: hourValue,
+          minute: minuteValue,
+          day: dayValue,
+        }).toMatchObject({
+          hour: 12,
+          minute: 30,
+          day: undefined,
+        })
       })
     })
   })
