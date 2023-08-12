@@ -96,8 +96,8 @@ export default function App() {
         </div>
 
         <div className="ne-dt-mb-8">
-          <label htmlFor="desktoptimepicker" className="ne-dt-text-lg">
-            DesktopTime Picker
+          <label htmlFor="timepicker" className="ne-dt-text-lg">
+            Time Picker
           </label>
 
           <DesktopTimePicker
@@ -112,8 +112,8 @@ export default function App() {
         </div>
 
         <div className="ne-dt-mb1-8">
-          <label htmlFor="DesktopDateTimePicker" className="ne-dt-text-lg">
-            Desktop Datetime Picker
+          <label htmlFor="datetimepicker" className="ne-dt-text-lg">
+            Datetime Picker
           </label>
 
           <DesktopDateTimePicker
