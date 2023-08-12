@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 
 import {
   DatePicker,
-  DesktopDateTimePicker,
-  DesktopTimePicker,
+  DateTimePicker,
   Language,
   NepaliDate,
   NepaliDateTime,
   NepaliTime,
+  StaticCalendar,
+  StaticTime,
+  TimePicker,
 } from '.'
 
 export default function App() {
@@ -100,7 +102,7 @@ export default function App() {
             Time Picker
           </label>
 
-          <DesktopTimePicker
+          <TimePicker
             lang={selectLang}
             timeInput={{
               fullWidth: true,
@@ -111,12 +113,12 @@ export default function App() {
           {time && <p>{JSON.stringify(time)}</p>}
         </div>
 
-        <div className="ne-dt-mb1-8">
+        <div className="ne-dt-mb-8">
           <label htmlFor="datetimepicker" className="ne-dt-text-lg">
             Datetime Picker
           </label>
 
-          <DesktopDateTimePicker
+          <DateTimePicker
             lang={selectLang}
             dateInput={{
               fullWidth: true,
@@ -125,6 +127,22 @@ export default function App() {
           />
 
           {dateTime && <p>{JSON.stringify(dateTime)}</p>}
+        </div>
+
+        <div className="ne-dt-mb-8">
+          <label htmlFor="static-calendar" className="ne-dt-text-lg">
+            Static Calendar
+          </label>
+
+          <StaticCalendar />
+        </div>
+
+        <div className="ne-dt-mb-8">
+          <label htmlFor="static-time" className="ne-dt-text-lg">
+            Static Time
+          </label>
+
+          <StaticTime />
         </div>
       </div>
     </div>
