@@ -61,7 +61,9 @@
     "release:ci:patch": "standard-version --release-as patch --dry-run",
     "build:link": "pnpm build && echo '{\"name\": \"react-nepali-datetime-picker\",\"version\":\"1.0.0\"}' > dist/package.json",
     "npm:prepublish": "pnpm lint && pnpm test:unit && pnpm build",
-    "npm:publish": "pnpm npm:prepublish && pnpm prerelease:alpha && npm publish --access public"
+    "npm:publish": "npm publish --access public",
+    "npm:publish:alpha": "pnpm npm:prepublish && pnpm prerelease:alpha && pnpm npm:publish",
+    "npm:publish:beta": "pnpm npm:prepublish && pnpm prerelease:beta && pnpm npm:publish"
   },
   "dependencies": {
     "dayjs": "^1.11.9",
