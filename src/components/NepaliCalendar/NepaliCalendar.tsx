@@ -181,14 +181,9 @@ export const NepaliCalendar = ({
   ])
 
   return (
-    <div
-      className={cn(
-        'ne-dt-bg-neutral-50 ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md',
-        className,
-      )}
-    >
-      <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-between">
-        <div className="ne-dt-flex ne-dt-flex-row ne-dt-gap-2 ne-dt-items-center">
+    <div className={cn('bg-neutral-50 py-4 px-4 rounded-md', className)}>
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row gap-2 items-center">
           <span>{selectedLocalisedMonth?.label}</span>
           <span>{selectedLocalisedYear?.label}</span>
           <Button onClick={() => setShowYearSelector((value) => !value)}>
@@ -196,18 +191,15 @@ export const NepaliCalendar = ({
               width="36"
               height="36"
               className={cn(
-                'ne-dt-transition-transform ne-dt-duration-500',
-                showYearSelector && 'ne-dt-transform ne-dt-rotate-180',
+                'transition-transform duration-500',
+                showYearSelector && 'transform rotate-180',
               )}
             />
           </Button>
         </div>
 
         <div
-          className={cn(
-            'ne-dt-grid ne-dt-grid-cols-2 ne-dt-gap-2',
-            showYearSelector && 'ne-dt-hidden',
-          )}
+          className={cn('grid grid-cols-2 gap-2', showYearSelector && 'hidden')}
         >
           <Button onClick={handleOnPrevClick}>
             <PrevIcon width="36" height="36" />
@@ -220,18 +212,18 @@ export const NepaliCalendar = ({
 
       {!showYearSelector && (
         <>
-          <div className="ne-dt-grid ne-dt-grid-cols-7 ne-dt-gap-2 ne-dt-justify-items-center ne-dt-mt-4">
+          <div className="grid grid-cols-7 gap-2 justify-items-center mt-4">
             {days.map((day) => (
               <span key={day.value}>{day.label}</span>
             ))}
           </div>
 
-          <div className="ne-dt-grid ne-dt-grid-cols-7 ne-dt-gap-2 ne-dt-justify-items-center ne-dt-mt-4">
+          <div className="grid grid-cols-7 gap-2 justify-items-center mt-4">
             {selectedLocalisedDates.map((date) => (
               <Button
                 key={date.id}
                 id={date.id}
-                className="ne-dt-w-9 ne-dt-h-9 ne-dt-p-2"
+                className="w-9 h-9 p-2"
                 active={date.id === currentLocalisedDate?.id}
                 inactive={!date.currentMonth}
                 selected={date.id === selectedLocalisedDate?.id}
@@ -245,8 +237,8 @@ export const NepaliCalendar = ({
       )}
 
       {showYearSelector && (
-        <div className="ne-dt-max-h-72 ne-dt-overflow-y-auto">
-          <div className="ne-dt-grid ne-dt-grid-cols-4 ne-dt-gap-2 ne-dt-justify-items-center ne-dt-mt-4 ne-dt-max-h-xs">
+        <div className="max-h-72 overflow-y-auto">
+          <div className="grid grid-cols-4 gap-2 justify-items-center mt-4 max-h-xs">
             {years.map((y) => (
               <Button
                 key={y.value}

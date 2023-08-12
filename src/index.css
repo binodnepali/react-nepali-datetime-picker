@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer utilities {
-  .ne-dt-h-full-svh {
+  .h-full-svh {
     height: 100svh;
 
-    @apply md:ne-dt-h-auto;
+    @apply md:h-auto;
   }
 }

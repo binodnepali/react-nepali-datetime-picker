@@ -118,13 +118,13 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
     }, [lang, value])
 
     return (
-      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
+      <div className={cn('flex flex-col', className)} ref={ref}>
         <Input
-          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
+          className={cn(fullWidth && 'w-full', inputClassName)}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
-            className: cn(fullWidth && 'ne-dt-w-full', nativeInputClassName),
+            className: cn(fullWidth && 'w-full', nativeInputClassName),
             ...nativeInputRest,
           }}
           icon={{
@@ -132,7 +132,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
               <CalendarClock
                 width="36"
                 height="36"
-                className="ne-dt-rounded-md hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
+                className="rounded-md hover:bg-gray-100 focus:outline-none focus:bg-gray-100 p-1"
               />
             ),
             ...inputIcon,
@@ -141,7 +141,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
         />
 
         {(hint.error || hint.success) && (
-          <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+          <div className="absolute bottom-0 left-0 translate-y-full">
             <Hint
               error={isValid ? undefined : hint.error}
               success={isValid && val.length > 0 ? hint.success : undefined}

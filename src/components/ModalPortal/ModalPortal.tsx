@@ -30,10 +30,7 @@ export const ModalPortal = forwardRef<HTMLDivElement, ModalPortalProps>(
 
     return createPortal(
       <Modal
-        modalClassName={cn(
-          'ne-dt-transition-transform ne-dt-ease-out ',
-          modalClassName,
-        )}
+        modalClassName={cn('transition-transform ease-out ', modalClassName)}
         style={{
           transform: cn(
             isMobile && 'none',

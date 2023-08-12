@@ -85,7 +85,7 @@ export const DesktopTimePicker = ({
   const timeInputRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
+    <div className={cn('relative flex flex-col', className)}>
       <TimeInput
         selectedTime={selectedTime}
         ref={timeInputRef}

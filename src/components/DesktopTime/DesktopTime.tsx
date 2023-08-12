@@ -130,9 +130,9 @@ export const DesktopTime = ({
   return (
     <div
       className={cn(
-        'ne-dt-bg-neutral-50 ne-dt-grid ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2 ne-dt-shadow-md',
-        is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
-        !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
+        'bg-neutral-50 grid rounded gap-2 w-fit h-60 overflow-hidden py-1 px-2 shadow-md',
+        is12HourFormat && 'grid-cols-[64px_64px_64px]',
+        !is12HourFormat && 'grid-cols-[64px_64px]',
         className,
       )}
     >
@@ -152,7 +152,7 @@ export const DesktopTime = ({
       />
 
       {is12HourFormat && (
-        <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start">
+        <div className="flex flex-col gap-2 justify-start">
           {timeDays.map((d) => (
             <Button
               variant="outline"
@@ -242,15 +242,8 @@ function HourList({
   }, [initialSelectedHour])
 
   return (
-    <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
-      ref={hourRef}
-    >
-      <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
-        id={HOUR_CONTENT}
-        key={HOUR_CONTENT}
-      >
+    <div className="overflow-y-auto will-change-scroll" ref={hourRef}>
+      <div className="flex flex-col gap-1" id={HOUR_CONTENT} key={HOUR_CONTENT}>
         {hours.map((h) => (
           <Button
             id={`h-${h.value === hour}`}
@@ -266,7 +259,7 @@ function HourList({
       </div>
 
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-mt-1"
+        className="flex flex-col gap-1 mt-1"
         id={HOUR_CLONED_CONTENT}
         key={HOUR_CLONED_CONTENT}
       >
@@ -352,12 +345,9 @@ function MinuteList({
   }, [initialSelectedMinute])
 
   return (
-    <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
-      ref={minuteRef}
-    >
+    <div className="overflow-y-auto will-change-scroll" ref={minuteRef}>
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
+        className="flex flex-col gap-1"
         id={MINUTE_CONTENT}
         key={MINUTE_CONTENT}
       >
@@ -376,7 +366,7 @@ function MinuteList({
       </div>
 
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-mt-1"
+        className="flex flex-col gap-1 mt-1"
         id={MINUTE_CLONED_CONTENT}
         key={MINUTE_CLONED_CONTENT}
       >

@@ -30,7 +30,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
     <div ref={ref} className={className}>
       <div
         className={cn(
-          'ne-dt-hidden md:ne-dt-block ne-dt-w-full ne-dt-h-full ne-dt-fixed ne-dt-inset-0 ne-dt-opactiy-0',
+          'hidden md:block w-full h-full fixed inset-0 opactiy-0',
           desktopOverlayClassName,
         )}
         onClick={onClose}
@@ -38,22 +38,20 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal(
 
       <div
         className={cn(
-          'ne-dt-absolute ne-dt-h-full ne-dt-w-full md:ne-dt-h-fit md:ne-dt-w-fit ne-dt-inset-0 ne-dt-bg-black ne-dt-bg-opacity-50 md:ne-dt-bg-opacity-0 ne-dt-flex md:ne-dt-block ne-dt-items-center ne-dt-justify-center ne-dt-z-[1000]',
+          'absolute h-full w-full md:h-fit md:w-fit inset-0 bg-black bg-opacity-50 md:bg-opacity-0 flex md:block items-center justify-center z-[1000]',
           modalClassName,
         )}
         style={style}
       >
         <div
           className={cn(
-            'ne-dt-fixed md:ne-dt-hidden ne-dt-top-0 ne-dt-left-0 ne-dt-w-full ne-dt-h-full ne-dt-opactiy-0 ne-dt-z-[999]',
+            'fixed md:hidden top-0 left-0 w-full h-full opactiy-0 z-[999]',
             mobileOverlayClassName,
           )}
           onClick={onClose}
         />
 
-        <div className={cn('ne-dt-z-[1000]', modalContentClassName)}>
-          {children}
-        </div>
+        <div className={cn('z-[1000]', modalContentClassName)}>{children}</div>
       </div>
     </div>
   )

@@ -44,18 +44,18 @@ export default function App() {
   }
 
   return (
-    <div className="ne-dt-p-4 ne-dt-min-h-screen">
-      <p className="ne-dt-text-lg ne-dt-text-gray-600">
+    <div className="p-4 min-h-screen">
+      <p className="text-lg text-gray-600">
         This is a playground for rendering components.
       </p>
 
-      <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
+      <div className="flex flex-col max-w-lg mt-4 md:mt-6">
         <div>
-          <label htmlFor="lang" className="ne-dt-text-lg ne-dt-mr-2">
+          <label htmlFor="lang" className="text-lg mr-2">
             Choose Language
           </label>
           <select
-            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            className="py-2 px-4 text-lg bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none w-fit"
             onChange={(e) => setSelectLang(e.target.value as Language)}
           >
             <option value="ne">Nepali</option>
@@ -63,12 +63,12 @@ export default function App() {
           </select>
         </div>
 
-        <div className="ne-dt-mt-4">
-          <label htmlFor="theme" className="ne-dt-text-lg ne-dt-mr-2">
+        <div className="mt-4">
+          <label htmlFor="theme" className="text-lg mr-2">
             Choose Theme
           </label>
           <select
-            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            className="py-2 px-4 text-lg bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none w-fit"
             onChange={(e) => toggleTheme(e.target.value)}
           >
             <option value="light">Light</option>
@@ -77,9 +77,9 @@ export default function App() {
         </div>
       </div>
 
-      <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
-        <div className="ne-dt-mb-8">
-          <label htmlFor="datepicker" className="ne-dt-text-lg">
+      <div className="flex flex-col max-w-lg mt-4 md:mt-6">
+        <div className="mb-8">
+          <label htmlFor="datepicker" className="text-lg">
             Date Picker
           </label>
 
@@ -94,8 +94,8 @@ export default function App() {
           {selectedDate && <p>{JSON.stringify(selectedDate)}</p>}
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="timepicker" className="ne-dt-text-lg">
+        <div className="mb-8">
+          <label htmlFor="timepicker" className="text-lg">
             Time Picker
           </label>
 
@@ -110,8 +110,8 @@ export default function App() {
           {time && <p>{JSON.stringify(time)}</p>}
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="datetimepicker" className="ne-dt-text-lg">
+        <div className="mb-8">
+          <label htmlFor="datetimepicker" className="text-lg">
             Datetime Picker
           </label>
 
@@ -126,16 +126,16 @@ export default function App() {
           {dateTime && <p>{JSON.stringify(dateTime)}</p>}
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="static-calendar" className="ne-dt-text-lg">
+        <div className="mb-8">
+          <label htmlFor="static-calendar" className="text-lg">
             Static Calendar
           </label>
 
           <StaticCalendar />
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="static-time" className="ne-dt-text-lg">
+        <div className="mb-8">
+          <label htmlFor="static-time" className="text-lg">
             Static Time
           </label>
 

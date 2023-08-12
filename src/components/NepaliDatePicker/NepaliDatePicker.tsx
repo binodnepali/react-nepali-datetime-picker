@@ -78,7 +78,7 @@ export const NepaliDatePicker = ({
   const { t } = useTranslation('DatePicker', lang)
 
   return (
-    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
+    <div className={cn('relative flex flex-col', className)}>
       <DateInput
         ref={dateInputRef}
         lang={lang}

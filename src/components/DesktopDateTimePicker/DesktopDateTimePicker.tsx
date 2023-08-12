@@ -212,7 +212,7 @@ export const DesktopDateTimePicker = ({
   } = trans
 
   return (
-    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
+    <div className={cn('relative flex flex-col', className)}>
       <DateTimeInput
         ref={dateInputRef}
         lang={lang}
@@ -249,13 +249,11 @@ export const DesktopDateTimePicker = ({
           ref={dateInputRef}
           {...modalRest}
         >
-          <div className="ne-dt-grid ne-dt-grid-cols-1 md:ne-dt-grid-cols-2 ne-dt-content-center ne-dt-p-4 md:ne-dt-p-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
-            <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
-              <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
-                {title}
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 content-center p-4 md:p-0 h-full-svh overflow-y-auto">
+            <div className="bg-neutral-50 p-4 rounded-t-md md:hidden">
+              <p className="text-neutral-500 text-sm font-normal">{title}</p>
 
-              <div className="ne-dt-grid ne-dt-grid-cols-2">
+              <div className="grid grid-cols-2">
                 <div>
                   <Button
                     variant="text"
@@ -263,8 +261,8 @@ export const DesktopDateTimePicker = ({
                   >
                     <span
                       className={cn(
-                        'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-normal',
-                        userClickedOn === 'year' && 'ne-dt-text-neutral-900',
+                        'text-neutral-500 text-base font-normal',
+                        userClickedOn === 'year' && 'text-neutral-900',
                       )}
                     >
                       {selectedDateTime?.date?.year.label ??
@@ -278,9 +276,8 @@ export const DesktopDateTimePicker = ({
                   >
                     <span
                       className={cn(
-                        'ne-dt-text-neutral-500 ne-dt-text-4xl ne-dt-font-normal',
-                        userClickedOn === 'monthdate' &&
-                          'ne-dt-text-neutral-900',
+                        'text-neutral-500 text-4xl font-normal',
+                        userClickedOn === 'monthdate' && 'text-neutral-900',
                       )}
                     >
                       {`${
@@ -297,23 +294,23 @@ export const DesktopDateTimePicker = ({
                   </Button>
                 </div>
 
-                <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4">
-                  <div className="ne-dt-flex ne-dt-flex-row  ne-dt-items-center">
+                <div className="flex flex-row justify-end gap-4">
+                  <div className="flex flex-row  items-center">
                     <Button
                       variant="text"
                       onClick={() => handleOnUserClickedOn('hour')}
                     >
                       <span
                         className={cn(
-                          'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
-                          userClickedOn === 'hour' && 'ne-dt-text-neutral-900',
+                          'text-neutral-500 text-5xl font-normal',
+                          userClickedOn === 'hour' && 'text-neutral-900',
                         )}
                       >
                         {selectedDateTime?.time?.hour.label ??
                           currentHour.label}
                       </span>
                     </Button>
-                    <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
+                    <span className="text-neutral-500 text-5xl font-normal">
                       :
                     </span>
                     <Button
@@ -322,9 +319,8 @@ export const DesktopDateTimePicker = ({
                     >
                       <span
                         className={cn(
-                          'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
-                          userClickedOn === 'minute' &&
-                            'ne-dt-text-neutral-900',
+                          'text-neutral-500 text-5xl font-normal',
+                          userClickedOn === 'minute' && 'text-neutral-900',
                         )}
                       >
                         {selectedDateTime?.time?.minute?.label ??
@@ -334,11 +330,7 @@ export const DesktopDateTimePicker = ({
                   </div>
 
                   {timeDays.length > 0 && (
-                    <div
-                      className={cn(
-                        'ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center',
-                      )}
-                    >
+                    <div className={cn('flex flex-col gap-1 justify-center')}>
                       {timeDays.map((td, index) => (
                         <Button
                           variant="text"
@@ -349,8 +341,8 @@ export const DesktopDateTimePicker = ({
                           <span
                             key={userClickedOn}
                             className={cn(
-                              'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
-                              timeDay === td.value && 'ne-dt-text-neutral-900',
+                              'text-neutral-500 text-base font-medium',
+                              timeDay === td.value && 'text-neutral-900',
                             )}
                           >
                             {td.label}
@@ -363,12 +355,11 @@ export const DesktopDateTimePicker = ({
               </div>
             </div>
 
-            <div className="ne-dt-grid ne-dt-grid-cols-2 ne-dt-bg-neutral-50 ne-dt-place-items-center ne-dt-pt-2 md:ne-dt-hidden">
+            <div className="grid grid-cols-2 bg-neutral-50 place-items-center pt-2 md:hidden">
               <div
                 className={cn(
-                  'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
-                  currentView === 'calendar' &&
-                    'ne-dt-border-b-2 ne-dt-border-gray-500',
+                  'flex flex-col items-center w-full',
+                  currentView === 'calendar' && 'border-b-2 border-gray-500',
                 )}
               >
                 <CalendarMonth
@@ -380,9 +371,8 @@ export const DesktopDateTimePicker = ({
 
               <div
                 className={cn(
-                  'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
-                  currentView === 'time' &&
-                    'ne-dt-border-b-2 ne-dt-border-gray-500',
+                  'flex flex-col items-center w-full',
+                  currentView === 'time' && 'border-b-2 border-gray-500',
                 )}
               >
                 <ClockOutlineIcon
@@ -399,15 +389,15 @@ export const DesktopDateTimePicker = ({
                 lang={lang}
                 selectedDate={selectedDateTimeRef?.current?.date}
                 openYearSelector={userClickedOn === 'year'}
-                className={cn('ne-dt-rounded-none')}
+                className={cn('rounded-none')}
                 {...calendar}
               />
             )}
 
             {currentView === 'time' && (
-              <div className="ne-dt-block ne-dt-w-full md:ne-dt-hidden">
+              <div className="block w-full md:hidden">
                 <DesktopTime
-                  className="ne-dt-rounded-none ne-dt-w-full"
+                  className="rounded-none w-full"
                   onTimeSelect={handleOnTimeSelect}
                   selectedTime={selectedDateTimeRef?.current?.time}
                   lang={lang}
@@ -417,7 +407,7 @@ export const DesktopDateTimePicker = ({
               </div>
             )}
 
-            <div className="ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden">
+            <div className="bg-neutral-50 flex flex-row justify-end gap-4 p-2 rounded-b-md md:hidden">
               <Button variant="outline" onClick={handleOnCancel}>
                 {cancel}
               </Button>
@@ -427,7 +417,7 @@ export const DesktopDateTimePicker = ({
               </Button>
             </div>
 
-            <div className="ne-dt-hidden md:ne-dt-block">
+            <div className="hidden md:block">
               <DesktopTime
                 onTimeSelect={handleOnTimeSelect}
                 selectedTime={selectedDateTimeRef?.current?.time}
