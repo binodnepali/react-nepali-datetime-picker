@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import svgr from 'vite-plugin-svgr'
@@ -31,6 +32,13 @@ export default defineConfig({
     }),
     react(),
     dts(),
+    visualizer({
+      template: 'treemap', // or sunburst
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'analyse.html', // will be saved in project's root
+    }),
   ],
   resolve: {
     alias: {
