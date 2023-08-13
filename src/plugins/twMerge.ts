@@ -1,8 +1,9 @@
 import { ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+
+import { twMergeExtender } from '@/lib/twMergeExtender'
 
 function cn(...args: ClassValue[]) {
-  return twMerge(clsx(args))
+  return twMergeExtender.twMerge(clsx(args))
 }
 
 export { clsx, cn }
