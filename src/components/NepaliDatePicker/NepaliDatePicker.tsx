@@ -5,7 +5,7 @@ import {
   DateInputProps,
   DateInputTargetValue,
 } from '@/components/DateInput/DateInput'
-import { ModalPortal } from '@/components/ModalPortal/ModalPortal'
+import { Modal } from '@/components/Modal/Modal'
 import {
   NepaliCalendar,
   NepaliCalendarProps,
@@ -48,7 +48,7 @@ export const NepaliDatePicker = ({
   const selectedDateRef = useRef<NepaliDate>()
 
   const handleOnInputDateClick = () => {
-    setShowModal(() => true)
+    setShowModal((prev) => !prev)
   }
 
   const handleOnSelectDate = (date: NepaliDate) => {
@@ -105,10 +105,10 @@ export const NepaliDatePicker = ({
       />
 
       {showModal && (
-        <ModalPortal
+        <Modal
+          inputRef={dateInputRef}
           onClose={handleOnModalClose}
           showModal={showModal}
-          ref={dateInputRef}
           {...modalRest}
         >
           <NepaliCalendar
@@ -117,7 +117,7 @@ export const NepaliDatePicker = ({
             selectedDate={selectedDateRef.current}
             {...calendar}
           />
-        </ModalPortal>
+        </Modal>
       )}
     </div>
   )

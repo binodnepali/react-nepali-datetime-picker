@@ -13,34 +13,19 @@ export default function App() {
   const { toggleTheme } = useThemeToggle()
   const [selectLang, setSelectLang] = useState<Language>('ne')
 
-  const [selectedDate, setSelectedDate] = useState<NepaliDate>()
   const handleOnDateSelect = (date?: NepaliDate) => {
-    if (!date) {
-      setSelectedDate(undefined)
-      return
-    }
-
-    setSelectedDate(date)
+    // eslint-disable-next-line no-console
+    console.log('handleOnDateSelect', date)
   }
 
-  const [time, setTime] = useState<NepaliTime>()
   const handleOnTimeSelect = (time?: NepaliTime) => {
-    if (!time) {
-      setTime(undefined)
-      return
-    }
-
-    setTime(time)
+    // eslint-disable-next-line no-console
+    console.log('handleOnTimeSelect', time)
   }
 
-  const [dateTime, setDateTime] = useState<NepaliDateTime>()
   const handleOnDateTimeSelect = (date: NepaliDateTime) => {
-    if (!date.valid) {
-      setDateTime(undefined)
-      return
-    }
-
-    setDateTime(date)
+    // eslint-disable-next-line no-console
+    console.log('handleOnDateTimeSelect', date)
   }
 
   return (
@@ -90,8 +75,6 @@ export default function App() {
             }}
             onDateSelect={handleOnDateSelect}
           />
-
-          {selectedDate && <p>{JSON.stringify(selectedDate)}</p>}
         </div>
 
         <div className="ne-dt-mb-8">
@@ -106,8 +89,6 @@ export default function App() {
             }}
             onTimeSelect={handleOnTimeSelect}
           />
-
-          {time && <p>{JSON.stringify(time)}</p>}
         </div>
 
         <div className="ne-dt-mb-8">
@@ -122,8 +103,6 @@ export default function App() {
             }}
             onDateTimeSelect={handleOnDateTimeSelect}
           />
-
-          {dateTime && <p>{JSON.stringify(dateTime)}</p>}
         </div>
 
         <div className="ne-dt-mb-8">

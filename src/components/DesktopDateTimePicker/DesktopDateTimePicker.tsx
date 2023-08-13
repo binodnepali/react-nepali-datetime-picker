@@ -11,10 +11,7 @@ import {
   DesktopTime,
   DesktopTimeProps,
 } from '@/components/DesktopTime/DesktopTime'
-import {
-  ModalPortal,
-  ModalPortalProps,
-} from '@/components/ModalPortal/ModalPortal'
+import { Modal, ModalProps } from '@/components/Modal/Modal'
 import {
   NepaliCalendar,
   NepaliCalendarProps,
@@ -35,7 +32,7 @@ interface DesktopDateTimePickerProps {
   className?: string
   lang?: Language
   onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
-  modal?: ModalPortalProps
+  modal?: ModalProps
   hourFormat?: HourFormat
   dateInput?: DateTimeInputProps
   calendar?: NepaliCalendarProps
@@ -147,7 +144,7 @@ export const DesktopDateTimePicker = ({
     setShowModal(() => false)
   }
 
-  const dateInputRef = useRef<HTMLInputElement>(null)
+  const dateTimeInputRef = useRef<HTMLInputElement>(null)
 
   const [currentView, setCurrentView] = useState<'calendar' | 'time'>(
     'calendar',
@@ -214,7 +211,7 @@ export const DesktopDateTimePicker = ({
   return (
     <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
       <DateTimeInput
-        ref={dateInputRef}
+        ref={dateTimeInputRef}
         lang={lang}
         value={selectedDateTime}
         hourFormat={hourFormat}
@@ -243,13 +240,13 @@ export const DesktopDateTimePicker = ({
       />
 
       {showModal && (
-        <ModalPortal
+        <Modal
           onClose={handleOnModalClose}
           showModal={showModal}
-          ref={dateInputRef}
+          inputRef={dateTimeInputRef}
           {...modalRest}
         >
-          <div className="ne-dt-grid ne-dt-grid-cols-1 md:ne-dt-grid-cols-2 ne-dt-content-center ne-dt-p-4 md:ne-dt-p-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
+          <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-content-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
             <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
               <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
                 {title}
@@ -399,7 +396,7 @@ export const DesktopDateTimePicker = ({
                 lang={lang}
                 selectedDate={selectedDateTimeRef?.current?.date}
                 openYearSelector={userClickedOn === 'year'}
-                className={cn('ne-dt-rounded-none')}
+                className="ne-dt-rounded-none"
                 {...calendar}
               />
             )}
@@ -437,7 +434,7 @@ export const DesktopDateTimePicker = ({
               />
             </div>
           </div>
-        </ModalPortal>
+        </Modal>
       )}
     </div>
   )

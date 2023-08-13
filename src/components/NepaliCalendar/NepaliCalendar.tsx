@@ -245,7 +245,7 @@ export const NepaliCalendar = ({
       )}
 
       {showYearSelector && (
-        <div className="ne-dt-max-h-72 ne-dt-overflow-y-auto">
+        <div className="ne-dt-max-h-80 ne-dt-overflow-y-auto">
           <div className="ne-dt-grid ne-dt-grid-cols-4 ne-dt-gap-2 ne-dt-justify-items-center ne-dt-mt-4 ne-dt-max-h-xs">
             {years.map((y) => (
               <Button

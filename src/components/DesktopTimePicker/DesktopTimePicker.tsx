@@ -4,10 +4,7 @@ import {
   DesktopTime,
   DesktopTimeProps,
 } from '@/components/DesktopTime/DesktopTime'
-import {
-  ModalPortal,
-  ModalPortalProps,
-} from '@/components/ModalPortal/ModalPortal'
+import { Modal, ModalProps } from '@/components/Modal/Modal'
 import {
   TimeInput,
   TimeInputProps,
@@ -24,7 +21,7 @@ interface DesktopTimePickerProps {
   desktopTime?: DesktopTimeProps
   hourFormat?: HourFormat
   lang?: Language
-  modal?: ModalPortalProps
+  modal?: ModalProps
   onTimeSelect?: (time?: NepaliTime) => void
   timeInput?: TimeInputProps
 }
@@ -44,6 +41,8 @@ export const DesktopTimePicker = ({
     ...timeInputRest
   } = timeInput
 
+  const { onClose: onCloseModal, ...modalRest } = modal
+
   const [showModal, setShowModal] = useState<boolean>(false)
 
   const [selectedTime, setSelectedTime] = useState<NepaliTime>()
@@ -60,6 +59,8 @@ export const DesktopTimePicker = ({
     setSelectedTime(() => time)
     selectedTimeRef.current = time
     onTimeSelect?.(time)
+
+    setShowModal(() => false)
   }
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +84,11 @@ export const DesktopTimePicker = ({
   const { t } = useTranslation('DesktopTimePicker', lang)
 
   const timeInputRef = useRef<HTMLDivElement>(null)
+
+  const handleOnModalClose = () => {
+    setShowModal(() => false)
+    onCloseModal?.()
+  }
 
   return (
     <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
@@ -116,11 +122,11 @@ export const DesktopTimePicker = ({
       />
 
       {showModal && (
-        <ModalPortal
-          onClose={() => setShowModal(false)}
+        <Modal
+          onClose={handleOnModalClose}
           showModal={showModal}
-          ref={timeInputRef}
-          {...modal}
+          inputRef={timeInputRef}
+          {...modalRest}
         >
           <DesktopTime
             onTimeSelect={handleOnTimeSelect}
@@ -129,7 +135,7 @@ export const DesktopTimePicker = ({
             hourFormat={hourFormat}
             {...desktopTime}
           />
-        </ModalPortal>
+        </Modal>
       )}
     </div>
   )
