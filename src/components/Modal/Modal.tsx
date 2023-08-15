@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+
+import { useDevice } from '@/hooks/useDevice'
 import { useModalPosition } from '@/hooks/useModalPosition'
 import { cn } from '@/plugins/twMerge'
 
@@ -31,14 +34,43 @@ export const Modal = ({
     showModal,
   })
 
+  const { isMobile } = useDevice()
+
+  const handleOnClose = () => {
+    if (isMobile) {
+      document.body.style.overflow = 'auto'
+    }
+    onClose?.()
+  }
+
+  useEffect(() => {
+    if (!isMobile) {
+      return
+    }
+
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      if (!isMobile) {
+        return
+      }
+
+      document.body.style.overflow = 'auto'
+    }
+  }, [isMobile, showModal])
+
   return (
     <div className={className}>
       <div
         className={cn(
-          'ne-dt-hidden md:ne-dt-block ne-dt-w-full ne-dt-h-full ne-dt-fixed ne-dt-inset-0 ne-dt-opactiy-0',
+          'ne-dt-hidden md:ne-dt-block ne-dt-w-full ne-dt-h-full ne-dt-fixed ne-dt-inset-0 ne-dt-opactiy-0 ',
           desktopOverlayClassName,
         )}
-        onClick={onClose}
+        onClick={handleOnClose}
       />
 
       <div
@@ -58,7 +90,7 @@ export const Modal = ({
             'ne-dt-fixed md:ne-dt-hidden ne-dt-top-0 ne-dt-left-0 ne-dt-w-full ne-dt-h-full ne-dt-opactiy-0 ne-dt-z-[999]',
             mobileOverlayClassName,
           )}
-          onClick={onClose}
+          onClick={handleOnClose}
         />
 
         <div className={cn('ne-dt-z-[1000]', modalContentClassName)}>

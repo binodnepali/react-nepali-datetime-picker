@@ -246,7 +246,7 @@ export const DesktopDateTimePicker = ({
           inputRef={dateTimeInputRef}
           {...modalRest}
         >
-          <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-content-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
+          <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-justify-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
             <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
               <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
                 {title}
