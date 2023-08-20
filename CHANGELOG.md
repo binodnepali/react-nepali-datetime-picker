@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.2](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2023-08-20)
+
+
+### Bug Fixes
+
+* disable body scroll when modal is shown in mobile view ([ed8cca2](https://github.com/binodnepali/react-nepali-datetime-picker/commit/ed8cca2e94062571a7058017328dfc28b9f39c7f))
+* modal position ([c95d85c](https://github.com/binodnepali/react-nepali-datetime-picker/commit/c95d85c1ed0aa502d66dc749ec8848670f6d27ec))
+
 ## [1.0.0-beta.1](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.0...v1.0.0-beta.1) (2023-08-13)
 
 
