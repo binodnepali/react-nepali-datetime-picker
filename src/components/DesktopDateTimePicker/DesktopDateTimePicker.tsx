@@ -27,10 +27,12 @@ import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 import { NepaliDateTime } from '@/types/NepaliDateTime'
 import { getMonthLabel } from '@/utils/nepaliDate'
+import { validateNepaliDateTime } from '@/utils/nepaliDateTime'
 
 interface DesktopDateTimePickerProps {
   className?: string
   lang?: Language
+  value?: string
   onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
   modal?: ModalProps
   hourFormat?: HourFormat
@@ -47,6 +49,7 @@ export const DesktopDateTimePicker = ({
   className = '',
   lang = 'ne',
   modal = {},
+  value = '',
   onDateTimeSelect,
   dateInput = {},
   hourFormat = 12,
@@ -74,8 +77,15 @@ export const DesktopDateTimePicker = ({
     onCloseModal?.()
   }
 
-  const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>()
-  const selectedDateTimeRef = useRef<NepaliDateTime>()
+  const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat)
+  const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>({
+    valid: validatedDateTime.valid,
+    ...(validatedDateTime.value ?? {}),
+  })
+  const selectedDateTimeRef = useRef<NepaliDateTime>({
+    valid: validatedDateTime.valid,
+    ...(validatedDateTime.value ?? {}),
+  })
 
   const handleOnSelectDate = (date: NepaliDate) => {
     const isTimeValid =

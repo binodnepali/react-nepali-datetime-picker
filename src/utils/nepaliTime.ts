@@ -62,7 +62,11 @@ export const validateTime = (
 
   const [hourAndMinute, dayPart] = time.split(' ').map((t) => t)
 
-  if (!hourAndMinute || (!dayPart && is12HourFormat)) {
+  if (
+    !hourAndMinute ||
+    (!dayPart && is12HourFormat) ||
+    (dayPart && !is12HourFormat)
+  ) {
     return {
       valid: false,
     }

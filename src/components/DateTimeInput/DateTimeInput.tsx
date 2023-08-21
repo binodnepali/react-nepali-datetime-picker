@@ -9,9 +9,10 @@ import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 import { NepaliDateTime } from '@/types/NepaliDateTime'
 import { NepaliTime } from '@/types/NepaliTime'
-import { validateDate } from '@/utils/nepaliDate'
-import { formatNepaliDateTime } from '@/utils/nepaliDateTime'
-import { validateTime } from '@/utils/nepaliTime'
+import {
+  formatNepaliDateTime,
+  validateNepaliDateTime,
+} from '@/utils/nepaliDateTime'
 
 export interface DateTimeInputProps {
   className?: string
@@ -54,53 +55,13 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
 
-      const [date, time, timeDay] = value.split(' ')
+      const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat)
 
-      const fullTime = timeDay ? `${time} ${timeDay}` : time
-
-      const validatedDate: {
-        valid: boolean
-        value?: NepaliDate
-      } = {
-        valid: false,
-      }
-      if (date !== undefined) {
-        const { valid, value } = validateDate(date, lang)
-
-        validatedDate.valid = valid
-        validatedDate.value = value
-      }
-
-      const validatedTime: {
-        valid: boolean
-        value?: NepaliTime
-      } = {
-        valid: false,
-      }
-      if (fullTime !== undefined) {
-        const { valid, value } = validateTime(fullTime, lang, hourFormat)
-
-        validatedTime.valid = valid
-        validatedTime.value = value
-      }
-
-      const valid = validatedDate.valid && validatedTime.valid
-
-      setIsValid(() => valid)
+      setIsValid(() => validatedDateTime.valid)
 
       setVal(() => value)
 
-      e.target.value = JSON.stringify({
-        valid,
-        ...(valid
-          ? {
-              value: {
-                date: validatedDate.value,
-                time: validatedTime.value,
-              },
-            }
-          : {}),
-      })
+      e.target.value = JSON.stringify(validatedDateTime)
 
       onInputChange?.(e)
     }
