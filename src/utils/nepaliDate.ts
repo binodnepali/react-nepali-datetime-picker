@@ -25,7 +25,7 @@ export const YEAR_MONTH_DATE_SEPARATOR = '/' // Separator between year, month an
 
 const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR)
 
-export const getCurrentNepaliDate = () => {
+export const getCurrentNepaliDate = (lang: Language = 'ne'): NepaliDate => {
   const date = dayjs()
 
   const localizedDate = date
@@ -74,9 +74,27 @@ export const getCurrentNepaliDate = () => {
   }
 
   return {
-    year: nepaliYear,
-    month: nepaliMonth - 1,
-    date: nepaliDate,
+    year: {
+      value: nepaliYear,
+      label:
+        lang === 'ne'
+          ? convertToNepaliDigit(nepaliYear)
+          : nepaliYear.toString(),
+    },
+    month: {
+      value: nepaliMonth - 1,
+      label: getMonthLabel(lang, nepaliMonth - 1) ?? '',
+    },
+    date: {
+      id: `${nepaliYear}${YEAR_MONTH_DATE_SEPARATOR}${
+        nepaliMonth - 1
+      }${YEAR_MONTH_DATE_SEPARATOR}${nepaliDate}`,
+      value: nepaliDate,
+      label:
+        lang === 'ne'
+          ? convertToNepaliDigit(nepaliDate)
+          : nepaliDate.toString(),
+    },
   }
 }
 

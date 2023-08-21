@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { Language } from '@/types/Language'
 import { Day, Month, Year } from '@/types/NepaliDate'
@@ -24,17 +24,17 @@ export const useNepaliCalendar = ({
     date: currentDate,
     month: currentMonth,
     year: currentYear,
-  } = getCurrentNepaliDate()
+  } = getCurrentNepaliDate(lang)
 
   const years = useMemo(() => getYears(lang), [lang])
   const months = useMemo(() => getMonths(lang, shortMonth), [lang, shortMonth])
   const weekDays = useMemo(() => getWeekDays(lang), [lang])
 
   const [selectedLocalisedYear, setSelectedLocalisedYear] = useState<Year>(
-    years.find((y) => y.value === currentYear) as Year,
+    years.find((y) => y.value === currentYear.value) as Year,
   )
   const [selectedLocalisedMonth, setSelectedLocalisedMonth] = useState<Month>(
-    months.find((m) => m.value === currentMonth) as Month,
+    months.find((m) => m.value === currentMonth.value) as Month,
   )
   const [selectedLocalisedDate, setSelectedLocalisedDate] = useState<Day>()
 
@@ -50,32 +50,32 @@ export const useNepaliCalendar = ({
 
   const currentLocalisedDate = useMemo(() => {
     const dates = getMonthDatesByYear({
-      year: currentYear,
-      month: currentMonth,
+      year: currentYear.value,
+      month: currentMonth.value,
       lang,
     })
 
     return dates.find(
       (d) =>
         d?.id ===
-        `${currentYear}${YEAR_MONTH_DATE_SEPARATOR}${currentMonth}${YEAR_MONTH_DATE_SEPARATOR}${currentDate}`,
+        `${currentYear.value}${YEAR_MONTH_DATE_SEPARATOR}${currentMonth.value}${YEAR_MONTH_DATE_SEPARATOR}${currentDate.value}`,
     )
   }, [currentDate, currentMonth, currentYear, lang])
 
-  useEffect(() => {
-    const foundCurrentYear = years.find((y) => y.value === currentYear)
-    if (!foundCurrentYear) {
-      return
-    }
+  // useEffect(() => {
+  //   const foundCurrentYear = years.find((y) => y.value === currentYear.value)
+  //   if (!foundCurrentYear) {
+  //     return
+  //   }
 
-    const foundCurrentMonth = months.find((m) => m.value === currentMonth)
-    if (!foundCurrentMonth) {
-      return
-    }
+  //   const foundCurrentMonth = months.find((m) => m.value === currentMonth.value)
+  //   if (!foundCurrentMonth) {
+  //     return
+  //   }
 
-    setSelectedLocalisedYear(() => foundCurrentYear)
-    setSelectedLocalisedMonth(() => foundCurrentMonth)
-  }, [currentMonth, currentYear, months, years])
+  //    setSelectedLocalisedYear(() => foundCurrentYear)
+  //   setSelectedLocalisedMonth(() => foundCurrentMonth)
+  // }, [currentMonth, currentYear, months, years])
 
   return {
     selectedLocalisedYear,
