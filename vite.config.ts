@@ -34,7 +34,6 @@ export default defineConfig({
     dts(),
     visualizer({
       template: 'treemap', // or sunburst
-      open: true,
       gzipSize: true,
       brotliSize: true,
       filename: 'analyse.html', // will be saved in project's root
@@ -51,6 +50,7 @@ export default defineConfig({
       '@types': path.resolve(__dirname, './src/types'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@plugins': path.resolve(__dirname, './src/plugins'),
+      '@theme': path.resolve(__dirname, './src/theme'),
     },
   },
 })

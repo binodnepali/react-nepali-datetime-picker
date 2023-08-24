@@ -15,6 +15,7 @@ export interface ModalProps {
   style?: React.CSSProperties
   inputRef?: React.RefObject<HTMLDivElement>
   showModal?: boolean
+  dataAutoId?: string
 }
 
 export const Modal = ({
@@ -28,6 +29,7 @@ export const Modal = ({
   style = {},
   inputRef,
   showModal = false,
+  dataAutoId,
 }: ModalProps) => {
   const { y: modalPositionY, x: modalPositionX } = useModalPosition({
     ref: inputRef,
@@ -64,7 +66,7 @@ export const Modal = ({
   }, [isMobile, showModal])
 
   return (
-    <div className={className}>
+    <div className={className} data-auto-id={dataAutoId}>
       <div
         className={cn(
           'ne-dt-hidden md:ne-dt-block ne-dt-w-full ne-dt-h-full ne-dt-fixed ne-dt-inset-0 ne-dt-opactiy-0 ',

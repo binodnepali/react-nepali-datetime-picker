@@ -254,9 +254,11 @@ export const DesktopDateTimePicker = ({
           onClose={handleOnModalClose}
           showModal={showModal}
           inputRef={dateTimeInputRef}
+          dataAutoId="desktop-date-time-picker-modal"
+          modalClassName="ne-dt-rounded  ne-dt-border ne-dt-border-primary"
           {...modalRest}
         >
-          <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-justify-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
+          <div className="ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-rounded ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row  ne-dt-justify-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
             <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
               <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
                 {title}
@@ -406,7 +408,7 @@ export const DesktopDateTimePicker = ({
                 lang={lang}
                 selectedDate={selectedDateTimeRef?.current?.date}
                 openYearSelector={userClickedOn === 'year'}
-                className="ne-dt-rounded-none"
+                className="ne-dt-rounded-none  md:ne-dt-border-r md:ne-dt-border-base-content"
                 {...calendar}
               />
             )}
@@ -414,7 +416,7 @@ export const DesktopDateTimePicker = ({
             {currentView === 'time' && (
               <div className="ne-dt-block ne-dt-w-full md:ne-dt-hidden">
                 <DesktopTime
-                  className="ne-dt-rounded-none ne-dt-w-full"
+                  className="ne-dt-rounded-none ne-dt-border-base-100 ne-dt-w-full"
                   onTimeSelect={handleOnTimeSelect}
                   selectedTime={selectedDateTimeRef?.current?.time}
                   lang={lang}
@@ -438,6 +440,7 @@ export const DesktopDateTimePicker = ({
               <DesktopTime
                 onTimeSelect={handleOnTimeSelect}
                 selectedTime={selectedDateTimeRef?.current?.time}
+                className="ne-dt-rounded-none ne-dt-border-base-100 ne-dt-w-full"
                 lang={lang}
                 hourFormat={hourFormat}
                 {...time}

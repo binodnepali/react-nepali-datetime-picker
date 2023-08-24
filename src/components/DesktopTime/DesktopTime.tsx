@@ -130,7 +130,7 @@ export const DesktopTime = ({
   return (
     <div
       className={cn(
-        'ne-dt-bg-neutral-50 ne-dt-grid ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2 ne-dt-shadow-md',
+        'ne-dt-grid ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2',
         is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
         !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
         className,

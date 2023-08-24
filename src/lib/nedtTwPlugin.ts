@@ -1,10 +1,38 @@
 import Plugin from 'tailwindcss/plugin'
 
-const nedtConfig = {}
+import {
+  getDarkTheme,
+  getDefaultDarkTheme,
+  getDefaultLightTheme,
+  getLightTheme,
+  ThemeColor,
+} from '../theme/themes'
 
-export const nedtTwPlugin = Plugin(function ({ config }) {
-  const usernedtConfig = config('nedt', nedtConfig)
+export const nedtTwPlugin = () =>
+  Plugin(function ({ config, addBase }) {
+    const userConfig = config(
+      'nepaliDateTimePicker',
+      {},
+    ) as NepaliDateTimePickerConfig
 
-  // eslint-disable-next-line no-console
-  console.log('usernedtConfig', usernedtConfig)
-})
+    const { theme } = userConfig
+
+    if (theme?.light) {
+      addBase(getLightTheme(theme.light))
+    } else {
+      addBase(getDefaultLightTheme())
+    }
+
+    if (theme?.dark) {
+      addBase(getDarkTheme(theme.dark))
+    } else {
+      addBase(getDefaultDarkTheme())
+    }
+  })
+
+type NepaliDateTimePickerConfig = {
+  theme?: {
+    light?: ThemeColor
+    dark?: ThemeColor
+  }
+}

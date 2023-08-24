@@ -182,10 +182,8 @@ export const NepaliCalendar = ({
 
   return (
     <div
-      className={cn(
-        'ne-dt-bg-neutral-50 ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md',
-        className,
-      )}
+      className={cn('ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md', className)}
+      data-auto-id="nepali-calendar"
     >
       <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-between">
         <div className="ne-dt-flex ne-dt-flex-row ne-dt-gap-2 ne-dt-items-center">
@@ -196,7 +194,7 @@ export const NepaliCalendar = ({
               width="36"
               height="36"
               className={cn(
-                'ne-dt-transition-transform ne-dt-duration-500',
+                'ne-dt-fill-base-content  ne-dt-transition-transform ne-dt-duration-500',
                 showYearSelector && 'ne-dt-transform ne-dt-rotate-180',
               )}
             />
@@ -210,10 +208,18 @@ export const NepaliCalendar = ({
           )}
         >
           <Button onClick={handleOnPrevClick}>
-            <PrevIcon width="36" height="36" />
+            <PrevIcon
+              width="36"
+              height="36"
+              className="ne-dt-fill-base-content"
+            />
           </Button>
           <Button onClick={handleOnNextClick}>
-            <NextIcon width="36" height="36" />
+            <NextIcon
+              width="36"
+              height="36"
+              className="ne-dt-fill-base-content"
+            />
           </Button>
         </div>
       </div>
@@ -233,7 +239,7 @@ export const NepaliCalendar = ({
                 id={date.id}
                 className="ne-dt-w-9 ne-dt-h-9 ne-dt-p-2"
                 active={date.id === currentLocalisedDate?.id}
-                inactive={!date.currentMonth}
+                disabled={!date.currentMonth}
                 selected={date.id === selectedLocalisedDate?.id}
                 onClick={() => handleOnSelectDate(date)}
               >

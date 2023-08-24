@@ -10,7 +10,7 @@ import {
 } from '.'
 
 export default function App() {
-  const { toggleTheme } = useThemeToggle()
+  const { toggleTheme, theme } = useThemeToggle()
   const [selectLang, setSelectLang] = useState<Language>('ne')
 
   const handleOnDateSelect = (date?: NepaliDate) => {
@@ -56,8 +56,12 @@ export default function App() {
             className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
             onChange={(e) => toggleTheme(e.target.value)}
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
+            <option value="light" selected={theme === 'light'}>
+              Light
+            </option>
+            <option value="dark" selected={theme == 'dark'}>
+              Dark
+            </option>
           </select>
         </div>
       </div>
@@ -126,11 +130,18 @@ export default function App() {
 }
 
 function useThemeToggle() {
+  const [theme, setTheme] = useState<string>('light')
+
   const handleOnToggleTheme = (theme: string) => {
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
+      //document.documentElement.classList.add('ne-dt-dark')
+      document.documentElement.setAttribute('data-theme', 'dark')
+      setTheme('dark')
     } else {
-      document.documentElement.classList.remove('dark')
+      //document.documentElement.classList.remove('ne-dt-dark')
+      document.documentElement.setAttribute('data-theme', 'light')
+
+      setTheme('light')
     }
     localStorage.theme = theme
   }
@@ -141,13 +152,20 @@ function useThemeToggle() {
       (!('theme' in localStorage) &&
         window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
-      document.documentElement.classList.add('dark')
+      //document.documentElement.classList.add('ne-dt-dark')
+      document.documentElement.setAttribute('data-theme', 'dark')
+      localStorage.theme = 'dark'
+      setTheme('dark')
     } else {
-      document.documentElement.classList.remove('dark')
+      //document.documentElement.classList.remove('ne-dt-dark')
+      document.documentElement.setAttribute('data-theme', 'light')
+      localStorage.theme = 'light'
+      setTheme('light')
     }
   }, [])
 
   return {
     toggleTheme: handleOnToggleTheme,
+    theme,
   }
 }
