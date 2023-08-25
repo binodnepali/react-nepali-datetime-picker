@@ -16,7 +16,7 @@
     "react-nepali-datetime-picker"
   ],
   "private": false,
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "license": "MIT",
   "main": "dist/index.umd.js",
