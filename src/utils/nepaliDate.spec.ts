@@ -13,9 +13,18 @@ describe('nepaliDate', () => {
       const date = getCurrentNepaliDate()
 
       const currentNepaliDate = {
-        year: 2080,
-        month: 3,
-        date: 2,
+        year: {
+          value: 2080,
+          label: '२०८०',
+        },
+        month: {
+          value: 3,
+          label: 'असार',
+        },
+        date: {
+          value: 2,
+          label: '२',
+        },
       }
 
       expect(date).toMatchObject(currentNepaliDate)
