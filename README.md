@@ -4,24 +4,42 @@
 
 This component library is built with React and TailwindCSS, and it is highly customizable to meet the needs of any user. And it aims to provide a comprehensive solution for integrating Nepali calendar functionality into your React applications. It offers a collection of reusable components that will enable seamless date picking, time picking, and datetime picking capabilities.
 
-## Available Components
+## Components
 
-* **Date Picker**: Let's user select nepali calendar date.
-* **Time Picker**: Let's user select nepali time.
-* **DateTime Picker**: Let's user select nepali date and time.
-* **Static Calendar**: Let's user select nepali calendar date without popupover/modal.
-* **Static Time**: Let's user select nepali time without popupover/modal.
+* **Date Picker**: Let's user select nepali calendar date. ✅ 
+* **Time Picker**: Let's user select nepali time. ✅ 
+* **DateTime Picker**: Let's user select nepali date and time. ✅ 
+* **Static Calendar**: Let's user select nepali calendar date without popupover/modal. ✅ 
+* **Static Desktop Time**: Let's user select nepali time without popupover/modal. ✅ 
+* **Static Mobile Time**: Let's user select nepali time with clock layout and no popupover/modal. 🚧
+
+## Before installation
+
+You need to insall [Node.js](https://nodejs.org) and [Tailwind CSS](https://tailwindcss.com).
 
 ## Installation
 
-To install the React Nepali Datetime Picker library, simply use npm or yarn:
+1. Install react-nepali-datetime-picker
 
 ```bash
-npm install react-nepali-datetime-picker
-#or
-yarn add react-nepali-datetime-picker
-#or
-pnpm add react-nepali-datetime-picker
+  npm install react-nepali-datetime-picker
+  #or
+  yarn add react-nepali-datetime-picker
+  #or
+  pnpm add react-nepali-datetime-picker
+  ```
+
+2. Then add `nedtTwPlugin` to your tailwind.config.js files:
+
+```js
+  import {
+      nedtTwPlugin,
+  } from 'react-nepali-datetime-picker';
+
+  module.exports = {
+      //...
+      plugins: [nedtTwPlugin()],
+  }
 ```
 
 ## Usage
@@ -29,10 +47,10 @@ pnpm add react-nepali-datetime-picker
 ```jsx
 import {
   DatePicker,
+  TimePicker,
   DateTimePicker,
   StaticCalendar,
-  StaticTime,
-  TimePicker,
+  StaticDesktopTime,
 } from 'react-nepali-datetime-picker';
 
 import 'react-nepali-datetime-picker/dist/style.css';
@@ -44,7 +62,7 @@ const MyComponent = () => {
       <TimePicker />
       <DateTimePicker />
       <StaticCalendar />
-      <StaticTime/>
+      <StaticDesktopTime/>
     </>
   );
 };
