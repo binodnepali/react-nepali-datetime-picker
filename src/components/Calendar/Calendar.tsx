@@ -3,28 +3,28 @@ import NextIcon from '@assets/Next.svg'
 import PrevIcon from '@assets/Prev.svg'
 import { useNepaliCalendar } from '@hooks/useNepaliCalendar'
 import { Button } from '@ui/Button/Button'
-import { useEffect, useState } from 'react'
+import { HTMLAttributes, useEffect, useState } from 'react'
 
 import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
-export interface NepaliCalendarProps {
+export interface CalendarProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
   lang?: Language
-  separator?: string
   selectedDate?: NepaliDate
   openYearSelector?: boolean
   onDateSelect?: (date: NepaliDate) => void
 }
 
-export const NepaliCalendar = ({
+export const Calendar = ({
   className = '',
   lang = 'ne',
   selectedDate,
   onDateSelect,
   openYearSelector = false,
-}: NepaliCalendarProps) => {
+  ...rest
+}: CalendarProps) => {
   const [showYearSelector, setShowYearSelector] = useState(false)
   useEffect(() => {
     setShowYearSelector(() => openYearSelector)
@@ -181,10 +181,7 @@ export const NepaliCalendar = ({
   ])
 
   return (
-    <div
-      className={cn('ne-dt-py-4 ne-dt-px-4 ne-dt-rounded-md', className)}
-      data-auto-id="nepali-calendar"
-    >
+    <div className={cn('ne-dt-flex ne-dt-flex-col', className)} {...rest}>
       <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-between">
         <div className="ne-dt-flex ne-dt-flex-row ne-dt-gap-2 ne-dt-items-center">
           <span>{selectedLocalisedMonth?.label}</span>

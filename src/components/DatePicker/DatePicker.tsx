@@ -1,46 +1,47 @@
-import { useRef, useState } from 'react'
+import { HTMLAttributes, useRef, useState } from 'react'
 
+import { Calendar, CalendarProps } from '@/components/Calendar/Calendar'
 import {
   DateInput,
   DateInputProps,
   DateInputTargetValue,
 } from '@/components/DateInput/DateInput'
-import { Modal } from '@/components/Modal/Modal'
-import {
-  NepaliCalendar,
-  NepaliCalendarProps,
-} from '@/components/NepaliCalendar/NepaliCalendar'
+import { Modal, ModalProps } from '@/components/Modal/Modal'
 import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
-interface NepaliDatePickerProps {
+interface DatePickerProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
   lang?: Language
   onDateSelect?: (selectedDate?: NepaliDate) => void
-  modal?: {
-    className?: string
-    onClose?: () => void
-  }
+  modal?: ModalProps
   dateInput?: DateInputProps
-  calendar?: NepaliCalendarProps
+  calendar?: CalendarProps
 }
-export const NepaliDatePicker = ({
+export const DatePicker = ({
   className = '',
   lang = 'ne',
   modal = {},
   onDateSelect,
   dateInput = {},
   calendar = {},
-}: NepaliDatePickerProps) => {
+  ...rest
+}: DatePickerProps) => {
   const {
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
     hint = {},
     ...dateInputRest
   } = dateInput
 
-  const { onClose: onCloseModal, ...modalRest } = modal
+  const { className: calendarClassName = '', ...calendarRest } = calendar
+
+  const {
+    onClose: onCloseModal,
+    modalContentClassName = '',
+    ...modalRest
+  } = modal
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -78,7 +79,10 @@ export const NepaliDatePicker = ({
   const { t } = useTranslation('DatePicker', lang)
 
   return (
-    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
+    <div
+      className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}
+      {...rest}
+    >
       <DateInput
         ref={dateInputRef}
         lang={lang}
@@ -109,13 +113,21 @@ export const NepaliDatePicker = ({
           inputRef={dateInputRef}
           onClose={handleOnModalClose}
           showModal={showModal}
+          modalContentClassName={cn(
+            'ne-dt-px-4 md:ne-dt-px-0',
+            modalContentClassName,
+          )}
           {...modalRest}
         >
-          <NepaliCalendar
+          <Calendar
             onDateSelect={handleOnSelectDate}
             lang={lang}
             selectedDate={selectedDateRef.current}
-            {...calendar}
+            className={cn(
+              'ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-2 md:ne-dt-p-4',
+              calendarClassName,
+            )}
+            {...calendarRest}
           />
         </Modal>
       )}

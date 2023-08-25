@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { HTMLAttributes, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/Button/Button'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
@@ -18,8 +18,9 @@ const MINUTE_CLONED_CONTENT = 'MINUTE_CLONED_CONTENT'
 const HOUR_CONTENT = 'HOUR_CONTENT'
 const HOUR_CLONED_CONTENT = 'HOUR_CLONED_CONTENT'
 
-export interface DesktopTimeProps {
+export interface DesktopTimeProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
+  contentClassName?: string
   hourFormat?: HourFormat
   lang?: Language
   onTimeSelect?: (time: NepaliTime) => void
@@ -28,10 +29,12 @@ export interface DesktopTimeProps {
 
 export const DesktopTime = ({
   className = '',
+  contentClassName = '',
   hourFormat = 12,
   lang = 'ne',
   selectedTime,
   onTimeSelect,
+  ...rest
 }: DesktopTimeProps) => {
   const {
     currentTime: { hour, minute, day },
@@ -129,48 +132,53 @@ export const DesktopTime = ({
 
   return (
     <div
-      className={cn(
-        'ne-dt-grid ne-dt-rounded ne-dt-gap-2 ne-dt-w-fit ne-dt-h-60 ne-dt-overflow-hidden ne-dt-py-1 ne-dt-px-2',
-        is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
-        !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
-        className,
-      )}
+      className={cn('ne-dt-flex ne-dt-flex-col ne-dt-w-fit', className)}
+      {...rest}
     >
-      <HourList
-        format={hourFormat}
-        hour={hour.value}
-        selectedHour={selectedHour?.value}
-        lang={lang}
-        onTimeSelect={handleOnHourClick}
-      />
+      <div
+        className={cn(
+          'ne-dt-grid ne-dt-gap-2 ne-dt-h-60 ne-dt-overflow-hidden',
+          is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
+          !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
+          contentClassName,
+        )}
+      >
+        <HourList
+          format={hourFormat}
+          hour={hour.value}
+          selectedHour={selectedHour?.value}
+          lang={lang}
+          onTimeSelect={handleOnHourClick}
+        />
 
-      <MinuteList
-        minute={minute.value}
-        selectedMinute={selectedMinute?.value}
-        lang={lang}
-        onTimeSelect={handleOnMinuteClick}
-      />
+        <MinuteList
+          minute={minute.value}
+          selectedMinute={selectedMinute?.value}
+          lang={lang}
+          onTimeSelect={handleOnMinuteClick}
+        />
 
-      {is12HourFormat && (
-        <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start">
-          {timeDays.map((d) => (
-            <Button
-              variant="outline"
-              active={d.value === day?.value}
-              selected={d.value === selectedDay?.value}
-              key={d.value}
-              onClick={() =>
-                handleOnDayClick({
-                  value: d.value,
-                  label: d.label,
-                })
-              }
-            >
-              {d.label}
-            </Button>
-          ))}
-        </div>
-      )}
+        {is12HourFormat && (
+          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start">
+            {timeDays.map((d) => (
+              <Button
+                variant="outline"
+                active={d.value === day?.value}
+                selected={d.value === selectedDay?.value}
+                key={d.value}
+                onClick={() =>
+                  handleOnDayClick({
+                    value: d.value,
+                    label: d.label,
+                  })
+                }
+              >
+                {d.label}
+              </Button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import CalendarMonth from '@/assets/CalendarMonth.svg'
 import ClockOutlineIcon from '@/assets/ClockOutline.svg'
+import { Calendar, CalendarProps } from '@/components/Calendar/Calendar'
 import {
   DateTimeInput,
   DateTimeInputProps,
@@ -12,10 +13,6 @@ import {
   DesktopTimeProps,
 } from '@/components/DesktopTime/DesktopTime'
 import { Modal, ModalProps } from '@/components/Modal/Modal'
-import {
-  NepaliCalendar,
-  NepaliCalendarProps,
-} from '@/components/NepaliCalendar/NepaliCalendar'
 import { Button } from '@/components/ui/Button/Button'
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
@@ -37,7 +34,7 @@ interface DesktopDateTimePickerProps {
   modal?: ModalProps
   hourFormat?: HourFormat
   dateInput?: DateTimeInputProps
-  calendar?: NepaliCalendarProps
+  calendar?: CalendarProps
   time?: DesktopTimeProps
   trans?: {
     title?: string
@@ -63,6 +60,9 @@ export const DesktopDateTimePicker = ({
     ...dateInputRest
   } = dateInput
   const { onClose: onCloseModal, ...modalRest } = modal
+
+  const { className: calendarClassName = '', ...calendarRest } = calendar
+  const { className: timeClassName = '', ...timeRest } = time
 
   const [showModal, setShowModal] = useState<boolean>(false)
   const handleOnInputDateClick = () => {
@@ -255,197 +255,195 @@ export const DesktopDateTimePicker = ({
           showModal={showModal}
           inputRef={dateTimeInputRef}
           dataAutoId="desktop-date-time-picker-modal"
-          modalClassName="ne-dt-rounded  ne-dt-border ne-dt-border-primary"
+          modalContentClassName="ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-mx-4 md:ne-dt-mx-0 ne-dt-max-h-full ne-dt-overflow-y-auto"
           {...modalRest}
         >
-          <div className="ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-rounded ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row  ne-dt-justify-center ne-dt-py-4 md:ne-dt-py-0 ne-dt-h-full-svh ne-dt-overflow-y-auto">
-            <div className="ne-dt-bg-neutral-50 ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
-              <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
-                {title}
-              </p>
+          <div className="ne-dt-p-4 ne-dt-rounded-t-md md:ne-dt-hidden">
+            <p className="ne-dt-text-neutral-500 ne-dt-text-sm ne-dt-font-normal">
+              {title}
+            </p>
 
-              <div className="ne-dt-grid ne-dt-grid-cols-2">
-                <div>
+            <div className="ne-dt-grid ne-dt-grid-cols-2">
+              <div>
+                <Button
+                  variant="text"
+                  onClick={() => handleOnUserClickedOn('year')}
+                >
+                  <span
+                    className={cn(
+                      'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-normal',
+                      userClickedOn === 'year' && 'ne-dt-text-neutral-900',
+                    )}
+                  >
+                    {selectedDateTime?.date?.year.label ??
+                      selectedLocalisedYear.label}
+                  </span>
+                </Button>
+
+                <Button
+                  variant="text"
+                  onClick={() => handleOnUserClickedOn('monthdate')}
+                >
+                  <span
+                    className={cn(
+                      'ne-dt-text-neutral-500 ne-dt-text-4xl ne-dt-font-normal',
+                      userClickedOn === 'monthdate' && 'ne-dt-text-neutral-900',
+                    )}
+                  >
+                    {`${
+                      getMonthLabel(
+                        lang,
+                        selectedDateTime?.date?.month.value,
+                        true,
+                      ) ?? selectedLocalisedMonth.label
+                    } ${
+                      selectedDateTime?.date?.date?.label ??
+                      currentLocalisedDate?.label
+                    }`}
+                  </span>
+                </Button>
+              </div>
+
+              <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4">
+                <div className="ne-dt-flex ne-dt-flex-row  ne-dt-items-center">
                   <Button
                     variant="text"
-                    onClick={() => handleOnUserClickedOn('year')}
+                    onClick={() => handleOnUserClickedOn('hour')}
                   >
                     <span
                       className={cn(
-                        'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-normal',
-                        userClickedOn === 'year' && 'ne-dt-text-neutral-900',
+                        'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
+                        userClickedOn === 'hour' && 'ne-dt-text-neutral-900',
                       )}
                     >
-                      {selectedDateTime?.date?.year.label ??
-                        selectedLocalisedYear.label}
+                      {selectedDateTime?.time?.hour.label ?? currentHour.label}
                     </span>
                   </Button>
-
+                  <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
+                    :
+                  </span>
                   <Button
                     variant="text"
-                    onClick={() => handleOnUserClickedOn('monthdate')}
+                    onClick={() => handleOnUserClickedOn('minute')}
                   >
                     <span
                       className={cn(
-                        'ne-dt-text-neutral-500 ne-dt-text-4xl ne-dt-font-normal',
-                        userClickedOn === 'monthdate' &&
-                          'ne-dt-text-neutral-900',
+                        'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
+                        userClickedOn === 'minute' && 'ne-dt-text-neutral-900',
                       )}
                     >
-                      {`${
-                        getMonthLabel(
-                          lang,
-                          selectedDateTime?.date?.month.value,
-                          true,
-                        ) ?? selectedLocalisedMonth.label
-                      } ${
-                        selectedDateTime?.date?.date?.label ??
-                        currentLocalisedDate?.label
-                      }`}
+                      {selectedDateTime?.time?.minute?.label ??
+                        currentMinute.label}
                     </span>
                   </Button>
                 </div>
 
-                <div className="ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4">
-                  <div className="ne-dt-flex ne-dt-flex-row  ne-dt-items-center">
-                    <Button
-                      variant="text"
-                      onClick={() => handleOnUserClickedOn('hour')}
-                    >
-                      <span
-                        className={cn(
-                          'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
-                          userClickedOn === 'hour' && 'ne-dt-text-neutral-900',
-                        )}
+                {timeDays.length > 0 && (
+                  <div
+                    className={cn(
+                      'ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center',
+                    )}
+                  >
+                    {timeDays.map((td, index) => (
+                      <Button
+                        variant="text"
+                        onClick={() => handleOnTimeDaySelect(td.value)}
+                        selected={timeDay === td.value}
+                        key={index}
                       >
-                        {selectedDateTime?.time?.hour.label ??
-                          currentHour.label}
-                      </span>
-                    </Button>
-                    <span className="ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal">
-                      :
-                    </span>
-                    <Button
-                      variant="text"
-                      onClick={() => handleOnUserClickedOn('minute')}
-                    >
-                      <span
-                        className={cn(
-                          'ne-dt-text-neutral-500 ne-dt-text-5xl ne-dt-font-normal',
-                          userClickedOn === 'minute' &&
-                            'ne-dt-text-neutral-900',
-                        )}
-                      >
-                        {selectedDateTime?.time?.minute?.label ??
-                          currentMinute.label}
-                      </span>
-                    </Button>
-                  </div>
-
-                  {timeDays.length > 0 && (
-                    <div
-                      className={cn(
-                        'ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-justify-center',
-                      )}
-                    >
-                      {timeDays.map((td, index) => (
-                        <Button
-                          variant="text"
-                          onClick={() => handleOnTimeDaySelect(td.value)}
-                          selected={timeDay === td.value}
-                          key={index}
+                        <span
+                          key={userClickedOn}
+                          className={cn(
+                            'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
+                            timeDay === td.value && 'ne-dt-text-neutral-900',
+                          )}
                         >
-                          <span
-                            key={userClickedOn}
-                            className={cn(
-                              'ne-dt-text-neutral-500 ne-dt-text-base ne-dt-font-medium',
-                              timeDay === td.value && 'ne-dt-text-neutral-900',
-                            )}
-                          >
-                            {td.label}
-                          </span>
-                        </Button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                          {td.label}
+                        </span>
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
+          </div>
 
-            <div className="ne-dt-grid ne-dt-grid-cols-2 ne-dt-bg-neutral-50 ne-dt-place-items-center ne-dt-pt-2 md:ne-dt-hidden">
-              <div
-                className={cn(
-                  'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
-                  currentView === 'calendar' &&
-                    'ne-dt-border-b-2 ne-dt-border-gray-500',
-                )}
-              >
-                <CalendarMonth
-                  width="36"
-                  height="36"
-                  onClick={() => setCurrentView(() => 'calendar')}
-                />
-              </div>
-
-              <div
-                className={cn(
-                  'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
-                  currentView === 'time' &&
-                    'ne-dt-border-b-2 ne-dt-border-gray-500',
-                )}
-              >
-                <ClockOutlineIcon
-                  width="36"
-                  height="36"
-                  onClick={() => setCurrentView(() => 'time')}
-                />
-              </div>
-            </div>
-
-            {currentView === 'calendar' && (
-              <NepaliCalendar
-                onDateSelect={handleOnSelectDate}
-                lang={lang}
-                selectedDate={selectedDateTimeRef?.current?.date}
-                openYearSelector={userClickedOn === 'year'}
-                className="ne-dt-rounded-none  md:ne-dt-border-r md:ne-dt-border-base-content"
-                {...calendar}
+          <div className="ne-dt-grid ne-dt-grid-cols-2 ne-dt-place-items-center ne-dt-pt-2 md:ne-dt-hidden">
+            <div
+              className={cn(
+                'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
+                currentView === 'calendar' &&
+                  'ne-dt-border-b-2 ne-dt-border-gray-500',
+              )}
+            >
+              <CalendarMonth
+                width="36"
+                height="36"
+                onClick={() => setCurrentView(() => 'calendar')}
               />
-            )}
-
-            {currentView === 'time' && (
-              <div className="ne-dt-block ne-dt-w-full md:ne-dt-hidden">
-                <DesktopTime
-                  className="ne-dt-rounded-none ne-dt-border-base-100 ne-dt-w-full"
-                  onTimeSelect={handleOnTimeSelect}
-                  selectedTime={selectedDateTimeRef?.current?.time}
-                  lang={lang}
-                  hourFormat={hourFormat}
-                  {...time}
-                />
-              </div>
-            )}
-
-            <div className="ne-dt-bg-neutral-50 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-p-2 ne-dt-rounded-b-md md:ne-dt-hidden">
-              <Button variant="outline" onClick={handleOnCancel}>
-                {cancel}
-              </Button>
-
-              <Button variant="outline" onClick={handleOnConfirm}>
-                {confirm}
-              </Button>
             </div>
 
-            <div className="ne-dt-hidden md:ne-dt-block">
+            <div
+              className={cn(
+                'ne-dt-flex ne-dt-flex-col ne-dt-items-center ne-dt-w-full',
+                currentView === 'time' &&
+                  'ne-dt-border-b-2 ne-dt-border-gray-500',
+              )}
+            >
+              <ClockOutlineIcon
+                width="36"
+                height="36"
+                onClick={() => setCurrentView(() => 'time')}
+              />
+            </div>
+          </div>
+
+          {currentView === 'calendar' && (
+            <Calendar
+              onDateSelect={handleOnSelectDate}
+              lang={lang}
+              selectedDate={selectedDateTimeRef?.current?.date}
+              openYearSelector={userClickedOn === 'year'}
+              className={cn(
+                'md:ne-dt-border-r ne-dt-border-primary ne-dt-p-2 md:ne-dt-p-4 md:ne-dt-min-w-max',
+                calendarClassName,
+              )}
+              {...calendarRest}
+            />
+          )}
+
+          {currentView === 'time' && (
+            <div className="ne-dt-block ne-dt-w-full md:ne-dt-hidden">
               <DesktopTime
+                className={cn('ne-dt-p-2 md:ne-dt-p-4', timeClassName)}
                 onTimeSelect={handleOnTimeSelect}
                 selectedTime={selectedDateTimeRef?.current?.time}
-                className="ne-dt-rounded-none ne-dt-border-base-100 ne-dt-w-full"
                 lang={lang}
                 hourFormat={hourFormat}
-                {...time}
+                {...timeRest}
               />
             </div>
+          )}
+
+          <div className="ne-dt-p-4 ne-dt-flex ne-dt-flex-row ne-dt-justify-end ne-dt-gap-4 ne-dt-rounded-b-md md:ne-dt-hidden ">
+            <Button variant="outline" onClick={handleOnCancel}>
+              {cancel}
+            </Button>
+
+            <Button variant="outline" onClick={handleOnConfirm}>
+              {confirm}
+            </Button>
+          </div>
+
+          <div className="ne-dt-hidden md:ne-dt-block">
+            <DesktopTime
+              onTimeSelect={handleOnTimeSelect}
+              selectedTime={selectedDateTimeRef?.current?.time}
+              className={cn('ne-dt-p-2 md:ne-dt-p-4', timeClassName)}
+              lang={lang}
+              hourFormat={hourFormat}
+              {...timeRest}
+            />
           </div>
         </Modal>
       )}

@@ -5,7 +5,7 @@ import {
   DatePicker,
   DateTimePicker,
   StaticCalendar,
-  StaticTime,
+  StaticDesktopTime,
   TimePicker,
 } from '.'
 
@@ -122,7 +122,7 @@ export default function App() {
             Static Time
           </label>
 
-          <StaticTime />
+          <StaticDesktopTime />
         </div>
       </div>
     </div>

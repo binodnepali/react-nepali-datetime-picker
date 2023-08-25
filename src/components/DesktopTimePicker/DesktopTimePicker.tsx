@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { HTMLAttributes, useRef, useState } from 'react'
 
 import {
   DesktopTime,
@@ -16,7 +16,7 @@ import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime } from '@/types/NepaliTime'
 
-interface DesktopTimePickerProps {
+interface DesktopTimePickerProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
   desktopTime?: DesktopTimeProps
   hourFormat?: HourFormat
@@ -34,6 +34,7 @@ export const DesktopTimePicker = ({
   desktopTime = {},
   lang = 'ne',
   hourFormat = 12,
+  ...rest
 }: DesktopTimePickerProps) => {
   const {
     input: { nativeInput = {}, icon: inputIcon = {}, ...inputRest } = {},
@@ -41,7 +42,13 @@ export const DesktopTimePicker = ({
     ...timeInputRest
   } = timeInput
 
-  const { onClose: onCloseModal, ...modalRest } = modal
+  const { className: timeClassName = '', ...desktopTimeRest } = desktopTime
+
+  const {
+    onClose: onCloseModal,
+    modalContentClassName = '',
+    ...modalRest
+  } = modal
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -91,7 +98,10 @@ export const DesktopTimePicker = ({
   }
 
   return (
-    <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
+    <div
+      className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}
+      {...rest}
+    >
       <TimeInput
         selectedTime={selectedTime}
         ref={timeInputRef}
@@ -126,6 +136,10 @@ export const DesktopTimePicker = ({
           onClose={handleOnModalClose}
           showModal={showModal}
           inputRef={timeInputRef}
+          modalContentClassName={cn(
+            'ne-dt-px-4 md:ne-dt-px-0',
+            modalContentClassName,
+          )}
           {...modalRest}
         >
           <DesktopTime
@@ -133,7 +147,11 @@ export const DesktopTimePicker = ({
             selectedTime={selectedTimeRef.current}
             lang={lang}
             hourFormat={hourFormat}
-            {...desktopTime}
+            className={cn(
+              'ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-2 md:ne-dt-p-4',
+              timeClassName,
+            )}
+            {...desktopTimeRest}
           />
         </Modal>
       )}

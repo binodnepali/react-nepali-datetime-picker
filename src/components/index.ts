@@ -1,10 +1,10 @@
 import { DateInput } from '@/components/DateInput/DateInput'
+import { DatePicker } from '@/components/DatePicker/DatePicker'
 import { DateTimeInput } from '@/components/DateTimeInput/DateTimeInput'
 import { DesktopDateTimePicker as DateTimePicker } from '@/components/DesktopDateTimePicker/DesktopDateTimePicker'
-import { DesktopTime as StaticTime } from '@/components/DesktopTime/DesktopTime'
 import { DesktopTimePicker as TimePicker } from '@/components/DesktopTimePicker/DesktopTimePicker'
-import { NepaliCalendar as StaticCalendar } from '@/components/NepaliCalendar/NepaliCalendar'
-import { NepaliDatePicker as DatePicker } from '@/components/NepaliDatePicker/NepaliDatePicker'
+import { StaticCalendar } from '@/components/StaticCalendar/StaticCalendar'
+import { StaticDesktopTime } from '@/components/StaticDesktopTime/StaticDesktopTime'
 import { TimeInput } from '@/components/TimeInput/TimeInput'
 
 export {
@@ -13,7 +13,7 @@ export {
   DateTimeInput,
   DateTimePicker,
   StaticCalendar,
-  StaticTime,
+  StaticDesktopTime,
   TimeInput,
   TimePicker,
 }
