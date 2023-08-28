@@ -98,17 +98,16 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
             ...nativeInputRest,
           }}
           icon={{
-            children: (
-              <ClockOutlineIcon
-                width={'36'}
-                height={'36'}
-                className="ne-dt-rounded-full hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
-              />
-            ),
             ...inputIcon,
           }}
           {...inputRest}
-        />
+        >
+          <ClockOutlineIcon
+            width={'36'}
+            height={'36'}
+            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+          />
+        </Input>
         {(hint.error || hint.success) && (
           <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
             <Hint

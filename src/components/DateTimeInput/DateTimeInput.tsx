@@ -19,7 +19,7 @@ export interface DateTimeInputProps {
   lang?: Language
   hourFormat?: HourFormat
   value?: NepaliDateTime
-  input?: InputProps
+  input?: Omit<InputProps, 'children'>
   hint?: HintProps
   fullWidth?: boolean
 }
@@ -79,27 +79,28 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
     }, [lang, value])
 
     return (
-      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
+      <div
+        className={cn('ne-dt-flex ne-dt-flex-col', className)}
+        ref={ref}
+        data-auto-id="dateTimeInput"
+      >
         <Input
-          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
+          className={cn(fullWidth && 'ne-dt-w-full', inputClassName)}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
             className: cn(fullWidth && 'ne-dt-w-full', nativeInputClassName),
             ...nativeInputRest,
           }}
-          icon={{
-            children: (
-              <CalendarClock
-                width="36"
-                height="36"
-                className="ne-dt-rounded-md hover:ne-dt-bg-gray-100 focus:ne-dt-outline-none focus:ne-dt-bg-gray-100 ne-dt-p-1"
-              />
-            ),
-            ...inputIcon,
-          }}
+          icon={inputIcon}
           {...inputRest}
-        />
+        >
+          <CalendarClock
+            width="36"
+            height="36"
+            className="ne-dt-rounded-md ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content ne-dt-p-1"
+          />
+        </Input>
 
         {(hint.error || hint.success) && (
           <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">

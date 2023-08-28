@@ -55,13 +55,10 @@ export default function App() {
           <select
             className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
             onChange={(e) => toggleTheme(e.target.value)}
+            value={theme}
           >
-            <option value="light" selected={theme === 'light'}>
-              Light
-            </option>
-            <option value="dark" selected={theme == 'dark'}>
-              Dark
-            </option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
           </select>
         </div>
       </div>
@@ -102,7 +99,7 @@ export default function App() {
 
           <DateTimePicker
             lang={selectLang}
-            dateInput={{
+            datetimeInput={{
               fullWidth: true,
             }}
             onDateTimeSelect={handleOnDateTimeSelect}

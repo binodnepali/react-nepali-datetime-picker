@@ -33,7 +33,7 @@ interface DesktopDateTimePickerProps {
   onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
   modal?: ModalProps
   hourFormat?: HourFormat
-  dateInput?: DateTimeInputProps
+  datetimeInput?: DateTimeInputProps
   calendar?: CalendarProps
   time?: DesktopTimeProps
   trans?: {
@@ -48,7 +48,7 @@ export const DesktopDateTimePicker = ({
   modal = {},
   value = '',
   onDateTimeSelect,
-  dateInput = {},
+  datetimeInput = {},
   hourFormat = 12,
   calendar = {},
   time = {},
@@ -58,7 +58,7 @@ export const DesktopDateTimePicker = ({
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
     hint = {},
     ...dateInputRest
-  } = dateInput
+  } = datetimeInput
   const { onClose: onCloseModal, ...modalRest } = modal
 
   const { className: calendarClassName = '', ...calendarRest } = calendar
