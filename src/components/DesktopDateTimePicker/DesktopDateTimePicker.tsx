@@ -29,7 +29,8 @@ import { validateNepaliDateTime } from '@/utils/nepaliDateTime'
 interface DesktopDateTimePickerProps {
   className?: string
   lang?: Language
-  value?: string
+  defaultValue?: string
+  fullWidth?: boolean
   onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
   modal?: ModalProps
   hourFormat?: HourFormat
@@ -46,7 +47,8 @@ export const DesktopDateTimePicker = ({
   className = '',
   lang = 'ne',
   modal = {},
-  value = '',
+  defaultValue = '',
+  fullWidth = false,
   onDateTimeSelect,
   datetimeInput = {},
   hourFormat = 12,
@@ -57,6 +59,7 @@ export const DesktopDateTimePicker = ({
   const {
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
     hint = {},
+    fullWidth: dateInputFullWidth = fullWidth,
     ...dateInputRest
   } = datetimeInput
   const { onClose: onCloseModal, ...modalRest } = modal
@@ -77,7 +80,11 @@ export const DesktopDateTimePicker = ({
     onCloseModal?.()
   }
 
-  const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat)
+  const validatedDateTime = validateNepaliDateTime(
+    defaultValue,
+    lang,
+    hourFormat,
+  )
   const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>({
     valid: validatedDateTime.valid,
     ...(validatedDateTime.value ?? {}),
@@ -246,6 +253,7 @@ export const DesktopDateTimePicker = ({
             message: t('dateTimeInputError'),
           },
         }}
+        fullWidth={dateInputFullWidth}
         {...dateInputRest}
       />
 
