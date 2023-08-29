@@ -7,8 +7,8 @@ import {
   DateInputTargetValue,
 } from '@/components/DateInput/DateInput'
 import { Modal, ModalProps } from '@/components/Modal/Modal'
-import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/plugins/twMerge'
+import transData from '@/translations/DatePicker.json'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
 
@@ -19,6 +19,7 @@ interface DatePickerProps extends HTMLAttributes<HTMLDivElement> {
   modal?: ModalProps
   dateInput?: DateInputProps
   calendar?: CalendarProps
+  trans?: DatePickerTrans
 }
 export const DatePicker = ({
   className = '',
@@ -27,11 +28,11 @@ export const DatePicker = ({
   onDateSelect,
   dateInput = {},
   calendar = {},
+  trans = {},
   ...rest
 }: DatePickerProps) => {
   const {
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
-    hint = {},
     ...dateInputRest
   } = dateInput
 
@@ -76,7 +77,7 @@ export const DatePicker = ({
 
   const dateInputRef = useRef<HTMLDivElement>(null)
 
-  const { t } = useTranslation('DatePicker', lang)
+  const { inputPlaceholder } = trans[lang] || transData[lang]
 
   return (
     <div
@@ -90,7 +91,7 @@ export const DatePicker = ({
         input={{
           nativeInput: {
             onChange: handleOnChange,
-            placeholder: t('inputPlaceholder'),
+            placeholder: inputPlaceholder,
             ...nativeInput,
           },
           icon: {
@@ -98,12 +99,6 @@ export const DatePicker = ({
             ...inputIcon,
           },
           ...inputRest,
-        }}
-        hint={{
-          ...hint,
-          error: hint?.error || {
-            message: t('inputError'),
-          },
         }}
         {...dateInputRest}
       />
@@ -133,4 +128,10 @@ export const DatePicker = ({
       )}
     </div>
   )
+}
+
+type DatePickerTrans = {
+  [lang in Language]?: {
+    inputPlaceholder: string
+  }
 }

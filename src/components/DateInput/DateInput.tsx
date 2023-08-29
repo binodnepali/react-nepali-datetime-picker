@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import CalendarMonth from '@/assets/CalendarMonth.svg'
-import { Hint, HintProps } from '@/components/ui/Hint/Hint'
+import { Hint } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
@@ -13,7 +13,18 @@ export interface DateInputProps {
   lang?: Language
   value?: NepaliDate
   input?: InputProps
-  hint?: HintProps
+  error?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
+  success?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
   fullWidth?: boolean
 }
 
@@ -21,11 +32,22 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
   function DateInput(
     {
       className = '',
-      hint = {},
       input = {},
       lang = 'ne',
       fullWidth = false,
       value,
+      error: {
+        message: errorMessage = '',
+        show: showError = false,
+        rootClassName: errorRootClassName = '',
+        className: errorClassName = '',
+      } = {},
+      success: {
+        message: successMessage = '',
+        show: showSuccess = false,
+        rootClassName: successRootClassName = '',
+        className: successClassName = '',
+      } = {},
     }: DateInputProps,
     ref,
   ): JSX.Element {
@@ -35,7 +57,16 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         className: nativeInputClassName = '',
         ...nativeInputRest
       } = {},
-      icon: inputIcon = {},
+      icon: {
+        children = (
+          <CalendarMonth
+            width="36"
+            height="36"
+            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+          />
+        ),
+        ...inputIconRest
+      } = {},
       className: inputClassName = '',
       ...inputRest
     } = input
@@ -83,26 +114,47 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
           nativeInput={{
             onChange: handleOnChange,
             value: val,
-            className: cn(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
+            className: cn(
+              nativeInputClassName,
+              fullWidth && 'ne-dt-w-full',
+              showError &&
+                !isValid &&
+                'ne-dt-border-error focus:ne-dt-outline-error',
+              showSuccess &&
+                isValid &&
+                val.length > 0 &&
+                'ne-dt-border-success focus:ne-dt-outline-success',
+            ),
             ...nativeInputRest,
           }}
           icon={{
-            ...inputIcon,
+            children,
+            ...inputIconRest,
           }}
           {...inputRest}
-        >
-          <CalendarMonth
-            width="36"
-            height="36"
-            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
-          />
-        </Input>
+        />
 
-        {(hint.error || hint.success) && (
-          <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+        {showError && errorMessage && !isValid && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              errorRootClassName,
+            )}
+          >
+            <Hint errorMessage={errorMessage} errorClassName={errorClassName} />
+          </div>
+        )}
+
+        {showSuccess && successMessage && isValid && val.length > 0 && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              successRootClassName,
+            )}
+          >
             <Hint
-              error={isValid ? undefined : hint.error}
-              success={isValid && val.length > 0 ? hint.success : undefined}
+              successMessage={successMessage}
+              successClassName={successClassName}
             />
           </div>
         )}

@@ -1,0 +1,10 @@
+{
+  "en": {
+    "inputPlaceholder": "YYYY/MM/DD",
+    "inputError": "Invalid date"
+  },
+  "ne": {
+    "inputPlaceholder": "वर्ष/महिना/मिति",
+    "inputError": "मिति ढाँचा गलत छ"
+  }
+}
