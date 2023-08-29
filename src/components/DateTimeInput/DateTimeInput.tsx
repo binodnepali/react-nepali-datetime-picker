@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import CalendarClock from '@/assets/CalendarClock.svg'
-import { Hint, HintProps } from '@/components/ui/Hint/Hint'
+import { Hint } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
 import { HourFormat } from '@/types/HourFormat'
@@ -19,21 +19,43 @@ export interface DateTimeInputProps {
   lang?: Language
   hourFormat?: HourFormat
   value?: NepaliDateTime
-  input?: Omit<InputProps, 'children'>
-  hint?: HintProps
+  input?: InputProps
+  error?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
+  success?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
   fullWidth?: boolean
 }
 
 export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
-  function DateInput(
+  function DateTimeInput(
     {
       className = '',
-      hint = {},
       input = {},
       lang = 'ne',
       fullWidth = false,
       value,
       hourFormat = 12,
+      error: {
+        message: errorMessage = '',
+        show: showError = false,
+        rootClassName: errorRootClassName = '',
+        className: errorClassName = '',
+      } = {},
+      success: {
+        message: successMessage = '',
+        show: showSuccess = false,
+        rootClassName: successRootClassName = '',
+        className: successClassName = '',
+      } = {},
     },
     ref,
   ) {
@@ -43,7 +65,16 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
         className: nativeInputClassName = '',
         ...nativeInputRest
       } = {},
-      icon: inputIcon = {},
+      icon: {
+        children = (
+          <CalendarClock
+            width="36"
+            height="36"
+            className="ne-dt-rounded-md ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content ne-dt-p-1"
+          />
+        ),
+        ...inputIconRest
+      } = {},
       className: inputClassName = '',
       ...inputRest
     } = input
@@ -89,24 +120,47 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
           nativeInput={{
             onChange: handleOnChange,
             value: val,
-            className: cn(fullWidth && 'ne-dt-w-full', nativeInputClassName),
+            className: cn(
+              fullWidth && 'ne-dt-w-full',
+              showError &&
+                !isValid &&
+                'ne-dt-border-error focus:ne-dt-outline-error',
+              showSuccess &&
+                isValid &&
+                val.length > 0 &&
+                'ne-dt-border-success focus:ne-dt-outline-success',
+              nativeInputClassName,
+            ),
             ...nativeInputRest,
           }}
-          icon={inputIcon}
+          icon={{
+            children,
+            ...inputIconRest,
+          }}
           {...inputRest}
-        >
-          <CalendarClock
-            width="36"
-            height="36"
-            className="ne-dt-rounded-md ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content ne-dt-p-1"
-          />
-        </Input>
+        />
 
-        {(hint.error || hint.success) && (
-          <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+        {showError && errorMessage && !isValid && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              errorRootClassName,
+            )}
+          >
+            <Hint errorMessage={errorMessage} errorClassName={errorClassName} />
+          </div>
+        )}
+
+        {showSuccess && successMessage && isValid && val.length > 0 && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              successRootClassName,
+            )}
+          >
             <Hint
-              error={isValid ? undefined : hint.error}
-              success={isValid && val.length > 0 ? hint.success : undefined}
+              successMessage={successMessage}
+              successClassName={successClassName}
             />
           </div>
         )}

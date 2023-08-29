@@ -24,6 +24,6 @@ export const useTranslation = (fileName: string, lang: Language = 'ne') => {
   }, [fileName, lang])
 
   return {
-    t: (key: string) => t[key] || key,
+    t: (key: string) => t[key] || '',
   }
 }

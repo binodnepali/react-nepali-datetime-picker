@@ -16,8 +16,8 @@ import { Modal, ModalProps } from '@/components/Modal/Modal'
 import { Button } from '@/components/ui/Button/Button'
 import { useNepaliCalendar } from '@/hooks/useNepaliCalendar'
 import { useNepaliTime } from '@/hooks/useNepaliTime'
-import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/plugins/twMerge'
+import transData from '@/translations/DesktopDatetimePicker.json'
 import { NepaliTime } from '@/types'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
@@ -37,12 +37,9 @@ interface DesktopDateTimePickerProps {
   datetimeInput?: DateTimeInputProps
   calendar?: CalendarProps
   time?: DesktopTimeProps
-  trans?: {
-    title?: string
-    cancel?: string
-    confirm?: string
-  }
+  trans?: DesktopDateTimePickerTrans
 }
+
 export const DesktopDateTimePicker = ({
   className = '',
   lang = 'ne',
@@ -58,7 +55,6 @@ export const DesktopDateTimePicker = ({
 }: DesktopDateTimePickerProps) => {
   const {
     input: { nativeInput, icon: inputIcon, ...inputRest } = {},
-    hint = {},
     fullWidth: dateInputFullWidth = fullWidth,
     ...dateInputRest
   } = datetimeInput
@@ -218,12 +214,13 @@ export const DesktopDateTimePicker = ({
     shortMonth: true,
   })
 
-  const { t } = useTranslation('DesktopDateTimePicker', lang)
   const {
-    title = t('title'),
-    cancel = t('cancel'),
-    confirm = t('confirm'),
-  } = trans
+    title = '',
+    cancel = '',
+    confirm = '',
+    dateTimeInputPlaceholder12HourFormat = '',
+    dateTimeInputPlaceholder24HourFormat = '',
+  } = trans[lang] ?? transData[lang]
 
   return (
     <div className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}>
@@ -237,8 +234,8 @@ export const DesktopDateTimePicker = ({
             onChange: handleOnDateTimeInputChange,
             placeholder:
               hourFormat === 12
-                ? t('dateTimeInputPlaceholder12HourFormat')
-                : t('dateTimeInputPlaceholder24HourFormat'),
+                ? dateTimeInputPlaceholder12HourFormat
+                : dateTimeInputPlaceholder24HourFormat,
             ...nativeInput,
           },
           icon: {
@@ -246,12 +243,6 @@ export const DesktopDateTimePicker = ({
             ...inputIcon,
           },
           ...inputRest,
-        }}
-        hint={{
-          ...hint,
-          error: hint?.error || {
-            message: t('dateTimeInputError'),
-          },
         }}
         fullWidth={dateInputFullWidth}
         {...dateInputRest}
@@ -457,4 +448,15 @@ export const DesktopDateTimePicker = ({
       )}
     </div>
   )
+}
+
+export type DesktopDateTimePickerTrans = {
+  [lang in Language]?: {
+    title?: string
+    cancel?: string
+    confirm?: string
+    dateTimeInputPlaceholder12HourFormat?: string
+    dateTimeInputPlaceholder24HourFormat?: string
+    dateTimeInputError?: string
+  }
 }

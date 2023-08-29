@@ -1,28 +1,32 @@
+import { cn } from '@/plugins/twMerge'
+
 export interface HintProps {
-  className?: string
-  error?: {
-    message: string
-  }
-  success?: {
-    message: string
-  }
+  errorClassName?: string
+  errorMessage?: string
+  successClassName?: string
+  successMessage?: string
 }
 
-export const Hint = ({ className = '', error, success }: HintProps) => {
+export const Hint = ({
+  errorMessage,
+  successMessage,
+  errorClassName = '',
+  successClassName = '',
+}: HintProps) => {
   const baseClassName = 'ne-dt-text-xs'
 
-  if (success) {
+  if (successMessage) {
     return (
-      <p className={`${baseClassName} ne-dt-text-green-500 ${className}`}>
-        {success.message}
+      <p className={cn(baseClassName, 'ne-dt-text-success', successClassName)}>
+        {successMessage}
       </p>
     )
   }
 
-  if (error) {
+  if (errorMessage) {
     return (
-      <p className={`${baseClassName} ne-dt-text-red-500 ${className}`}>
-        {error.message}
+      <p className={cn(baseClassName, 'ne-dt-text-error', errorClassName)}>
+        {errorMessage}
       </p>
     )
   }

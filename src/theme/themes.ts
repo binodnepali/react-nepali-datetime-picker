@@ -20,6 +20,10 @@ export const defaultThemes: {
     'base-200': '#191e24',
     'base-300': '#15191e',
     'base-content': '#A6ADBB',
+    error: '#EE565B',
+    'error-content': '#ffffff',
+    success: '#42BA96',
+    'success-content': '#ffffff',
   },
   light: {
     primary: '#570df8',
@@ -35,6 +39,10 @@ export const defaultThemes: {
     'base-200': '#F2F2F2',
     'base-300': '#E5E6E6',
     'base-content': '#1f2937',
+    error: '#EF4444',
+    'error-content': '#ffffff',
+    success: '#10B981',
+    'success-content': '#ffffff',
   },
 }
 
@@ -69,6 +77,10 @@ export type ThemeColor = {
   'base-200'?: string
   'base-300'?: string
   'base-content'?: string
+  error?: string
+  'error-content'?: string
+  success?: string
+  'success-content'?: string
 }
 
 export const getLightTheme = (light: ThemeColor) => {

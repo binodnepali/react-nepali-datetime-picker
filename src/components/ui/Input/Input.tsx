@@ -4,17 +4,19 @@ export interface InputProps {
   className?: string
   icon?: IconProps
   nativeInput?: NativeInputProps
-  children?: React.ReactNode
 }
 export const Input = ({
   className = '',
   nativeInput = {},
   icon = {},
-  children,
 }: InputProps) => {
   const { className: inputClassName = '', ...nativeInputRest } = nativeInput
 
-  const { className: iconClassName = '', ...iconRest } = icon
+  const {
+    className: iconClassName = '',
+    children: iconChildren,
+    ...iconRest
+  } = icon
 
   return (
     <div
@@ -30,7 +32,7 @@ export const Input = ({
         {...nativeInputRest}
       />
 
-      {children && (
+      {iconChildren && (
         <div
           className={cn(
             'ne-dt-absolute ne-dt-inset-y-0 ne-dt-right-0 ne-dt-mr-1 ne-dt-flex ne-dt-items-center ne-dt-cursor-pointer',
@@ -38,7 +40,7 @@ export const Input = ({
           )}
           {...iconRest}
         >
-          {children}
+          {iconChildren}
         </div>
       )}
     </div>
@@ -53,5 +55,6 @@ type NativeInputProps = React.HTMLAttributes<HTMLInputElement> & {
 
 type IconProps = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
+  children?: React.ReactNode
   onClick?: () => void
 }
