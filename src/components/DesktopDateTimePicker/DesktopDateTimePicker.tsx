@@ -31,7 +31,7 @@ interface DesktopDateTimePickerProps {
   lang?: Language
   defaultValue?: string
   fullWidth?: boolean
-  onDateTimeSelect?: (selectedDateTime: NepaliDateTime) => void
+  onDateTimeSelect?: (selectedDateTime?: NepaliDateTime) => void
   modal?: ModalProps
   hourFormat?: HourFormat
   datetimeInput?: DateTimeInputProps
@@ -82,11 +82,9 @@ export const DesktopDateTimePicker = ({
     hourFormat,
   )
   const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>({
-    valid: validatedDateTime.valid,
     ...(validatedDateTime.value ?? {}),
   })
   const selectedDateTimeRef = useRef<NepaliDateTime>({
-    valid: validatedDateTime.valid,
     ...(validatedDateTime.value ?? {}),
   })
 
@@ -101,19 +99,35 @@ export const DesktopDateTimePicker = ({
       date,
       ...(selectedDateTime?.time ? { time: selectedDateTime.time } : {}),
     }
-    onDateTimeSelect?.(dateTime)
+    if (isTimeValid) {
+      onDateTimeSelect?.({
+        date,
+        ...(selectedDateTime?.time ? { time: selectedDateTime.time } : {}),
+      })
+    } else {
+      onDateTimeSelect?.()
+    }
     setSelectedDateTime(() => dateTime)
     selectedDateTimeRef.current = dateTime
   }
   const handleOnTimeSelect = (time: NepaliTime) => {
     const isTimeValid = hourFormat === 12 ? time.day?.value !== undefined : true
+    const valid = selectedDateTime?.date && isTimeValid ? true : false
 
     const dateTime = {
-      valid: selectedDateTime?.date && isTimeValid ? true : false,
+      valid,
       ...(isTimeValid ? { time } : {}),
       ...(selectedDateTime?.date ? { date: selectedDateTime.date } : {}),
     }
-    onDateTimeSelect?.(dateTime)
+
+    if (valid) {
+      onDateTimeSelect?.({
+        ...(selectedDateTime?.date ? { date: selectedDateTime.date } : {}),
+        ...(isTimeValid ? { time } : {}),
+      })
+    } else {
+      onDateTimeSelect?.()
+    }
     setSelectedDateTime(() => dateTime)
     selectedDateTimeRef.current = dateTime
   }
@@ -125,18 +139,20 @@ export const DesktopDateTimePicker = ({
 
     const targetValue = JSON.parse(value) as DateTimeInputTargetValue
 
-    onDateTimeSelect?.({
-      valid: targetValue.valid,
-      ...(targetValue.valid
-        ? {
-            date: targetValue.value?.date,
-            time: targetValue.value?.time,
-          }
-        : {}),
-    })
+    if (targetValue.valid) {
+      onDateTimeSelect?.({
+        ...(targetValue.valid
+          ? {
+              date: targetValue.value?.date,
+              time: targetValue.value?.time,
+            }
+          : {}),
+      })
+    } else {
+      onDateTimeSelect?.()
+    }
 
     selectedDateTimeRef.current = {
-      valid: targetValue.valid,
       ...(targetValue.valid
         ? {
             date: targetValue.value?.date,
@@ -150,7 +166,6 @@ export const DesktopDateTimePicker = ({
       return
     }
     onDateTimeSelect?.({
-      valid: true,
       date: selectedDateTime.date,
       time: selectedDateTime.time,
     })

@@ -23,9 +23,9 @@ export default function App() {
     console.log('handleOnTimeSelect', time)
   }
 
-  const handleOnDateTimeSelect = (date: NepaliDateTime) => {
+  const handleOnDateTimeSelect = (dateTime?: NepaliDateTime) => {
     // eslint-disable-next-line no-console
-    console.log('handleOnDateTimeSelect', date)
+    console.log('handleOnDateTimeSelect', dateTime)
   }
 
   return (
@@ -98,9 +98,12 @@ export default function App() {
           </label>
 
           <DateTimePicker
-            lang={selectLang}
+            lang={'en'}
             datetimeInput={{
               fullWidth: true,
+              error: {
+                show: true,
+              },
             }}
             onDateTimeSelect={handleOnDateTimeSelect}
           />
