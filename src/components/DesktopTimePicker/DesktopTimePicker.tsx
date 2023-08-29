@@ -10,8 +10,8 @@ import {
   TimeInputProps,
   TimeInputTargetValue,
 } from '@/components/TimeInput/TimeInput'
-import { useTranslation } from '@/hooks/useTranslation'
 import { cn } from '@/plugins/twMerge'
+import transData from '@/translations/DesktopTimePicker.json'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import { NepaliTime } from '@/types/NepaliTime'
@@ -24,6 +24,7 @@ interface DesktopTimePickerProps extends HTMLAttributes<HTMLDivElement> {
   modal?: ModalProps
   onTimeSelect?: (time?: NepaliTime) => void
   timeInput?: TimeInputProps
+  trans?: DesktopTimePickerTrans
 }
 
 export const DesktopTimePicker = ({
@@ -34,11 +35,11 @@ export const DesktopTimePicker = ({
   desktopTime = {},
   lang = 'ne',
   hourFormat = 12,
+  trans = {},
   ...rest
 }: DesktopTimePickerProps) => {
   const {
     input: { nativeInput = {}, icon: inputIcon = {}, ...inputRest } = {},
-    hint = {},
     ...timeInputRest
   } = timeInput
 
@@ -88,7 +89,8 @@ export const DesktopTimePicker = ({
     setShowModal(() => !showModal)
   }
 
-  const { t } = useTranslation('DesktopTimePicker', lang)
+  const { timeInputPlaceholder12HourFormat, timeInputPlaceholder24HourFormat } =
+    trans[lang] ?? transData[lang]
 
   const timeInputRef = useRef<HTMLDivElement>(null)
 
@@ -110,8 +112,8 @@ export const DesktopTimePicker = ({
             onChange: handleOnInputChange,
             placeholder:
               hourFormat === 12
-                ? t('timeInputPlaceholder12HourFormat')
-                : t('timeInputPlaceholder24HourFormat'),
+                ? timeInputPlaceholder12HourFormat
+                : timeInputPlaceholder24HourFormat,
             ...nativeInput,
           },
           icon: {
@@ -119,12 +121,6 @@ export const DesktopTimePicker = ({
             ...inputIcon,
           },
           ...inputRest,
-        }}
-        hint={{
-          ...hint,
-          error: hint?.error || {
-            message: t('timeInputError'),
-          },
         }}
         lang={lang}
         hourFormat={hourFormat}
@@ -157,4 +153,12 @@ export const DesktopTimePicker = ({
       )}
     </div>
   )
+}
+
+type DesktopTimePickerTrans = {
+  [lang in Language]?: {
+    timeInputPlaceholder12HourFormat: string
+    timeInputPlaceholder24HourFormat: string
+    timeInputError: string
+  }
 }

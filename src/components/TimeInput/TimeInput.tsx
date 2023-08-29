@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import ClockOutlineIcon from '@/assets/ClockOutline.svg'
-import { Hint, HintProps } from '@/components/ui/Hint/Hint'
+import { Hint } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
 import { NepaliTime } from '@/types'
@@ -19,9 +19,20 @@ export interface TimeInputProps {
   selectedTime?: NepaliTime
   input?: InputProps
   lang?: Language
-  fullWidth?: boolean
   hourFormat?: HourFormat
-  hint?: HintProps
+  fullWidth?: boolean
+  error?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
+  success?: {
+    message?: string
+    show?: boolean
+    rootClassName?: string
+    className?: string
+  }
 }
 export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
   function TimeInput(
@@ -32,7 +43,18 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
       fullWidth = false,
       hourFormat = 12,
       selectedTime,
-      hint = {},
+      error: {
+        message: errorMessage = '',
+        show: showError = false,
+        rootClassName: errorRootClassName = '',
+        className: errorClassName = '',
+      } = {},
+      success: {
+        message: successMessage = '',
+        show: showSuccess = false,
+        rootClassName: successRootClassName = '',
+        className: successClassName = '',
+      } = {},
     },
     ref,
   ) {
@@ -43,7 +65,16 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
         className: nativeInputClassName = '',
         ...nativeInputRest
       } = {},
-      icon: inputIcon = {},
+      icon: {
+        children = (
+          <ClockOutlineIcon
+            width={'36'}
+            height={'36'}
+            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+          />
+        ),
+        ...inputIconRest
+      } = {},
       className: inputClassName = '',
       ...inputRest
     } = input
@@ -94,25 +125,47 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
           nativeInput={{
             value: val,
             onChange: handleOnInputChange,
-            className: cn(nativeInputClassName, fullWidth && 'ne-dt-w-full'),
+            className: cn(
+              nativeInputClassName,
+              fullWidth && 'ne-dt-w-full',
+              showError &&
+                !isValid &&
+                'ne-dt-border-error focus:ne-dt-outline-error',
+              showSuccess &&
+                isValid &&
+                val.length > 0 &&
+                'ne-dt-border-success focus:ne-dt-outline-success',
+            ),
             ...nativeInputRest,
           }}
           icon={{
-            ...inputIcon,
+            children,
+            ...inputIconRest,
           }}
           {...inputRest}
-        >
-          <ClockOutlineIcon
-            width={'36'}
-            height={'36'}
-            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
-          />
-        </Input>
-        {(hint.error || hint.success) && (
-          <div className="ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full">
+        />
+
+        {showError && errorMessage && !isValid && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              errorRootClassName,
+            )}
+          >
+            <Hint errorMessage={errorMessage} errorClassName={errorClassName} />
+          </div>
+        )}
+
+        {showSuccess && successMessage && isValid && val.length > 0 && (
+          <div
+            className={cn(
+              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              successRootClassName,
+            )}
+          >
             <Hint
-              error={isValid ? undefined : hint.error}
-              success={isValid && val.length > 0 ? hint.success : undefined}
+              successMessage={successMessage}
+              successClassName={successClassName}
             />
           </div>
         )}

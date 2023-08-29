@@ -1,0 +1,12 @@
+{
+  "en": {
+    "timeInputPlaceholder12HourFormat": "hh:mm AA",
+    "timeInputPlaceholder24HourFormat": "HH:mm",
+    "timeInputError": "Invalid time"
+  },
+  "ne": {
+    "timeInputPlaceholder12HourFormat": "घण्टा:मिनेट बजे",
+    "timeInputPlaceholder24HourFormat": "घण्टा:मिनेट",
+    "timeInputError": "समय ढाँचा गलत छ"
+  }
+}
