@@ -429,7 +429,7 @@ export const DesktopDateTimePicker = ({
           {currentView === 'time' && (
             <div className="ne-dt-block ne-dt-w-full md:ne-dt-hidden">
               <DesktopTime
-                className={cn('ne-dt-p-2 md:ne-dt-p-4', timeClassName)}
+                className={cn('ne-dt-p-1 md:ne-dt-p-2', timeClassName)}
                 onTimeSelect={handleOnTimeSelect}
                 selectedTime={selectedDateTimeRef?.current?.time}
                 lang={lang}
@@ -453,7 +453,7 @@ export const DesktopDateTimePicker = ({
             <DesktopTime
               onTimeSelect={handleOnTimeSelect}
               selectedTime={selectedDateTimeRef?.current?.time}
-              className={cn('ne-dt-p-2 md:ne-dt-p-4', timeClassName)}
+              className={cn('ne-dt-p-1 md:ne-dt-p-2', timeClassName)}
               lang={lang}
               hourFormat={hourFormat}
               {...timeRest}

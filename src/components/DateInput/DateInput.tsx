@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import CalendarMonth from '@/assets/CalendarMonth.svg'
+import { Button } from '@/components/ui/Button/Button'
 import { Hint } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
@@ -59,11 +60,13 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
       } = {},
       icon: {
         children = (
-          <CalendarMonth
-            width="36"
-            height="36"
-            className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
-          />
+          <Button variant="icon">
+            <CalendarMonth
+              width="36"
+              height="36"
+              className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+            />
+          </Button>
         ),
         ...inputIconRest
       } = {},

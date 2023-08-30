@@ -137,7 +137,7 @@ export const DesktopTime = ({
     >
       <div
         className={cn(
-          'ne-dt-grid ne-dt-gap-2 ne-dt-h-60 ne-dt-overflow-hidden',
+          'ne-dt-grid ne-dt-gap-0 ne-dt-h-64 ne-dt-overflow-hidden',
           is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
           !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
           contentClassName,
@@ -159,7 +159,7 @@ export const DesktopTime = ({
         />
 
         {is12HourFormat && (
-          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start">
+          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start ne-dt-p-1">
             {timeDays.map((d) => (
               <Button
                 variant="outline"
@@ -251,7 +251,7 @@ function HourList({
 
   return (
     <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
+      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll ne-dt-p-1"
       ref={hourRef}
     >
       <div
@@ -361,7 +361,7 @@ function MinuteList({
 
   return (
     <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll"
+      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll ne-dt-p-1"
       ref={minuteRef}
     >
       <div

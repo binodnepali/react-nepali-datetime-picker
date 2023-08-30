@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import CalendarClock from '@/assets/CalendarClock.svg'
+import { Button } from '@/components/ui/Button/Button'
 import { Hint } from '@/components/ui/Hint/Hint'
 import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
@@ -67,11 +68,9 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
       } = {},
       icon: {
         children = (
-          <CalendarClock
-            width="36"
-            height="36"
-            className="ne-dt-rounded-md ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content ne-dt-p-1"
-          />
+          <Button variant="icon">
+            <CalendarClock width="36" height="36" />
+          </Button>
         ),
         ...inputIconRest
       } = {},

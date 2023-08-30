@@ -144,7 +144,7 @@ export const DesktopTimePicker = ({
             lang={lang}
             hourFormat={hourFormat}
             className={cn(
-              'ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-2 md:ne-dt-p-4',
+              'ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-1 md:ne-dt-p-2',
               timeClassName,
             )}
             {...desktopTimeRest}
