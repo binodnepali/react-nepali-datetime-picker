@@ -76,17 +76,23 @@ export const DesktopDateTimePicker = ({
     onCloseModal?.()
   }
 
-  const validatedDateTime = validateNepaliDateTime(
-    defaultValue,
-    lang,
-    hourFormat,
-  )
-  const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>({
-    ...(validatedDateTime.value ?? {}),
-  })
-  const selectedDateTimeRef = useRef<NepaliDateTime>({
-    ...(validatedDateTime.value ?? {}),
-  })
+  const [selectedDateTime, setSelectedDateTime] = useState<NepaliDateTime>()
+  const selectedDateTimeRef = useRef<NepaliDateTime>()
+  useEffect(() => {
+    const validatedDateTime = validateNepaliDateTime(
+      defaultValue,
+      lang,
+      hourFormat,
+    )
+
+    setSelectedDateTime(() => ({
+      ...(validatedDateTime.value ?? {}),
+    }))
+
+    selectedDateTimeRef.current = {
+      ...(validatedDateTime.value ?? {}),
+    }
+  }, [defaultValue, hourFormat, lang])
 
   const handleOnSelectDate = (date: NepaliDate) => {
     const isTimeValid =
