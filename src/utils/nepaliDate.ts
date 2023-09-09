@@ -83,7 +83,7 @@ export const getCurrentNepaliDate = (lang: Language = 'ne'): NepaliDate => {
     },
     month: {
       value: nepaliMonth - 1,
-      label: getMonthLabel(lang, nepaliMonth - 1) ?? '',
+      label: getMonthLabel(lang, nepaliMonth) ?? '',
     },
     date: {
       id: `${nepaliYear}${YEAR_MONTH_DATE_SEPARATOR}${

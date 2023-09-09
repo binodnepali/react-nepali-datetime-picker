@@ -5,7 +5,7 @@ import { getCurrentNepaliDate } from './nepaliDate'
 describe('nepaliDate', () => {
   describe('getCurrentNepaliDate', () => {
     test('should return nepali date from current gregorian date', () => {
-      const mockDate = new Date('2023-07-18')
+      const mockDate = new Date('2023-09-09')
       const spy = vi
         .spyOn(global, 'Date')
         .mockImplementation(() => mockDate as unknown as string)
@@ -18,12 +18,12 @@ describe('nepaliDate', () => {
           label: '२०८०',
         },
         month: {
-          value: 3,
-          label: 'असार',
+          value: 4,
+          label: 'भदौ',
         },
         date: {
-          value: 2,
-          label: '२',
+          value: 24,
+          label: '२४',
         },
       }
 
