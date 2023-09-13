@@ -194,6 +194,14 @@ export const months = [
   },
 ] as const
 
+/**
+ * @description
+ * This is the data for the months of the year.
+ * The first element of the tuple is the number of days in each month.
+ * Each month is an array of 3 elements. The first element is the number of days after which the month starts and the second element is the number of days in the month. The third element is the number of days after which next month starts.
+ * The second element of the tuple is the total number of days in the year.
+ * The data is from 2000 BS to 2099 BS.
+ */
 export const monthsData: Array<[Array<[number, number, number]>, number]> = [
   [
     [
