@@ -1,8 +1,7 @@
 import { days } from '@/constants/days'
-import { months } from '@/constants/months'
+import { months, monthsData } from '@/constants/months'
 import { weekDays } from '@/constants/weekDays'
-import { yearsWithDaysInMonth } from '@/constants/yearsWithDaysInMonth'
-import { dayjs } from '@/plugins/dayjs'
+import { dateConverter, NepaliDateTime } from '@/plugins/nepaliDateTime'
 import { Language } from '@/types/Language'
 import { Day, Month, NepaliDate, Year } from '@/types/NepaliDate'
 import { WeekDay } from '@/types/WeekDay'
@@ -13,87 +12,41 @@ import {
   convertToNepaliDigit,
 } from './digit'
 
-const GREGORIAN_START_YEAR = 1943 // Start year of the Gregorian calendar
-const NEPALI_START_YEAR = 2000 // Start year of the Nepali calendar
-const NEPALI_END_YEAR = 2089 // End year of the Nepali calendar
-const NEPALI_YEAR_OFFSET = NEPALI_START_YEAR - GREGORIAN_START_YEAR // Convert Gregorian year to Nepali year
-const NEPALI_MONTH_OFFSET = 8 // Add an offset of 8 to convert Gregorian month to Nepali month
-const NEPALI_DATE_OFFSET = 15 // Add an offset of 15 to convert Gregorian date to Nepali date
-const NEPALI_MONTHS_IN_YEAR = 12 // Number of months in a year
-
 export const YEAR_MONTH_DATE_SEPARATOR = '/' // Separator between year, month and date
 
-const years = generateYears(NEPALI_START_YEAR, NEPALI_END_YEAR)
+const DEFAULT_FORMAT = `YYYY${YEAR_MONTH_DATE_SEPARATOR}MM${YEAR_MONTH_DATE_SEPARATOR}DD`
+
+const years = generateYears()
 
 export const getCurrentNepaliDate = (lang: Language = 'ne'): NepaliDate => {
-  const date = dayjs()
+  const nepaliDateTime = new NepaliDateTime()
 
-  const localizedDate = date
-    .tz('Asia/Kathmandu')
-    .format(`YYYY${YEAR_MONTH_DATE_SEPARATOR}MM${YEAR_MONTH_DATE_SEPARATOR}DD`)
+  const formattedDateTime =
+    lang === 'ne'
+      ? nepaliDateTime.formatNepali(DEFAULT_FORMAT)
+      : nepaliDateTime.format(DEFAULT_FORMAT)
 
-  const [currentYear, currentMonth, currentDate] = localizedDate
-    .split(YEAR_MONTH_DATE_SEPARATOR)
-    .map((item) => parseInt(item, 10))
+  const year = nepaliDateTime.getYear()
+  const month = nepaliDateTime.getMonth()
+  const date = nepaliDateTime.getDate()
 
-  let nepaliYear = currentYear + NEPALI_YEAR_OFFSET
-  let nepaliMonth = currentMonth + NEPALI_MONTH_OFFSET
-  let nepaliDate = currentDate + NEPALI_DATE_OFFSET
-
-  const days = yearsWithDaysInMonth as unknown as {
-    [year: number]: {
-      daysInMonth: [number, number, number][]
-    }
-  }
-  const nepaliDaysInMonth = days[nepaliYear].daysInMonth.map((day) => {
-    if (typeof day === 'number') {
-      return day
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, daysInMonth, __] = day
-
-    return daysInMonth
-  })
-
-  // Adjust Nepali month and year if it exceeds the maximum values
-  if (nepaliMonth > NEPALI_MONTHS_IN_YEAR) {
-    nepaliMonth -= NEPALI_MONTHS_IN_YEAR
-  }
-
-  // Adjust Nepali date and month if it exceeds the maximum values
-  if (nepaliDate > nepaliDaysInMonth[nepaliMonth - 1]) {
-    nepaliDate -= nepaliDaysInMonth[nepaliMonth - 1]
-    nepaliMonth += 1
-  }
-
-  // Adjust Nepali month and year if it exceeds the maximum values
-  if (nepaliMonth > NEPALI_MONTHS_IN_YEAR) {
-    nepaliMonth -= NEPALI_MONTHS_IN_YEAR
-    nepaliYear += 1
-  }
+  const [yearLabel, monthLabel, dateLabel] = formattedDateTime.split(
+    YEAR_MONTH_DATE_SEPARATOR,
+  )
 
   return {
     year: {
-      value: nepaliYear,
-      label:
-        lang === 'ne'
-          ? convertToNepaliDigit(nepaliYear)
-          : nepaliYear.toString(),
+      value: year,
+      label: yearLabel,
     },
     month: {
-      value: nepaliMonth - 1,
-      label: getMonthLabel(lang, nepaliMonth) ?? '',
+      value: month,
+      label: monthLabel,
     },
     date: {
-      id: `${nepaliYear}${YEAR_MONTH_DATE_SEPARATOR}${
-        nepaliMonth - 1
-      }${YEAR_MONTH_DATE_SEPARATOR}${nepaliDate}`,
-      value: nepaliDate,
-      label:
-        lang === 'ne'
-          ? convertToNepaliDigit(nepaliDate)
-          : nepaliDate.toString(),
+      id: `${year}${YEAR_MONTH_DATE_SEPARATOR}${month}${YEAR_MONTH_DATE_SEPARATOR}${date}`,
+      value: date,
+      label: dateLabel,
     },
   }
 }
@@ -114,34 +67,24 @@ export const getYears = (lang: Language): Year[] => {
   })
 }
 
-function generateYears(startYear: number, endYear: number) {
-  const years: {
-    label: {
-      ne: string
-      en: string
-    }
-    value: number
-    daysInMonth: [number, number, number][]
-  }[] = []
+function generateYears() {
+  let year = dateConverter.npMinYear()
 
-  const days = yearsWithDaysInMonth as unknown as {
-    [year: number]: {
-      daysInMonth: [number, number, number][]
-    }
-  }
-
-  for (let year = startYear; year <= endYear; year++) {
-    years.push({
+  return monthsData.map((month) => {
+    const [dates] = month
+    const yearData = {
       label: {
         ne: convertToNepaliDigit(year),
         en: year.toString(),
       },
       value: year,
-      daysInMonth: days[year].daysInMonth,
-    })
-  }
+      daysInMonth: dates,
+    }
 
-  return years
+    year++
+
+    return yearData
+  })
 }
 
 export const getMonths = (lang: Language, short = false): Month[] => {

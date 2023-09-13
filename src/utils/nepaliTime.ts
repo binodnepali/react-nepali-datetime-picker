@@ -1,5 +1,5 @@
 import { timeDays } from '@/constants/timeDays'
-import { dayjs } from '@/plugins/dayjs'
+import { NepaliDateTime } from '@/plugins/nepaliDateTime'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
 import {
@@ -18,7 +18,7 @@ export const getCurrentNepaliTime = (
   lang: Language = 'ne',
   hourFormat: HourFormat = 12,
 ): NepaliTime => {
-  const date = dayjs().tz('Asia/Kathmandu')
+  const date = new NepaliDateTime()
 
   const formatDate =
     hourFormat === 12 ? date.format('hh:mm A') : date.format('HH:mm A')

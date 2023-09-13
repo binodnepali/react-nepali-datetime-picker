@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import type { Language, NepaliDate, NepaliDateTime, NepaliTime } from '.'
+import type {
+  HourFormat,
+  Language,
+  NepaliDate,
+  NepaliDateTime,
+  NepaliTime,
+} from '.'
 import {
   DatePicker,
   DateTimePicker,
@@ -11,7 +17,8 @@ import {
 
 export default function App() {
   const { toggleTheme, theme } = useThemeToggle()
-  const [selectLang, setSelectLang] = useState<Language>('ne')
+  const [selectedLang, setSelectLang] = useState<Language>('ne')
+  const [selectedHourFormat, setSelectedHourFormat] = useState<HourFormat>(12)
 
   const handleOnDateSelect = (date?: NepaliDate) => {
     // eslint-disable-next-line no-console
@@ -30,11 +37,7 @@ export default function App() {
 
   return (
     <div className="ne-dt-p-4 ne-dt-min-h-screen">
-      <p className="ne-dt-text-lg ne-dt-text-gray-600">
-        This is a playground for rendering components.
-      </p>
-
-      <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
+      <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-gap-8 ne-dt-mt-4 ne-dt-md:mt-6">
         <div>
           <label htmlFor="lang" className="ne-dt-text-lg ne-dt-mr-2">
             Choose Language
@@ -48,7 +51,22 @@ export default function App() {
           </select>
         </div>
 
-        <div className="ne-dt-mt-4">
+        <div>
+          <label htmlFor="hour-format" className="ne-dt-text-lg ne-dt-mr-2">
+            Choose Hour Format
+          </label>
+          <select
+            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            onChange={(e) =>
+              setSelectedHourFormat(e.target.value as unknown as HourFormat)
+            }
+          >
+            <option value={12}>12</option>
+            <option value={24}>24</option>
+          </select>
+        </div>
+
+        <div>
           <label htmlFor="theme" className="ne-dt-text-lg ne-dt-mr-2">
             Choose Theme
           </label>
@@ -70,7 +88,7 @@ export default function App() {
           </label>
 
           <DatePicker
-            lang={selectLang}
+            lang={selectedLang}
             dateInput={{
               fullWidth: true,
             }}
@@ -84,7 +102,8 @@ export default function App() {
           </label>
 
           <TimePicker
-            lang={selectLang}
+            lang={selectedLang}
+            hourFormat={selectedHourFormat}
             timeInput={{
               fullWidth: true,
             }}
@@ -98,7 +117,8 @@ export default function App() {
           </label>
 
           <DateTimePicker
-            lang={'en'}
+            lang={selectedLang}
+            hourFormat={selectedHourFormat}
             datetimeInput={{
               fullWidth: true,
               error: {
@@ -114,7 +134,7 @@ export default function App() {
             Static Calendar
           </label>
 
-          <StaticCalendar />
+          <StaticCalendar lang={selectedLang} />
         </div>
 
         <div className="ne-dt-mb-8">
@@ -122,7 +142,10 @@ export default function App() {
             Static Time
           </label>
 
-          <StaticDesktopTime />
+          <StaticDesktopTime
+            lang={selectedLang}
+            hourFormat={selectedHourFormat}
+          />
         </div>
       </div>
     </div>

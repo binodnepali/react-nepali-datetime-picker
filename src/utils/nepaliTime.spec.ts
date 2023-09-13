@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import * as dayjs from '@/plugins/dayjs.ts'
+import * as nepaliDateTime from '@/plugins/nepaliDateTime'
 
 import {
   getCurrentNepaliTime,
@@ -11,17 +11,15 @@ import {
 describe('nepaliTime', () => {
   describe('getCurrentNepaliTime', () => {
     it('should return time in 12 hour format', () => {
-      const spy = vi.spyOn(dayjs, 'dayjs').mockImplementation(() => {
-        return {
-          tz: vi.fn(() => {
-            return {
-              format: vi.fn(() => {
-                return '01:30 PM'
-              }),
-            }
-          }),
-        } as unknown as dayjs.Dayjs
-      })
+      const spy = vi
+        .spyOn(nepaliDateTime, 'NepaliDateTime')
+        .mockImplementation(() => {
+          return {
+            format: vi.fn(() => {
+              return '01:30 PM'
+            }),
+          } as unknown as nepaliDateTime.NepaliDateTime
+        })
 
       const {
         hour: { label: hourLabel, value: hourValue },
@@ -77,17 +75,15 @@ describe('nepaliTime', () => {
     })
 
     it('should return time in 24 hour format', () => {
-      const spy = vi.spyOn(dayjs, 'dayjs').mockImplementation(() => {
-        return {
-          tz: vi.fn(() => {
-            return {
-              format: vi.fn(() => {
-                return '13:30 PM'
-              }),
-            }
-          }),
-        } as unknown as dayjs.Dayjs
-      })
+      const spy = vi
+        .spyOn(nepaliDateTime, 'NepaliDateTime')
+        .mockImplementation(() => {
+          return {
+            format: vi.fn(() => {
+              return '13:30 PM'
+            }),
+          } as unknown as nepaliDateTime.NepaliDateTime
+        })
 
       const {
         hour: { label: hourLabel, value: hourValue },
