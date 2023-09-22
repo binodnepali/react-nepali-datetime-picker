@@ -10,6 +10,9 @@ import type {
 import {
   DatePicker,
   DateTimePicker,
+  formatNepaliDateTime,
+  getCurrentNepaliDate,
+  getCurrentNepaliTime,
   StaticCalendar,
   StaticDesktopTime,
   TimePicker,
@@ -118,6 +121,7 @@ export default function App() {
 
           <DateTimePicker
             lang={selectedLang}
+            defaultValue={getCurrentDateTime(selectedLang)}
             hourFormat={selectedHourFormat}
             datetimeInput={{
               fullWidth: true,
@@ -191,4 +195,24 @@ function useThemeToggle() {
     toggleTheme: handleOnToggleTheme,
     theme,
   }
+}
+
+function getCurrentDateTime(lang: Language) {
+  const nepaliDate = getCurrentNepaliDate(lang)
+  const nepaliTime = getCurrentNepaliTime(lang)
+  const nepaliDateTime = formatNepaliDateTime(
+    {
+      date: {
+        ...nepaliDate,
+        month: {
+          ...nepaliDate.month,
+          value: nepaliDate.month.value + 1,
+        },
+      },
+      time: nepaliTime,
+    },
+    lang,
+  )
+
+  return nepaliDateTime
 }
