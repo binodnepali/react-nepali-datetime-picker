@@ -12,6 +12,10 @@ import { NepaliDateTime } from '@/types/NepaliDateTime'
 import { NepaliTime } from '@/types/NepaliTime'
 import {
   formatNepaliDateTime,
+  MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT,
+  MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT,
+  MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT,
+  MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT,
   validateNepaliDateTime,
 } from '@/utils/nepaliDateTime'
 
@@ -44,7 +48,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
       lang = 'ne',
       fullWidth = false,
       value,
-      hourFormat = 12,
+      hourFormat = '12',
       error: {
         message: errorMessage = '',
         show: showError = false,
@@ -84,6 +88,23 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
+
+      if (
+        (lang === 'ne' &&
+          hourFormat === '12' &&
+          value.length > MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT) ||
+        (lang === 'ne' &&
+          hourFormat === '24' &&
+          value.length > MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT) ||
+        (lang === 'en' &&
+          hourFormat === '12' &&
+          value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT) ||
+        (lang === 'en' &&
+          hourFormat === '24' &&
+          value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT)
+      ) {
+        return
+      }
 
       const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat)
 

@@ -16,12 +16,12 @@ import {
 
 export const getCurrentNepaliTime = (
   lang: Language = 'ne',
-  hourFormat: HourFormat = 12,
+  hourFormat: HourFormat = '12',
 ): NepaliTime => {
   const date = new NepaliDateTime()
 
   const formatDate =
-    hourFormat === 12 ? date.format('hh:mm A') : date.format('HH:mm A')
+    hourFormat === '12' ? date.format('hh:mm A') : date.format('HH:mm A')
 
   const hour = parseInt(formatDate.split(':')[0])
   const minute = parseInt(formatDate.split(':')[1])
@@ -49,16 +49,23 @@ export const getCurrentNepaliTime = (
 
 const TIME_12_REGEX = /^(0[1-9]|1[0-2]):([0-5][0-9])$/
 const TIME_24_REGEX = /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/
+
 export const NEPALI_COLON_CHARACTER = 'ः'
+
+export const MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT = 12
+export const MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT = 5
+export const MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT = 8
+export const MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT = 5
+
 export const validateTime = (
   time: string,
   lang: Language = 'ne',
-  hourFormat: HourFormat = 12,
+  hourFormat: HourFormat = '12',
 ): {
   valid: boolean
   value?: NepaliTime
 } => {
-  const is12HourFormat = hourFormat === 12
+  const is12HourFormat = hourFormat === '12'
 
   const [hourAndMinute, dayPart] = time.split(' ').map((t) => t)
 
@@ -240,7 +247,7 @@ export const sortValuesByCurrentValue = (
 export const formatTime = (
   time: NepaliTime,
   lang: Language = 'ne',
-  hourFormat: HourFormat = 12,
+  hourFormat: HourFormat = '12',
 ) => {
   const {
     hour: { value: hour },
@@ -257,8 +264,8 @@ export const formatTime = (
   const separator = lang === 'ne' ? NEPALI_COLON_CHARACTER : ':'
 
   const format = `${hourString}${separator}${minuteString}${
-    hourFormat === 12 ? ` ${dayString}` : ''
+    hourFormat === '12' ? ` ${dayString}` : ''
   }`
 
-  return format
+  return format.trim()
 }

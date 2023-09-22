@@ -12,7 +12,7 @@ interface NepaliTimeParams {
 }
 
 export const useNepaliTime = (params?: NepaliTimeParams) => {
-  const { lang = 'ne', hourFormat = 12 } = params ?? {}
+  const { lang = 'ne', hourFormat = '12' } = params ?? {}
 
   const currentTime = getCurrentNepaliTime(lang, hourFormat)
 
@@ -29,7 +29,7 @@ export const useNepaliTime = (params?: NepaliTimeParams) => {
     selectedDay,
     setSelectedDay,
     timeDays:
-      hourFormat === 12
+      hourFormat === '12'
         ? timeDays.map((timeDay) => ({
             label: timeDay.label[lang],
             value: timeDay.value,

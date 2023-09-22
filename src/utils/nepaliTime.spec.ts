@@ -89,7 +89,7 @@ describe('nepaliTime', () => {
         hour: { label: hourLabel, value: hourValue },
         minute: { label: minuteLabel, value: minuteValue },
         day: { label: dayLabel, value: dayValue } = {},
-      } = getCurrentNepaliTime('ne', 24)
+      } = getCurrentNepaliTime('ne', '24')
       expect({
         hour: hourLabel,
         minute: minuteLabel,
@@ -113,7 +113,7 @@ describe('nepaliTime', () => {
         hour: { label: enLabel, value: enValue },
         minute: { label: enMinuteLabel, value: enMinuteValue },
         day: { label: enDayLabel, value: enDayValue } = {},
-      } = getCurrentNepaliTime('en', 24)
+      } = getCurrentNepaliTime('en', '24')
       expect({
         hour: enLabel,
         minute: enMinuteLabel,
@@ -156,7 +156,7 @@ describe('nepaliTime', () => {
               value: undefined,
             },
           } = {},
-        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३० विहानी`, 'ne', 12)
+        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३० विहानी`, 'ne', '12')
 
         expect(valid).toBe(true)
         expect({
@@ -197,7 +197,7 @@ describe('nepaliTime', () => {
               value: undefined,
             },
           } = {},
-        } = validateTime(`12:30 AM`, 'en', 12)
+        } = validateTime(`12:30 AM`, 'en', '12')
 
         expect(valid).toBe(true)
         expect({
@@ -240,7 +240,7 @@ describe('nepaliTime', () => {
               value: undefined,
             },
           } = {},
-        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३०`, 'ne', 24)
+        } = validateTime(`१२${NEPALI_COLON_CHARACTER}३०`, 'ne', '24')
 
         expect(valid).toBe(true)
         expect({
@@ -281,7 +281,7 @@ describe('nepaliTime', () => {
               value: undefined,
             },
           } = {},
-        } = validateTime(`12:30`, 'en', 24)
+        } = validateTime(`12:30`, 'en', '24')
 
         expect(valid).toBe(true)
         expect({

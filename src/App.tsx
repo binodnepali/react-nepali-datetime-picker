@@ -21,7 +21,7 @@ import {
 export default function App() {
   const { toggleTheme, theme } = useThemeToggle()
   const [selectedLang, setSelectLang] = useState<Language>('ne')
-  const [selectedHourFormat, setSelectedHourFormat] = useState<HourFormat>(12)
+  const [selectedHourFormat, setSelectedHourFormat] = useState<HourFormat>('12')
 
   const handleOnDateSelect = (date?: NepaliDate) => {
     // eslint-disable-next-line no-console
@@ -64,8 +64,8 @@ export default function App() {
               setSelectedHourFormat(e.target.value as unknown as HourFormat)
             }
           >
-            <option value={12}>12</option>
-            <option value={24}>24</option>
+            <option value={'12'}>12</option>
+            <option value={'24'}>24</option>
           </select>
         </div>
 

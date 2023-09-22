@@ -48,7 +48,7 @@ export const DesktopDateTimePicker = ({
   fullWidth = false,
   onDateTimeSelect,
   datetimeInput = {},
-  hourFormat = 12,
+  hourFormat = '12',
   calendar = {},
   time = {},
   trans = {},
@@ -96,7 +96,7 @@ export const DesktopDateTimePicker = ({
 
   const handleOnSelectDate = (date: NepaliDate) => {
     const isTimeValid =
-      hourFormat === 12
+      hourFormat === '12'
         ? selectedDateTime?.time?.day?.value !== undefined
         : true
 
@@ -117,7 +117,8 @@ export const DesktopDateTimePicker = ({
     selectedDateTimeRef.current = dateTime
   }
   const handleOnTimeSelect = (time: NepaliTime) => {
-    const isTimeValid = hourFormat === 12 ? time.day?.value !== undefined : true
+    const isTimeValid =
+      hourFormat === '12' ? time.day?.value !== undefined : true
     const valid = selectedDateTime?.date && isTimeValid ? true : false
 
     const dateTime = {
@@ -254,7 +255,7 @@ export const DesktopDateTimePicker = ({
           nativeInput: {
             onChange: handleOnDateTimeInputChange,
             placeholder:
-              hourFormat === 12
+              hourFormat === '12'
                 ? dateTimeInputPlaceholder12HourFormat
                 : dateTimeInputPlaceholder24HourFormat,
             ...nativeInput,

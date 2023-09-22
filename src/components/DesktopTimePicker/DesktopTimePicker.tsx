@@ -34,7 +34,7 @@ export const DesktopTimePicker = ({
   timeInput = {},
   desktopTime = {},
   lang = 'ne',
-  hourFormat = 12,
+  hourFormat = '12',
   trans = {},
   ...rest
 }: DesktopTimePickerProps) => {
@@ -58,7 +58,7 @@ export const DesktopTimePicker = ({
 
   const handleOnTimeSelect = (time: NepaliTime) => {
     const isTimeValid =
-      hourFormat === 12 ? time?.day?.value !== undefined : true
+      hourFormat === '12' ? time?.day?.value !== undefined : true
 
     if (!isTimeValid) {
       return
@@ -111,7 +111,7 @@ export const DesktopTimePicker = ({
           nativeInput: {
             onChange: handleOnInputChange,
             placeholder:
-              hourFormat === 12
+              hourFormat === '12'
                 ? timeInputPlaceholder12HourFormat
                 : timeInputPlaceholder24HourFormat,
             ...nativeInput,

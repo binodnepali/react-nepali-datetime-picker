@@ -7,7 +7,11 @@ import { Input, InputProps } from '@/components/ui/Input/Input'
 import { cn } from '@/plugins/twMerge'
 import { Language } from '@/types/Language'
 import { NepaliDate } from '@/types/NepaliDate'
-import { formatNepaliDate, validateDate } from '@/utils/nepaliDate'
+import {
+  formatNepaliDate,
+  MAX_DATE_LENGTH,
+  validateDate,
+} from '@/utils/nepaliDate'
 
 export interface DateInputProps {
   className?: string
@@ -80,6 +84,10 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
+
+      if (value.length > MAX_DATE_LENGTH) {
+        return
+      }
 
       const { valid, value: val } = validateDate(value, lang)
 

@@ -1,1 +1,1 @@
-export type HourFormat = 12 | 24
+export type HourFormat = '12' | '24'

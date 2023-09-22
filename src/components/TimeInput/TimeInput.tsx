@@ -8,7 +8,14 @@ import { cn } from '@/plugins/twMerge'
 import { NepaliTime } from '@/types'
 import { HourFormat } from '@/types/HourFormat'
 import { Language } from '@/types/Language'
-import { formatTime, validateTime } from '@/utils/nepaliTime'
+import {
+  formatTime,
+  MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT,
+  MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT,
+  MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT,
+  MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT,
+  validateTime,
+} from '@/utils/nepaliTime'
 
 export type TimeInputTargetValue = {
   valid: boolean
@@ -42,7 +49,7 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
       lang = 'ne',
       input = {},
       fullWidth = false,
-      hourFormat = 12,
+      hourFormat = '12',
       selectedTime,
       error: {
         message: errorMessage = '',
@@ -87,6 +94,23 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
 
     const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
+
+      if (
+        (lang === 'ne' &&
+          hourFormat === '12' &&
+          value.length > MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT) ||
+        (lang === 'ne' &&
+          hourFormat === '24' &&
+          value.length > MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT) ||
+        (lang === 'en' &&
+          hourFormat === '12' &&
+          value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT) ||
+        (lang === 'en' &&
+          hourFormat === '24' &&
+          value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT)
+      ) {
+        return
+      }
 
       const { valid, value: validatedValue } = validateTime(
         value,

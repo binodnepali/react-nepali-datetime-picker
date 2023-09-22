@@ -30,7 +30,7 @@ export interface DesktopTimeProps extends HTMLAttributes<HTMLDivElement> {
 export const DesktopTime = ({
   className = '',
   contentClassName = '',
-  hourFormat = 12,
+  hourFormat = '12',
   lang = 'ne',
   selectedTime,
   onTimeSelect,
@@ -50,7 +50,7 @@ export const DesktopTime = ({
     hourFormat,
   })
 
-  const is12HourFormat = hourFormat === 12
+  const is12HourFormat = hourFormat === '12'
 
   const handleOnHourClick = (time: Time) => {
     setSelectedHour(() => time)
@@ -238,7 +238,7 @@ function HourList({
 
   const hours = useMemo(
     () =>
-      format === 12
+      format === '12'
         ? sortValuesByCurrentValue(selectedHour ?? hour, generate12Hours(lang))
         : sortValuesByCurrentValue(selectedHour ?? hour, generate24Hours(lang)),
     // eslint-disable-next-line react-hooks/exhaustive-deps

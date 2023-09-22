@@ -7,10 +7,15 @@ import { NepaliTime } from '@/types/NepaliTime'
 import { formatNepaliDate, validateDate } from './nepaliDate'
 import { formatTime, validateTime } from './nepaliTime'
 
+export const MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT = 23
+export const MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT = 16
+export const MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT = 19
+export const MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT = 16
+
 export const validateNepaliDateTime = (
   value: string,
   lang: Language = 'ne',
-  hourFormat: HourFormat = 12,
+  hourFormat: HourFormat = '12',
 ) => {
   const [date, time, timeDay] = value.split(' ')
 
@@ -62,7 +67,7 @@ export const validateNepaliDateTime = (
 export const formatNepaliDateTime = (
   nepaliDateTime: NepaliDateTime,
   lang: Language = 'ne',
-  hourFormat: HourFormat = 12,
+  hourFormat: HourFormat = '12',
 ) => {
   if (!nepaliDateTime.date || !nepaliDateTime.time) {
     return ''

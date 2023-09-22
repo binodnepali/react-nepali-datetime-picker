@@ -234,6 +234,8 @@ export const getWeekDays = (lang: Language, short = true): WeekDay[] => {
   })
 }
 
+export const MAX_DATE_LENGTH = 10
+
 export const validateDate = (
   value: string,
   lang = 'ne',
