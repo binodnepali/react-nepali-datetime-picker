@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.7](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-09-25)
+
+
+### Bug Fixes
+
+* no limit characters check in vomponent input ([636c70e](https://github.com/binodnepali/react-nepali-datetime-picker/commit/636c70e026575ebc9a7304a8de0c68e69a34185f))
+* time validation ([0a32cae](https://github.com/binodnepali/react-nepali-datetime-picker/commit/0a32cae1cd44261692b7f956cf9a2bf51f6a2030))
+
 ## [1.0.0-beta.6](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2023-09-13)
 
 
