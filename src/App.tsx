@@ -60,6 +60,7 @@ export default function App() {
           </label>
           <select
             className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            defaultValue={selectedHourFormat}
             onChange={(e) =>
               setSelectedHourFormat(e.target.value as unknown as HourFormat)
             }
@@ -200,6 +201,7 @@ function useThemeToggle() {
 function getCurrentDateTime(lang: Language) {
   const nepaliDate = getCurrentNepaliDate(lang)
   const nepaliTime = getCurrentNepaliTime(lang)
+
   const nepaliDateTime = formatNepaliDateTime(
     {
       date: {

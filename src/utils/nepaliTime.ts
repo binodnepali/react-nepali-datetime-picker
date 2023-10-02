@@ -24,13 +24,14 @@ export const getCurrentNepaliTime = (
     hourFormat === '12' ? date.format('hh:mm A') : date.format('HH:mm A')
 
   const hour = parseInt(formatDate.split(':')[0])
+  const hr = hourFormat === '12' && hour === 0 ? 12 : hour
   const minute = parseInt(formatDate.split(':')[1])
   const day = formatDate.split(' ')[1]
 
   return {
     hour: {
-      value: hour,
-      label: lang === 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
+      value: hr,
+      label: lang === 'ne' ? addLeadingNepaliZero(hr) : addLeadingZero(hr),
     },
     minute: {
       value: minute,
@@ -195,10 +196,10 @@ export const generate12Hours = (lang: Language): Time[] => {
   const hours = []
 
   for (let i = 1; i <= 12; i++) {
-    const hour = i < 12 ? i : 0
+    //const hour = i < 12 ? i : 0
     hours.push({
       value: i,
-      label: lang == 'ne' ? addLeadingNepaliZero(hour) : addLeadingZero(hour),
+      label: lang == 'ne' ? addLeadingNepaliZero(i) : addLeadingZero(i),
     })
   }
 
