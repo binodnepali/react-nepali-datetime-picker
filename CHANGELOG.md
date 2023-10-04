@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.8](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.5...v1.0.0-beta.8) (2023-10-04)
+
+
+### Bug Fixes
+
+* date format ([d355996](https://github.com/binodnepali/react-nepali-datetime-picker/commit/d3559968ed50ad3b711e3d4bcda057036d610e2f))
+* **DesktopDateTimePicker:** ui not update when default value changed ([c82bcbd](https://github.com/binodnepali/react-nepali-datetime-picker/commit/c82bcbd505429cb181c1558a856311309ab41701))
+* incorrect nepali date ([f885ac6](https://github.com/binodnepali/react-nepali-datetime-picker/commit/f885ac67bf3ba2a5481ab2fc9a9861e52530e780))
+* no limit characters check in vomponent input ([636c70e](https://github.com/binodnepali/react-nepali-datetime-picker/commit/636c70e026575ebc9a7304a8de0c68e69a34185f))
+* time validation ([0a32cae](https://github.com/binodnepali/react-nepali-datetime-picker/commit/0a32cae1cd44261692b7f956cf9a2bf51f6a2030))
+* time validation for 12 hour format ([702862c](https://github.com/binodnepali/react-nepali-datetime-picker/commit/702862c038cef54b92b60e1d782fb4a469e6abd8))
+
 ## [1.0.0-beta.7](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2023-09-25)
 
 
