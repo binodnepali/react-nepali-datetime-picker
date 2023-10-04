@@ -343,7 +343,9 @@ export const formatNepaliDate = (date: NepaliDate, lang: Language) => {
   const formattedDate = format
     .replace(
       'YYYY',
-      lang === 'ne' ? date.year.label : date.year.value.toString(),
+      lang === 'ne'
+        ? convertToNepaliDigit(date.year.value)
+        : date.year.value.toString(),
     )
     .replace(
       'MM',
