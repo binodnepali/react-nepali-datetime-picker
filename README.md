@@ -4,8 +4,6 @@
 
 This component library is built with React and TailwindCSS, and it is highly customizable to meet the needs of any user. And it aims to provide a comprehensive solution for integrating Nepali calendar functionality into your React applications. It offers a collection of reusable components that will enable seamless date picking, time picking, and datetime picking capabilities.
 
-Demo site [link](https://react-nepali-datetime-picker.web.app)
-
 ## Components
 
 * **Date Picker**: Let's user select nepali calendar date. ✅ 
@@ -14,6 +12,8 @@ Demo site [link](https://react-nepali-datetime-picker.web.app)
 * **Static Calendar**: Let's user select nepali calendar date without popupover/modal. ✅ 
 * **Static Desktop Time**: Let's user select nepali time without popupover/modal. ✅ 
 * **Static Mobile Time**: Let's user select nepali time with clock layout and no popupover/modal. 🚧
+
+Demo site [link](https://react-nepali-datetime-picker.web.app)
 
 ## Before installation
 
