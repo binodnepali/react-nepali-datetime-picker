@@ -6,6 +6,15 @@ import type {
   NepaliDateTime,
   NepaliTime,
 } from 'react-nepali-datetime-picker'
+
+// import type {
+//   HourFormat,
+//   Language,
+//   NepaliDate,
+//   NepaliDateTime,
+//   NepaliTime,
+// } from '../../dist/index.es.js'
+
 import {
   DatePicker,
   DateTimePicker,
@@ -17,7 +26,19 @@ import {
   TimePicker,
 } from 'react-nepali-datetime-picker'
 
+// import {
+//   DatePicker,
+//   DateTimePicker,
+//   formatNepaliDateTime,
+//   getCurrentNepaliDate,
+//   getCurrentNepaliTime,
+//   StaticCalendar,
+//   StaticDesktopTime,
+//   TimePicker,
+// } from '../../dist/index.es.js'
+
 import 'react-nepali-datetime-picker/dist/style.css'
+// import '../../dist/style.css'
 
 export default function App() {
   const { toggleTheme, theme } = useThemeToggle()
