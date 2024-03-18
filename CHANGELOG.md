@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.9](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2024-03-18)
+
+
+### Bug Fixes
+
+* bg color overriden by tailwind preflight ([b95bd68](https://github.com/binodnepali/react-nepali-datetime-picker/commit/b95bd688f12d7d1ac0633a56928806cb6d8eb076))
+
 ## [1.0.0-beta.8](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.5...v1.0.0-beta.8) (2023-10-04)
 
 
