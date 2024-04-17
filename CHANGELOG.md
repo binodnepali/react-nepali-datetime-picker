@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.11](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2024-04-17)
+
+
+### Bug Fixes
+
+* **#13:** inconsistent months date show in the calendar view for 2081 ([7ad8db8](https://github.com/binodnepali/react-nepali-datetime-picker/commit/7ad8db8ffac18d2ad2ec33e539ccf3f7f0c7767d)), closes [#13](https://github.com/binodnepali/react-nepali-datetime-picker/issues/13)
+
 ## [1.0.0-beta.10](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2024-04-17)
 
 
