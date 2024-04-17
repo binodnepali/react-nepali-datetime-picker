@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.10](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2024-04-17)
+
+
+### Bug Fixes
+
+* **#7:** am shown when time is 12 o'clock afternoon ([ccc9384](https://github.com/binodnepali/react-nepali-datetime-picker/commit/ccc9384843cb88edb956ba60af0e2deb779d65e3)), closes [#7](https://github.com/binodnepali/react-nepali-datetime-picker/issues/7)
+
 ## [1.0.0-beta.9](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2024-03-18)
 
 
