@@ -12,8 +12,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-nepali-datetime-picker:
-    specifier: 1.0.0-beta.9
-    version: 1.0.0-beta.9
+    specifier: 1.0.0-beta.11
+    version: 1.0.0-beta.11
 
 devDependencies:
   '@types/react':
@@ -1628,8 +1628,8 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /nepali-datetime@1.2.0:
-    resolution: {integrity: sha512-xYs0IsUZOlOW4It0y1GqyhXOJScFebE19wMJbi+1Jlwj1kr5cBHBCL4QBaSAZQc5dvOPodg6Sed243vm1drWyw==}
+  /nepali-datetime@1.2.1:
+    resolution: {integrity: sha512-d6nUSYFTGV/Cpzno7IjtH0GzH14wXW5kQgq+UEN894Wb4jSUUYgwhntls90UZoLMoFyRUktOCEV4ZzgvoqfDKg==}
     dev: false
 
   /node-releases@2.0.14:
@@ -1840,11 +1840,11 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-nepali-datetime-picker@1.0.0-beta.9:
-    resolution: {integrity: sha512-IibjiiC1KR7Vme67DEdhTUUxPXVbbPcAER48eLg/79/ANH4/AE6xe0tJneMfI1VYrRca+eDBlr0fSu4XlGimhQ==}
+  /react-nepali-datetime-picker@1.0.0-beta.11:
+    resolution: {integrity: sha512-X5kyKMTwRwUNF9crQLj185ormw2DvX95khKbdRKAhTEs45XQcUPzcABdjpAN0if/GG1ij71EhzVDTS7FqmwmcQ==}
     engines: {node: '>=16.8.0'}
     dependencies:
-      nepali-datetime: 1.2.0
+      nepali-datetime: 1.2.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
