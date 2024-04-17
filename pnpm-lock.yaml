@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   nepali-datetime:
-    specifier: 1.1.1
-    version: 1.1.1
+    specifier: 1.2.1
+    version: 1.2.1
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -3406,8 +3406,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /nepali-datetime@1.1.1:
-    resolution: {integrity: sha512-vesqhb7MGelGbIDWV1MNaLfrA1t4OFaHTP1vstl+Rldqp/uHn6w6mM+j8/WEauZJPCpfbW+LOPTFDtKDLbXHYA==}
+  /nepali-datetime@1.2.1:
+    resolution: {integrity: sha512-d6nUSYFTGV/Cpzno7IjtH0GzH14wXW5kQgq+UEN894Wb4jSUUYgwhntls90UZoLMoFyRUktOCEV4ZzgvoqfDKg==}
     dev: false
 
   /node-releases@2.0.13:
