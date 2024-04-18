@@ -16,7 +16,7 @@
     "react-nepali-datetime-picker"
   ],
   "private": false,
-  "version": "1.0.0-beta.12",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
   "main": "dist/index.umd.js",
@@ -68,6 +68,9 @@
     "npm:publish:alpha": "pnpm npm:prepublish && pnpm prerelease:alpha && pnpm npm:publish && pnpm git:push",
     "npm:publish:beta": "pnpm npm:prepublish && pnpm prerelease:beta && pnpm npm:publish && pnpm git:push",
     "npm:publish:rc": "pnpm npm:prepublish && pnpm prerelease:rc && pnpm npm:publish && pnpm git:push",
+    "npm:publish:minor": "pnpm npm:prepublish && pnpm release --release-as minor && pnpm npm:publish && pnpm git:push",
+    "npm:publish:major": "pnpm npm:prepublish && pnpm release --release-as major && pnpm npm:publish && pnpm git:push",
+    "npm:publish:patch": "pnpm npm:prepublish && pnpm release --release-as patch && pnpm npm:publish && pnpm git:push",
     "deploy:demo-site": "cd demo-site && pnpm deploy"
   },
   "dependencies": {
