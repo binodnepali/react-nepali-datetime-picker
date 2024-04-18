@@ -12,8 +12,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-nepali-datetime-picker:
-    specifier: 1.0.0-beta.11
-    version: 1.0.0-beta.11
+    specifier: 1.0.0-beta.12
+    version: 1.0.0-beta.12
 
 devDependencies:
   '@types/react':
@@ -1840,8 +1840,8 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-nepali-datetime-picker@1.0.0-beta.11:
-    resolution: {integrity: sha512-X5kyKMTwRwUNF9crQLj185ormw2DvX95khKbdRKAhTEs45XQcUPzcABdjpAN0if/GG1ij71EhzVDTS7FqmwmcQ==}
+  /react-nepali-datetime-picker@1.0.0-beta.12:
+    resolution: {integrity: sha512-j+iFys6xi504vUsAWRWc2J7pbULGgsdLwkf3Oc7NRG6I4hMn5IIsNOLA59ufSAvLiXYC9F0PpdJ1bomWn7Xhdw==}
     engines: {node: '>=16.8.0'}
     dependencies:
       nepali-datetime: 1.2.1
