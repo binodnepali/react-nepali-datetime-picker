@@ -1593,7 +1593,7 @@ export const monthsData: Array<[Array<[number, number, number]>, number]> = [
       [1, 29, 12],
       [2, 30, 10],
       [4, 29, 9],
-      [5, 30, 6],
+      [5, 31, 6],
     ],
     366,
   ], // 2081 BS
