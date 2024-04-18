@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.12](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2024-04-18)
+
+
+### Bug Fixes
+
+* **#15:** year 2080 last month total days ([d01387e](https://github.com/binodnepali/react-nepali-datetime-picker/commit/d01387e2d75c0553496f14779d9f30ff0bf10ca1)), closes [#15](https://github.com/binodnepali/react-nepali-datetime-picker/issues/15)
+* **#15:** year 2081 last month days ([cdb3f44](https://github.com/binodnepali/react-nepali-datetime-picker/commit/cdb3f447556277a7a6940c2bb10b168d4a348237)), closes [#15](https://github.com/binodnepali/react-nepali-datetime-picker/issues/15)
+
 ## [1.0.0-beta.11](https://github.com/binodnepali/react-nepali-datetime-picker/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2024-04-17)
 
 
