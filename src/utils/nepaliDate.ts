@@ -151,7 +151,9 @@ export const getMonthDatesByYear = ({
 const getDatesInMonthByYear = (year: number, month: number) => {
   const prevMonth = month - 1 < 0 ? 11 : month - 1
 
-  const prevMonthDates = years.find((y) => y.value === year)?.daysInMonth[
+  const prevYear = month - 1 < 0 ? year - 1 : year
+
+  const prevMonthDates = years.find((y) => y.value === prevYear)?.daysInMonth[
     prevMonth
   ]
   const currentMonthDates = years.find((y) => y.value === year)?.daysInMonth[
