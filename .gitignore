@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 analyse.html
+package-lock.json
+yarn.lock
+burn.lock
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +26,6 @@ analyse.html
 *.njsproj
 *.sln
 *.sw?
+
+# ignore files
+today.md
