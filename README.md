@@ -82,7 +82,7 @@ export default MyComponent;
     "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@types/node": "22.14.1",
+    "@types/node": "22.15.15",
     "@eslint/js": "9.25.0",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
@@ -98,35 +98,31 @@ export default MyComponent;
     "rollup-plugin-visualizer": "5.14.0",
     "vite-plugin-dts": "4.5.3",
     "vite-plugin-svgr": "4.3.0",
-    "vitest": "3.1.1"
-  }
-}
-```
-
-### tailwindcss
-
-```json
-{
-  "devDependencies": {
-    "autoprefixer": "10.4.21",
-    "clsx": "2.1.1",
-    "postcss": "8.5.3",
-    "tailwind-merge": "3.0.2",
-    "tailwindcss": "4.0.17"
-  }
-}
-```
-
-### project dx
-
-```json
-{
-  "devDependencies": {
+    "vitest": "3.1.1",
     "husky": "9.1.7",
     "lint-staged": "15.5.0",
     "@commitlint/cli": "19.8.0",
     "@commitlint/config-conventional": "19.8.0",
     "commit-and-tag-version": "12.5.0"
+  }
+}
+```
+
+### tailwindcss & shadcn/ui
+
+```json
+{
+  "dependencies": {
+    "@radix-ui/react-label": "2.1.6",
+    "@tailwindcss/vite": "4.1.5",
+    "class-variance-authority": "0.7.1",
+    "lucide-react": "0.508.0",
+    "tailwindcss": "4.1.5",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.2.0"
+  },
+  "devDependencies": {
+    "tw-animate-css": "1.2.9"
   }
 }
 ```

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 import type {
   HourFormat,
@@ -6,7 +6,7 @@ import type {
   NepaliDate,
   NepaliDateTime,
   NepaliTime,
-} from '.'
+} from ".";
 import {
   DatePicker,
   DateTimePicker,
@@ -16,35 +16,35 @@ import {
   StaticCalendar,
   StaticDesktopTime,
   TimePicker,
-} from '.'
+} from ".";
+import { Label } from "./components/ui/label";
 
 export default function App() {
-  const { toggleTheme, theme } = useThemeToggle()
-  const [selectedLang, setSelectLang] = useState<Language>('ne')
-  const [selectedHourFormat, setSelectedHourFormat] = useState<HourFormat>('12')
+  const { toggleTheme, theme } = useThemeToggle();
+  const [selectedLang, setSelectLang] = useState<Language>("ne");
+  const [selectedHourFormat, setSelectedHourFormat] =
+    useState<HourFormat>("12");
 
   const handleOnDateSelect = (date?: NepaliDate) => {
-     
-    console.log('handleOnDateSelect', date)
-  }
+    console.log("handleOnDateSelect", date);
+  };
 
   const handleOnTimeSelect = (time?: NepaliTime) => {
-     
-    console.log('handleOnTimeSelect', time)
-  }
+    console.log("handleOnTimeSelect", time);
+  };
 
   const handleOnDateTimeSelect = (dateTime?: NepaliDateTime) => {
-     
-    console.log('handleOnDateTimeSelect', dateTime)
-  }
+    console.log("handleOnDateTimeSelect", dateTime);
+  };
 
   return (
-    <div className="ne-dt-p-4 ne-dt-min-h-screen">
+    <div className="nedt:p-4 ne-dt-min-h-screen">
       <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-gap-8 ne-dt-mt-4 ne-dt-md:mt-6">
         <div>
-          <label htmlFor="lang" className="ne-dt-text-lg ne-dt-mr-2">
+          <Label htmlFor="lang" className="nedt:mr-2">
             Choose Language
-          </label>
+          </Label>
+
           <select
             className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
             onChange={(e) => setSelectLang(e.target.value as Language)}
@@ -65,8 +65,8 @@ export default function App() {
               setSelectedHourFormat(e.target.value as unknown as HourFormat)
             }
           >
-            <option value={'12'}>12</option>
-            <option value={'24'}>24</option>
+            <option value={"12"}>12</option>
+            <option value={"24"}>24</option>
           </select>
         </div>
 
@@ -154,53 +154,53 @@ export default function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function useThemeToggle() {
-  const [theme, setTheme] = useState<string>('light')
+  const [theme, setTheme] = useState<string>("light");
 
   const handleOnToggleTheme = (theme: string) => {
-    if (theme === 'dark') {
+    if (theme === "dark") {
       //document.documentElement.classList.add('ne-dt-dark')
-      document.documentElement.setAttribute('data-theme', 'dark')
-      setTheme('dark')
+      document.documentElement.setAttribute("data-theme", "dark");
+      setTheme("dark");
     } else {
       //document.documentElement.classList.remove('ne-dt-dark')
-      document.documentElement.setAttribute('data-theme', 'light')
+      document.documentElement.setAttribute("data-theme", "light");
 
-      setTheme('light')
+      setTheme("light");
     }
-    localStorage.theme = theme
-  }
+    localStorage.theme = theme;
+  };
 
   useEffect(() => {
     if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches)
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
       //document.documentElement.classList.add('ne-dt-dark')
-      document.documentElement.setAttribute('data-theme', 'dark')
-      localStorage.theme = 'dark'
-      setTheme('dark')
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.theme = "dark";
+      setTheme("dark");
     } else {
       //document.documentElement.classList.remove('ne-dt-dark')
-      document.documentElement.setAttribute('data-theme', 'light')
-      localStorage.theme = 'light'
-      setTheme('light')
+      document.documentElement.setAttribute("data-theme", "light");
+      localStorage.theme = "light";
+      setTheme("light");
     }
-  }, [])
+  }, []);
 
   return {
     toggleTheme: handleOnToggleTheme,
     theme,
-  }
+  };
 }
 
 function getCurrentDateTime(lang: Language) {
-  const nepaliDate = getCurrentNepaliDate(lang)
-  const nepaliTime = getCurrentNepaliTime(lang)
+  const nepaliDate = getCurrentNepaliDate(lang);
+  const nepaliTime = getCurrentNepaliTime(lang);
 
   const nepaliDateTime = formatNepaliDateTime(
     {
@@ -214,7 +214,7 @@ function getCurrentDateTime(lang: Language) {
       time: nepaliTime,
     },
     lang,
-  )
+  );
 
-  return nepaliDateTime
+  return nepaliDateTime;
 }

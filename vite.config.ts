@@ -4,6 +4,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import svgr from "vite-plugin-svgr";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,6 +31,7 @@ export default defineConfig({
       include: ["**/*.svg"],
     }),
     react(),
+    tailwindcss(),
     dts(),
     visualizer({
       template: "treemap", // or sunburst
