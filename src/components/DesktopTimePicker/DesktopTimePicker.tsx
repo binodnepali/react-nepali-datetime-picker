@@ -1,107 +1,111 @@
-import { HTMLAttributes, useRef, useState } from 'react'
+import type { HTMLAttributes} from "react";
+import { useRef, useState } from "react";
 
+import type {
+  DesktopTimeProps} from "@/components/DesktopTime/DesktopTime";
 import {
-  DesktopTime,
-  DesktopTimeProps,
-} from '@/components/DesktopTime/DesktopTime'
-import { Modal, ModalProps } from '@/components/Modal/Modal'
-import {
-  TimeInput,
+  DesktopTime
+} from "@/components/DesktopTime/DesktopTime";
+import type { ModalProps } from "@/components/Modal/Modal";
+import { Modal } from "@/components/Modal/Modal";
+import type {
   TimeInputProps,
-  TimeInputTargetValue,
-} from '@/components/TimeInput/TimeInput'
-import { cn } from '@/plugins/twMerge'
-import transData from '@/translations/DesktopTimePicker.json'
-import { HourFormat } from '@/types/HourFormat'
-import { Language } from '@/types/Language'
-import { NepaliTime } from '@/types/NepaliTime'
+  TimeInputTargetValue} from "@/components/TimeInput/TimeInput";
+import {
+  TimeInput
+} from "@/components/TimeInput/TimeInput";
+import { cn } from "@/plugins/twMerge";
+import transData from "@/translations/DesktopTimePicker.json";
+import type { HourFormat } from "@/types/HourFormat";
+import type { Language } from "@/types/Language";
+import type { NepaliTime } from "@/types/NepaliTime";
 
 interface DesktopTimePickerProps extends HTMLAttributes<HTMLDivElement> {
-  className?: string
-  desktopTime?: DesktopTimeProps
-  hourFormat?: HourFormat
-  lang?: Language
-  modal?: ModalProps
-  onTimeSelect?: (time?: NepaliTime) => void
-  timeInput?: TimeInputProps
-  trans?: DesktopTimePickerTrans
+  className?: string;
+  desktopTime?: DesktopTimeProps;
+  hourFormat?: HourFormat;
+  lang?: Language;
+  modal?: ModalProps;
+  onTimeSelect?: (time?: NepaliTime) => void;
+  timeInput?: TimeInputProps;
+  trans?: DesktopTimePickerTrans;
 }
 
 export const DesktopTimePicker = ({
-  className = '',
+  className = "",
   onTimeSelect,
   modal = {},
   timeInput = {},
   desktopTime = {},
-  lang = 'ne',
-  hourFormat = '12',
+  lang = "ne",
+  hourFormat = "12",
   trans = {},
   ...rest
 }: DesktopTimePickerProps) => {
   const {
     input: { nativeInput = {}, icon: inputIcon = {}, ...inputRest } = {},
     ...timeInputRest
-  } = timeInput
+  } = timeInput;
 
-  const { className: timeClassName = '', ...desktopTimeRest } = desktopTime
+  const { className: timeClassName = "", ...desktopTimeRest } = desktopTime;
 
   const {
     onClose: onCloseModal,
-    modalContentClassName = '',
+    modalContentClassName = "",
     ...modalRest
-  } = modal
+  } = modal;
 
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const [selectedTime, setSelectedTime] = useState<NepaliTime>()
-  const selectedTimeRef = useRef<NepaliTime>()
+  const [selectedTime, setSelectedTime] = useState<NepaliTime>();
+  const selectedTimeRef = useRef<NepaliTime>(undefined);
 
   const handleOnTimeSelect = (time: NepaliTime) => {
     const isTimeValid =
-      hourFormat === '12' ? time?.day?.value !== undefined : true
+      hourFormat === "12" ? time?.day?.value !== undefined : true;
 
     if (!isTimeValid) {
-      return
+      return;
     }
 
-    setSelectedTime(() => time)
-    selectedTimeRef.current = time
-    onTimeSelect?.(time)
+    setSelectedTime(() => time);
+    selectedTimeRef.current = time;
+    onTimeSelect?.(time);
 
-    setShowModal(() => false)
-  }
+    setShowModal(() => false);
+  };
 
   const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+    const value = e.target.value;
 
-    const targetValue = JSON.parse(value) as TimeInputTargetValue
+    const targetValue = JSON.parse(value) as TimeInputTargetValue;
 
     if (!targetValue.valid) {
-      selectedTimeRef.current = undefined
-      return
+      selectedTimeRef.current = undefined;
+      return;
     }
 
-    selectedTimeRef.current = targetValue.value
-    onTimeSelect?.(targetValue.value)
-  }
+    selectedTimeRef.current = targetValue.value;
+    onTimeSelect?.(targetValue.value);
+  };
 
   const handleOnIconClick = () => {
-    setShowModal(() => !showModal)
-  }
+    setShowModal(() => !showModal);
+  };
 
   const { timeInputPlaceholder12HourFormat, timeInputPlaceholder24HourFormat } =
-    trans[lang] ?? transData[lang]
+    trans[lang] ?? transData[lang];
 
-  const timeInputRef = useRef<HTMLDivElement>(null)
+  const timeInputRef = useRef<HTMLDivElement>(null);
 
   const handleOnModalClose = () => {
-    setShowModal(() => false)
-    onCloseModal?.()
-  }
+    setShowModal(() => false);
+    onCloseModal?.();
+  };
 
   return (
     <div
-      className={cn('ne-dt-relative ne-dt-flex ne-dt-flex-col', className)}
+      className={cn("ne-dt-relative ne-dt-flex ne-dt-flex-col", className)}
       {...rest}
     >
       <TimeInput
@@ -111,7 +115,7 @@ export const DesktopTimePicker = ({
           nativeInput: {
             onChange: handleOnInputChange,
             placeholder:
-              hourFormat === '12'
+              hourFormat === "12"
                 ? timeInputPlaceholder12HourFormat
                 : timeInputPlaceholder24HourFormat,
             ...nativeInput,
@@ -133,7 +137,7 @@ export const DesktopTimePicker = ({
           showModal={showModal}
           inputRef={timeInputRef}
           modalContentClassName={cn(
-            'ne-dt-px-4 md:ne-dt-px-0',
+            "ne-dt-px-4 md:ne-dt-px-0",
             modalContentClassName,
           )}
           {...modalRest}
@@ -144,7 +148,7 @@ export const DesktopTimePicker = ({
             lang={lang}
             hourFormat={hourFormat}
             className={cn(
-              'ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-1 md:ne-dt-p-2',
+              "ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-1 md:ne-dt-p-2",
               timeClassName,
             )}
             {...desktopTimeRest}
@@ -152,13 +156,13 @@ export const DesktopTimePicker = ({
         </Modal>
       )}
     </div>
-  )
-}
+  );
+};
 
 type DesktopTimePickerTrans = {
   [lang in Language]?: {
-    timeInputPlaceholder12HourFormat: string
-    timeInputPlaceholder24HourFormat: string
-    timeInputError: string
-  }
-}
+    timeInputPlaceholder12HourFormat: string;
+    timeInputPlaceholder24HourFormat: string;
+    timeInputError: string;
+  };
+};

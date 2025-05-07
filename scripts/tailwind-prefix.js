@@ -8,7 +8,7 @@ function addPrefix(classNames) {
     .map((className) => CLASS_PREFIX + className)
     .join(' ')
 
-  // eslint-disable-next-line no-console
+   
   console.log(prefixedClassName)
 
   return prefixedClassName

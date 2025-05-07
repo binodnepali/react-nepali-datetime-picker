@@ -24,17 +24,17 @@ export default function App() {
   const [selectedHourFormat, setSelectedHourFormat] = useState<HourFormat>('12')
 
   const handleOnDateSelect = (date?: NepaliDate) => {
-    // eslint-disable-next-line no-console
+     
     console.log('handleOnDateSelect', date)
   }
 
   const handleOnTimeSelect = (time?: NepaliTime) => {
-    // eslint-disable-next-line no-console
+     
     console.log('handleOnTimeSelect', time)
   }
 
   const handleOnDateTimeSelect = (dateTime?: NepaliDateTime) => {
-    // eslint-disable-next-line no-console
+     
     console.log('handleOnDateTimeSelect', dateTime)
   }
 

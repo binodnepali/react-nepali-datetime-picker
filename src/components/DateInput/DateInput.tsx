@@ -1,65 +1,66 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from "react";
 
-import CalendarMonth from '@/assets/CalendarMonth.svg'
-import { Button } from '@/components/ui/Button/Button'
-import { Hint } from '@/components/ui/Hint/Hint'
-import { Input, InputProps } from '@/components/ui/Input/Input'
-import { cn } from '@/plugins/twMerge'
-import { Language } from '@/types/Language'
-import { NepaliDate } from '@/types/NepaliDate'
+import CalendarMonth from "@/assets/CalendarMonth.svg";
+import { Button } from "@/components/ui/Button/Button";
+import { Hint } from "@/components/ui/Hint/Hint";
+import type { InputProps } from "@/components/ui/Input/Input";
+import { Input } from "@/components/ui/Input/Input";
+import { cn } from "@/plugins/twMerge";
+import type { Language } from "@/types/Language";
+import type { NepaliDate } from "@/types/NepaliDate";
 import {
   formatNepaliDate,
   MAX_DATE_LENGTH,
   validateDate,
-} from '@/utils/nepaliDate'
+} from "@/utils/nepaliDate";
 
 export interface DateInputProps {
-  className?: string
-  lang?: Language
-  value?: NepaliDate
-  input?: InputProps
+  className?: string;
+  lang?: Language;
+  value?: NepaliDate;
+  input?: InputProps;
   error?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
   success?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
-  fullWidth?: boolean
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
+  fullWidth?: boolean;
 }
 
 export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
   function DateInput(
     {
-      className = '',
+      className = "",
       input = {},
-      lang = 'ne',
+      lang = "ne",
       fullWidth = false,
       value,
       error: {
-        message: errorMessage = '',
+        message: errorMessage = "",
         show: showError = false,
-        rootClassName: errorRootClassName = '',
-        className: errorClassName = '',
+        rootClassName: errorRootClassName = "",
+        className: errorClassName = "",
       } = {},
       success: {
-        message: successMessage = '',
+        message: successMessage = "",
         show: showSuccess = false,
-        rootClassName: successRootClassName = '',
-        className: successClassName = '',
+        rootClassName: successRootClassName = "",
+        className: successClassName = "",
       } = {},
     }: DateInputProps,
     ref,
-  ): JSX.Element {
+  ) {
     const {
       nativeInput: {
         onChange: onInputChange,
-        className: nativeInputClassName = '',
+        className: nativeInputClassName = "",
         ...nativeInputRest
       } = {},
       icon: {
@@ -74,26 +75,26 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         ),
         ...inputIconRest
       } = {},
-      className: inputClassName = '',
+      className: inputClassName = "",
       ...inputRest
-    } = input
+    } = input;
 
-    const [val, setVal] = useState<string>('')
+    const [val, setVal] = useState<string>("");
 
-    const [isValid, setIsValid] = useState<boolean>(true)
+    const [isValid, setIsValid] = useState<boolean>(true);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
+      const { value } = e.target;
 
       if (value.length > MAX_DATE_LENGTH) {
-        return
+        return;
       }
 
-      const { valid, value: val } = validateDate(value, lang)
+      const { valid, value: val } = validateDate(value, lang);
 
-      setIsValid(() => valid)
+      setIsValid(() => valid);
 
-      setVal(() => value)
+      setVal(() => value);
 
       e.target.value = JSON.stringify({
         isValid: valid,
@@ -102,39 +103,39 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
               value: val,
             }
           : {}),
-      })
+      });
 
-      onInputChange?.(e)
-    }
+      onInputChange?.(e);
+    };
 
     useEffect(() => {
       if (!value) {
-        setVal(() => '')
+        setVal(() => "");
 
-        return
+        return;
       }
 
-      setVal(() => formatNepaliDate(value, lang))
-      setIsValid(() => true)
-    }, [lang, value])
+      setVal(() => formatNepaliDate(value, lang));
+      setIsValid(() => true);
+    }, [lang, value]);
 
     return (
-      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
+      <div className={cn("ne-dt-flex ne-dt-flex-col", className)} ref={ref}>
         <Input
-          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
+          className={cn(inputClassName, fullWidth && "ne-dt-w-full")}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
             className: cn(
               nativeInputClassName,
-              fullWidth && 'ne-dt-w-full',
+              fullWidth && "ne-dt-w-full",
               showError &&
                 !isValid &&
-                'ne-dt-border-error focus:ne-dt-outline-error',
+                "ne-dt-border-error focus:ne-dt-outline-error",
               showSuccess &&
                 isValid &&
                 val.length > 0 &&
-                'ne-dt-border-success focus:ne-dt-outline-success',
+                "ne-dt-border-success focus:ne-dt-outline-success",
             ),
             ...nativeInputRest,
           }}
@@ -148,7 +149,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         {showError && errorMessage && !isValid && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full",
               errorRootClassName,
             )}
           >
@@ -159,7 +160,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         {showSuccess && successMessage && isValid && val.length > 0 && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full",
               successRootClassName,
             )}
           >
@@ -170,11 +171,11 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
           </div>
         )}
       </div>
-    )
+    );
   },
-)
+);
 
 export type DateInputTargetValue = {
-  valid: boolean
-  value: NepaliDate | undefined
-}
+  valid: boolean;
+  value: NepaliDate | undefined;
+};
