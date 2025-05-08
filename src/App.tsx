@@ -38,15 +38,15 @@ export default function App() {
   };
 
   return (
-    <div className="nedt:p-4 ne-dt-min-h-screen">
-      <div className="ne-dt-flex ne-dt-flex-col md:ne-dt-flex-row ne-dt-gap-8 ne-dt-mt-4 ne-dt-md:mt-6">
+    <div className="nedt:p-4 nedt:min-h-screen">
+      <div className="nedt:flex nedt:flex-col nedt:md:flex-row nedt:gap-8 nedt:mt-4 nedt:md:mt-6">
         <div>
-          <Label htmlFor="lang" className="nedt:mr-2">
+          <Label htmlFor="lang" className="nedt:mr-2 nedt:inline">
             Choose Language
           </Label>
 
           <select
-            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            className="nedt:py-2 nedt:px-4 nedt:text-lg nedt:bg-white nedt:border nedt:border-gray-300 nedt:rounded-md nedt:shadow-sm nedt:focus:outline-none nedt:focus:ring-1 nedt:focus:ring-blue-500 nedt:appearance-none nedt:w-fit"
             onChange={(e) => setSelectLang(e.target.value as Language)}
           >
             <option value="ne">Nepali</option>
@@ -55,11 +55,11 @@ export default function App() {
         </div>
 
         <div>
-          <label htmlFor="hour-format" className="ne-dt-text-lg ne-dt-mr-2">
+          <label htmlFor="hour-format" className="nedt:text-lg nedt:mr-2">
             Choose Hour Format
           </label>
           <select
-            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            className="nedt:py-2 nedt:px-4 nedt:text-lg nedt:bg-white nedt:border nedt:border-gray-300 nedt:rounded-md nedt:shadow-sm nedt:focus:outline-none nedt:focus:ring-1 nedt:focus:ring-blue-500 nedt:appearance-none nedt:w-fit"
             defaultValue={selectedHourFormat}
             onChange={(e) =>
               setSelectedHourFormat(e.target.value as unknown as HourFormat)
@@ -71,11 +71,11 @@ export default function App() {
         </div>
 
         <div>
-          <label htmlFor="theme" className="ne-dt-text-lg ne-dt-mr-2">
+          <label htmlFor="theme" className="nedt:text-lg nedt:mr-2">
             Choose Theme
           </label>
           <select
-            className="ne-dt-py-2 ne-dt-px-4 ne-dt-text-lg ne-dt-bg-white ne-dt-border ne-dt-border-gray-300 ne-dt-rounded-md ne-dt-shadow-sm focus:ne-dt-outline-none focus:ne-dt-ring-1 focus:ne-dt-ring-blue-500 ne-dt-appearance-none ne-dt-w-fit"
+            className="nedt:py-2 nedt:px-4 nedt:text-lg nedt:bg-white nedt:border nedt:border-gray-300 nedt:rounded-md nedt:shadow-sm nedt:focus:outline-none nedt:focus:ring-1 nedt:focus:ring-blue-500 nedt:appearance-none nedt:w-fit"
             onChange={(e) => toggleTheme(e.target.value)}
             value={theme}
           >
@@ -85,9 +85,9 @@ export default function App() {
         </div>
       </div>
 
-      <div className="ne-dt-flex ne-dt-flex-col ne-dt-max-w-lg ne-dt-mt-4 ne-dt-md:mt-6">
-        <div className="ne-dt-mb-8">
-          <label htmlFor="datepicker" className="ne-dt-text-lg">
+      <div className="nedt:flex nedt:flex-col nedt:max-w-lg nedt:mt-4 nedt:md:mt-6">
+        <div className="nedt:mb-8">
+          <label htmlFor="datepicker" className="nedt:text-lg">
             Date Picker
           </label>
 
@@ -100,8 +100,8 @@ export default function App() {
           />
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="timepicker" className="ne-dt-text-lg">
+        <div className="nedt:mb-8">
+          <label htmlFor="timepicker" className="nedt:text-lg">
             Time Picker
           </label>
 
@@ -115,8 +115,8 @@ export default function App() {
           />
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="datetimepicker" className="ne-dt-text-lg">
+        <div className="nedt:mb-8">
+          <label htmlFor="datetimepicker" className="nedt:text-lg">
             Datetime Picker
           </label>
 
@@ -134,16 +134,16 @@ export default function App() {
           />
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="static-calendar" className="ne-dt-text-lg">
+        <div className="nedt:mb-8">
+          <label htmlFor="static-calendar" className="nedt:text-lg">
             Static Calendar
           </label>
 
           <StaticCalendar lang={selectedLang} />
         </div>
 
-        <div className="ne-dt-mb-8">
-          <label htmlFor="static-time" className="ne-dt-text-lg">
+        <div className="nedt:mb-8">
+          <label htmlFor="static-time" className="nedt:text-lg">
             Static Time
           </label>
 
@@ -162,11 +162,11 @@ function useThemeToggle() {
 
   const handleOnToggleTheme = (theme: string) => {
     if (theme === "dark") {
-      //document.documentElement.classList.add('ne-dt-dark')
+      //document.documentElement.classList.add('nedt:dark')
       document.documentElement.setAttribute("data-theme", "dark");
       setTheme("dark");
     } else {
-      //document.documentElement.classList.remove('ne-dt-dark')
+      //document.documentElement.classList.remove('nedt:dark')
       document.documentElement.setAttribute("data-theme", "light");
 
       setTheme("light");
@@ -180,12 +180,12 @@ function useThemeToggle() {
       (!("theme" in localStorage) &&
         window.matchMedia("(prefers-color-scheme: dark)").matches)
     ) {
-      //document.documentElement.classList.add('ne-dt-dark')
+      //document.documentElement.classList.add('nedt:dark')
       document.documentElement.setAttribute("data-theme", "dark");
       localStorage.theme = "dark";
       setTheme("dark");
     } else {
-      //document.documentElement.classList.remove('ne-dt-dark')
+      //document.documentElement.classList.remove('nedt:dark')
       document.documentElement.setAttribute("data-theme", "light");
       localStorage.theme = "light";
       setTheme("light");

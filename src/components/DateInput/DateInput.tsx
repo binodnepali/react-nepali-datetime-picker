@@ -69,7 +69,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
             <CalendarMonth
               width="36"
               height="36"
-              className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+              className="nedt:rounded-full nedt:p-1 nedt:bg-base-100 nedt:hover:bg-base-200 nedt:fill-base-content"
             />
           </Button>
         ),
@@ -120,22 +120,22 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
     }, [lang, value]);
 
     return (
-      <div className={cn("ne-dt-flex ne-dt-flex-col", className)} ref={ref}>
+      <div className={cn("nedt:flex nedt:flex-col", className)} ref={ref}>
         <Input
-          className={cn(inputClassName, fullWidth && "ne-dt-w-full")}
+          className={cn(inputClassName, fullWidth && "nedt:w-full")}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
             className: cn(
               nativeInputClassName,
-              fullWidth && "ne-dt-w-full",
+              fullWidth && "nedt:w-full",
               showError &&
                 !isValid &&
-                "ne-dt-border-error focus:ne-dt-outline-error",
+                "nedt:border-error focus:nedt:outline-error",
               showSuccess &&
                 isValid &&
                 val.length > 0 &&
-                "ne-dt-border-success focus:ne-dt-outline-success",
+                "nedt:border-success focus:nedt:outline-success",
             ),
             ...nativeInputRest,
           }}
@@ -149,7 +149,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         {showError && errorMessage && !isValid && (
           <div
             className={cn(
-              "ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full",
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               errorRootClassName,
             )}
           >
@@ -160,7 +160,7 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
         {showSuccess && successMessage && isValid && val.length > 0 && (
           <div
             className={cn(
-              "ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full",
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               successRootClassName,
             )}
           >

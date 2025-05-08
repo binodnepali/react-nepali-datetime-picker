@@ -1,37 +1,38 @@
-import { HTMLAttributes, useEffect, useMemo, useRef, useState } from 'react'
+import type { HTMLAttributes } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { Button } from '@/components/ui/Button/Button'
-import { useNepaliTime } from '@/hooks/useNepaliTime'
-import { cn } from '@/plugins/twMerge'
-import { HourFormat } from '@/types/HourFormat'
-import { Language } from '@/types/Language'
-import { NepaliTime, Time } from '@/types/NepaliTime'
+import { Button } from "@/components/ui/Button/Button";
+import { useNepaliTime } from "@/hooks/useNepaliTime";
+import { cn } from "@/plugins/twMerge";
+import type { HourFormat } from "@/types/HourFormat";
+import type { Language } from "@/types/Language";
+import type { NepaliTime, Time } from "@/types/NepaliTime";
 import {
   generate12Hours,
   generate24Hours,
   generateMinutes,
   sortValuesByCurrentValue,
-} from '@/utils/nepaliTime'
+} from "@/utils/nepaliTime";
 
-const MINUTE_CONTENT = 'MINUTE_CONTENT'
-const MINUTE_CLONED_CONTENT = 'MINUTE_CLONED_CONTENT'
-const HOUR_CONTENT = 'HOUR_CONTENT'
-const HOUR_CLONED_CONTENT = 'HOUR_CLONED_CONTENT'
+const MINUTE_CONTENT = "MINUTE_CONTENT";
+const MINUTE_CLONED_CONTENT = "MINUTE_CLONED_CONTENT";
+const HOUR_CONTENT = "HOUR_CONTENT";
+const HOUR_CLONED_CONTENT = "HOUR_CLONED_CONTENT";
 
 export interface DesktopTimeProps extends HTMLAttributes<HTMLDivElement> {
-  className?: string
-  contentClassName?: string
-  hourFormat?: HourFormat
-  lang?: Language
-  onTimeSelect?: (time: NepaliTime) => void
-  selectedTime?: NepaliTime
+  className?: string;
+  contentClassName?: string;
+  hourFormat?: HourFormat;
+  lang?: Language;
+  onTimeSelect?: (time: NepaliTime) => void;
+  selectedTime?: NepaliTime;
 }
 
 export const DesktopTime = ({
-  className = '',
-  contentClassName = '',
-  hourFormat = '12',
-  lang = 'ne',
+  className = "",
+  contentClassName = "",
+  hourFormat = "12",
+  lang = "ne",
   selectedTime,
   onTimeSelect,
   ...rest
@@ -48,14 +49,14 @@ export const DesktopTime = ({
   } = useNepaliTime({
     lang,
     hourFormat,
-  })
+  });
 
-  const is12HourFormat = hourFormat === '12'
+  const is12HourFormat = hourFormat === "12";
 
   const handleOnHourClick = (time: Time) => {
-    setSelectedHour(() => time)
+    setSelectedHour(() => time);
     if (!selectedMinute) {
-      return
+      return;
     }
 
     onTimeSelect?.({
@@ -75,13 +76,13 @@ export const DesktopTime = ({
             },
           }
         : {}),
-    })
-  }
+    });
+  };
 
   const handleOnMinuteClick = (time: Time) => {
-    setSelectedMinute(() => time)
+    setSelectedMinute(() => time);
     if (!selectedHour) {
-      return
+      return;
     }
 
     onTimeSelect?.({
@@ -101,13 +102,13 @@ export const DesktopTime = ({
             },
           }
         : {}),
-    })
-  }
+    });
+  };
 
   const handleOnDayClick = (day: { value: string; label: string }) => {
-    setSelectedDay(() => day)
+    setSelectedDay(() => day);
     if (!selectedHour || !selectedMinute) {
-      return
+      return;
     }
 
     onTimeSelect?.({
@@ -120,26 +121,26 @@ export const DesktopTime = ({
         label: selectedMinute.label,
       },
       ...(is12HourFormat && day.value && day.label ? { day } : {}),
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    setSelectedHour(() => selectedTime?.hour)
-    setSelectedMinute(() => selectedTime?.minute)
-    setSelectedDay(() => selectedTime?.day)
+    setSelectedHour(() => selectedTime?.hour);
+    setSelectedMinute(() => selectedTime?.minute);
+    setSelectedDay(() => selectedTime?.day);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTime])
+  }, [selectedTime]);
 
   return (
     <div
-      className={cn('ne-dt-flex ne-dt-flex-col ne-dt-w-fit', className)}
+      className={cn("nedt:flex nedt:flex-col nedt:w-fit", className)}
       {...rest}
     >
       <div
         className={cn(
-          'ne-dt-grid ne-dt-gap-0 ne-dt-h-64 ne-dt-overflow-hidden',
-          is12HourFormat && 'ne-dt-grid-cols-[64px_64px_64px]',
-          !is12HourFormat && 'ne-dt-grid-cols-[64px_64px]',
+          "nedt:grid nedt:gap-0 nedt:h-64 nedt:overflow-hidden",
+          is12HourFormat && "nedt:grid-cols-[64px_64px_64px]",
+          !is12HourFormat && "nedt:grid-cols-[64px_64px]",
           contentClassName,
         )}
       >
@@ -159,7 +160,7 @@ export const DesktopTime = ({
         />
 
         {is12HourFormat && (
-          <div className="ne-dt-flex ne-dt-flex-col ne-dt-gap-2 ne-dt-justify-start ne-dt-p-1">
+          <div className="nedt:flex nedt:flex-col nedt:gap-2 nedt:justify-start nedt:p-1">
             {timeDays.map((d) => (
               <Button
                 variant="outline"
@@ -180,8 +181,8 @@ export const DesktopTime = ({
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 function HourList({
   format,
@@ -190,72 +191,72 @@ function HourList({
   selectedHour: initialSelectedHour,
   onTimeSelect,
 }: {
-  format: HourFormat
-  hour: number
-  selectedHour?: number
-  lang: Language
-  onTimeSelect?: (time: Time) => void
+  format: HourFormat;
+  hour: number;
+  selectedHour?: number;
+  lang: Language;
+  onTimeSelect?: (time: Time) => void;
 }) {
-  const hourRef = useRef<HTMLDivElement>(null)
+  const hourRef = useRef<HTMLDivElement>(null);
 
   const handleOnHourScroll = () => {
-    const hourCurrentRef = hourRef.current
-    const content = document.getElementById(HOUR_CONTENT)
-    const clonedContent = document.getElementById(HOUR_CLONED_CONTENT)
+    const hourCurrentRef = hourRef.current;
+    const content = document.getElementById(HOUR_CONTENT);
+    const clonedContent = document.getElementById(HOUR_CLONED_CONTENT);
 
     if (!hourCurrentRef || !content || !clonedContent) {
-      return
+      return;
     }
 
-    const { scrollTop, scrollHeight, clientHeight } = hourCurrentRef
+    const { scrollTop, scrollHeight, clientHeight } = hourCurrentRef;
 
     if (scrollTop + clientHeight >= scrollHeight) {
       // User has reached the end, reset the scroll position to show the original content
-      hourCurrentRef.scrollTop -= content.offsetHeight
+      hourCurrentRef.scrollTop -= content.offsetHeight;
     }
 
     if (scrollTop === 0) {
       // User has reached the top, reset the scroll position to show the cloned content
-      hourCurrentRef.scrollTop += clonedContent.offsetHeight
+      hourCurrentRef.scrollTop += clonedContent.offsetHeight;
     }
-  }
+  };
   useEffect(() => {
-    const hourCurrentRef = hourRef.current
-    hourCurrentRef?.addEventListener('scroll', handleOnHourScroll)
+    const hourCurrentRef = hourRef.current;
+    hourCurrentRef?.addEventListener("scroll", handleOnHourScroll);
 
     return () => {
-      hourCurrentRef?.removeEventListener('scroll', handleOnHourScroll)
-    }
-  }, [])
+      hourCurrentRef?.removeEventListener("scroll", handleOnHourScroll);
+    };
+  }, []);
 
   const [selectedHour, setSelectedHour] = useState<number | undefined>(
     initialSelectedHour,
-  )
+  );
   const handleOnHourClick = (time: Time) => {
-    setSelectedHour(() => time.value)
-    onTimeSelect?.(time)
-  }
+    setSelectedHour(() => time.value);
+    onTimeSelect?.(time);
+  };
 
   const hours = useMemo(
     () =>
-      format === '12'
+      format === "12"
         ? sortValuesByCurrentValue(selectedHour ?? hour, generate12Hours(lang))
         : sortValuesByCurrentValue(selectedHour ?? hour, generate24Hours(lang)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [format, lang, selectedHour],
-  )
+  );
 
   useEffect(() => {
-    setSelectedHour(() => initialSelectedHour)
-  }, [initialSelectedHour])
+    setSelectedHour(() => initialSelectedHour);
+  }, [initialSelectedHour]);
 
   return (
     <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll ne-dt-p-1"
+      className="nedt:overflow-y-auto nedt:will-change-scroll nedt:p-1"
       ref={hourRef}
     >
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
+        className="nedt:flex nedt:flex-col nedt:gap-1"
         id={HOUR_CONTENT}
         key={HOUR_CONTENT}
       >
@@ -274,7 +275,7 @@ function HourList({
       </div>
 
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-mt-1"
+        className="nedt:flex nedt:flex-col nedt:gap-1 nedt:mt-1"
         id={HOUR_CLONED_CONTENT}
         key={HOUR_CLONED_CONTENT}
       >
@@ -292,7 +293,7 @@ function HourList({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 function MinuteList({
@@ -301,71 +302,71 @@ function MinuteList({
   selectedMinute: initialSelectedMinute,
   onTimeSelect,
 }: {
-  minute: number
-  lang: Language
-  selectedMinute?: number
-  onTimeSelect?: (time: Time) => void
+  minute: number;
+  lang: Language;
+  selectedMinute?: number;
+  onTimeSelect?: (time: Time) => void;
 }) {
-  const minuteRef = useRef<HTMLDivElement>(null)
+  const minuteRef = useRef<HTMLDivElement>(null);
 
   const handleOnMinuteScroll = () => {
-    const minuteCurrentRef = minuteRef.current
-    const content = document.getElementById(MINUTE_CONTENT)
-    const clonedContent = document.getElementById(MINUTE_CLONED_CONTENT)
+    const minuteCurrentRef = minuteRef.current;
+    const content = document.getElementById(MINUTE_CONTENT);
+    const clonedContent = document.getElementById(MINUTE_CLONED_CONTENT);
 
     if (!minuteCurrentRef || !content || !clonedContent) {
-      return
+      return;
     }
 
-    const { scrollTop, scrollHeight, clientHeight } = minuteCurrentRef
+    const { scrollTop, scrollHeight, clientHeight } = minuteCurrentRef;
 
     if (scrollTop + clientHeight >= scrollHeight) {
       // User has reached the end, reset the scroll position to show the original content
-      minuteCurrentRef.scrollTop -= content.offsetHeight
+      minuteCurrentRef.scrollTop -= content.offsetHeight;
     }
 
     if (scrollTop === 0) {
       // User has reached the top, reset the scroll position to show the cloned content
-      minuteCurrentRef.scrollTop += clonedContent.offsetHeight
+      minuteCurrentRef.scrollTop += clonedContent.offsetHeight;
     }
-  }
+  };
   useEffect(() => {
-    const minuteCurrentRef = minuteRef.current
+    const minuteCurrentRef = minuteRef.current;
 
-    minuteCurrentRef?.addEventListener('scroll', handleOnMinuteScroll)
+    minuteCurrentRef?.addEventListener("scroll", handleOnMinuteScroll);
 
     return () => {
-      minuteCurrentRef?.removeEventListener('scroll', handleOnMinuteScroll)
-    }
-  }, [])
+      minuteCurrentRef?.removeEventListener("scroll", handleOnMinuteScroll);
+    };
+  }, []);
 
   const [selectedMinute, setSelectedMinute] = useState<number | undefined>(
     initialSelectedMinute,
-  )
+  );
 
   const handleOnMinuteClick = (time: Time) => {
-    setSelectedMinute(() => time.value)
-    onTimeSelect?.(time)
-  }
+    setSelectedMinute(() => time.value);
+    onTimeSelect?.(time);
+  };
 
   const minutes = useMemo(
     () =>
       sortValuesByCurrentValue(selectedMinute ?? minute, generateMinutes(lang)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [lang, selectedMinute],
-  )
+  );
 
   useEffect(() => {
-    setSelectedMinute(() => initialSelectedMinute)
-  }, [initialSelectedMinute])
+    setSelectedMinute(() => initialSelectedMinute);
+  }, [initialSelectedMinute]);
 
   return (
     <div
-      className="ne-dt-overflow-y-auto ne-dt-will-change-scroll ne-dt-p-1"
+      className="nedt:overflow-y-auto nedt:will-change-scroll nedt:p-1"
       ref={minuteRef}
     >
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1"
+        className="nedt:flex nedt:flex-col nedt:gap-1"
         id={MINUTE_CONTENT}
         key={MINUTE_CONTENT}
       >
@@ -384,7 +385,7 @@ function MinuteList({
       </div>
 
       <div
-        className="ne-dt-flex ne-dt-flex-col ne-dt-gap-1 ne-dt-mt-1"
+        className="nedt:flex nedt:flex-col nedt:gap-1 nedt:mt-1"
         id={MINUTE_CLONED_CONTENT}
         key={MINUTE_CLONED_CONTENT}
       >
@@ -402,5 +403,5 @@ function MinuteList({
         ))}
       </div>
     </div>
-  )
+  );
 }

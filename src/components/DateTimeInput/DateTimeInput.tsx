@@ -1,15 +1,16 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from "react";
 
-import CalendarClock from '@/assets/CalendarClock.svg'
-import { Button } from '@/components/ui/Button/Button'
-import { Hint } from '@/components/ui/Hint/Hint'
-import { Input, InputProps } from '@/components/ui/Input/Input'
-import { cn } from '@/plugins/twMerge'
-import { HourFormat } from '@/types/HourFormat'
-import { Language } from '@/types/Language'
-import { NepaliDate } from '@/types/NepaliDate'
-import { NepaliDateTime } from '@/types/NepaliDateTime'
-import { NepaliTime } from '@/types/NepaliTime'
+import CalendarClock from "@/assets/CalendarClock.svg";
+import { Button } from "@/components/ui/Button/Button";
+import { Hint } from "@/components/ui/Hint/Hint";
+import type { InputProps } from "@/components/ui/Input/Input";
+import { Input } from "@/components/ui/Input/Input";
+import { cn } from "@/plugins/twMerge";
+import type { HourFormat } from "@/types/HourFormat";
+import type { Language } from "@/types/Language";
+import type { NepaliDate } from "@/types/NepaliDate";
+import type { NepaliDateTime } from "@/types/NepaliDateTime";
+import type { NepaliTime } from "@/types/NepaliTime";
 import {
   formatNepaliDateTime,
   MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT,
@@ -17,49 +18,49 @@ import {
   MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT,
   MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT,
   validateNepaliDateTime,
-} from '@/utils/nepaliDateTime'
+} from "@/utils/nepaliDateTime";
 
 export interface DateTimeInputProps {
-  className?: string
-  lang?: Language
-  hourFormat?: HourFormat
-  value?: NepaliDateTime
-  input?: InputProps
+  className?: string;
+  lang?: Language;
+  hourFormat?: HourFormat;
+  value?: NepaliDateTime;
+  input?: InputProps;
   error?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
   success?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
-  fullWidth?: boolean
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
+  fullWidth?: boolean;
 }
 
 export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
   function DateTimeInput(
     {
-      className = '',
+      className = "",
       input = {},
-      lang = 'ne',
+      lang = "ne",
       fullWidth = false,
       value,
-      hourFormat = '12',
+      hourFormat = "12",
       error: {
-        message: errorMessage = '',
+        message: errorMessage = "",
         show: showError = false,
-        rootClassName: errorRootClassName = '',
-        className: errorClassName = '',
+        rootClassName: errorRootClassName = "",
+        className: errorClassName = "",
       } = {},
       success: {
-        message: successMessage = '',
+        message: successMessage = "",
         show: showSuccess = false,
-        rootClassName: successRootClassName = '',
-        className: successClassName = '',
+        rootClassName: successRootClassName = "",
+        className: successClassName = "",
       } = {},
     },
     ref,
@@ -67,7 +68,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
     const {
       nativeInput: {
         onChange: onInputChange,
-        className: nativeInputClassName = '',
+        className: nativeInputClassName = "",
         ...nativeInputRest
       } = {},
       icon: {
@@ -78,77 +79,77 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
         ),
         ...inputIconRest
       } = {},
-      className: inputClassName = '',
+      className: inputClassName = "",
       ...inputRest
-    } = input
+    } = input;
 
-    const [val, setVal] = useState<string>('')
+    const [val, setVal] = useState<string>("");
 
-    const [isValid, setIsValid] = useState<boolean>(true)
+    const [isValid, setIsValid] = useState<boolean>(true);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
+      const { value } = e.target;
 
       if (
-        (lang === 'ne' &&
-          hourFormat === '12' &&
+        (lang === "ne" &&
+          hourFormat === "12" &&
           value.length > MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT) ||
-        (lang === 'ne' &&
-          hourFormat === '24' &&
+        (lang === "ne" &&
+          hourFormat === "24" &&
           value.length > MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT) ||
-        (lang === 'en' &&
-          hourFormat === '12' &&
+        (lang === "en" &&
+          hourFormat === "12" &&
           value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT) ||
-        (lang === 'en' &&
-          hourFormat === '24' &&
+        (lang === "en" &&
+          hourFormat === "24" &&
           value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT)
       ) {
-        return
+        return;
       }
 
-      const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat)
+      const validatedDateTime = validateNepaliDateTime(value, lang, hourFormat);
 
-      setIsValid(() => validatedDateTime.valid)
+      setIsValid(() => validatedDateTime.valid);
 
-      setVal(() => value)
+      setVal(() => value);
 
-      e.target.value = JSON.stringify(validatedDateTime)
+      e.target.value = JSON.stringify(validatedDateTime);
 
-      onInputChange?.(e)
-    }
+      onInputChange?.(e);
+    };
 
     useEffect(() => {
       if (!value) {
-        setVal(() => '')
+        setVal(() => "");
 
-        return
+        return;
       }
 
-      setVal(() => formatNepaliDateTime(value, lang))
+      setVal(() => formatNepaliDateTime(value, lang));
 
-      setIsValid(() => true)
-    }, [lang, value])
+      setIsValid(() => true);
+    }, [lang, value]);
 
     return (
       <div
-        className={cn('ne-dt-flex ne-dt-flex-col', className)}
+        className={cn("nedt:flex nedt:flex-col", className)}
         ref={ref}
         data-auto-id="dateTimeInput"
       >
         <Input
-          className={cn(fullWidth && 'ne-dt-w-full', inputClassName)}
+          className={cn(fullWidth && "nedt:w-full", inputClassName)}
           nativeInput={{
             onChange: handleOnChange,
             value: val,
             className: cn(
-              fullWidth && 'ne-dt-w-full',
+              fullWidth && "nedt:w-full",
               showError &&
                 !isValid &&
-                'ne-dt-border-error focus:ne-dt-outline-error',
+                "nedt:border-error nedt:focus:outline-error",
               showSuccess &&
                 isValid &&
                 val.length > 0 &&
-                'ne-dt-border-success focus:ne-dt-outline-success',
+                "nedt:border-success nedt:focus:outline-success",
               nativeInputClassName,
             ),
             ...nativeInputRest,
@@ -163,7 +164,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
         {showError && errorMessage && !isValid && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               errorRootClassName,
             )}
           >
@@ -174,7 +175,7 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
         {showSuccess && successMessage && isValid && val.length > 0 && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               successRootClassName,
             )}
           >
@@ -185,14 +186,14 @@ export const DateTimeInput = forwardRef<HTMLDivElement, DateTimeInputProps>(
           </div>
         )}
       </div>
-    )
+    );
   },
-)
+);
 
 export type DateTimeInputTargetValue = {
-  valid: boolean
+  valid: boolean;
   value?: {
-    date: NepaliDate
-    time: NepaliTime
-  }
-}
+    date: NepaliDate;
+    time: NepaliTime;
+  };
+};

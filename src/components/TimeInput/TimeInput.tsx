@@ -1,13 +1,14 @@
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from "react";
 
-import ClockOutlineIcon from '@/assets/ClockOutline.svg'
-import { Button } from '@/components/ui/Button/Button'
-import { Hint } from '@/components/ui/Hint/Hint'
-import { Input, InputProps } from '@/components/ui/Input/Input'
-import { cn } from '@/plugins/twMerge'
-import { NepaliTime } from '@/types'
-import { HourFormat } from '@/types/HourFormat'
-import { Language } from '@/types/Language'
+import ClockOutlineIcon from "@/assets/ClockOutline.svg";
+import { Button } from "@/components/ui/Button/Button";
+import { Hint } from "@/components/ui/Hint/Hint";
+import type { InputProps } from "@/components/ui/Input/Input";
+import { Input } from "@/components/ui/Input/Input";
+import { cn } from "@/plugins/twMerge";
+import type { NepaliTime } from "@/types";
+import type { HourFormat } from "@/types/HourFormat";
+import type { Language } from "@/types/Language";
 import {
   formatTime,
   MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT,
@@ -15,53 +16,53 @@ import {
   MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT,
   MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT,
   validateTime,
-} from '@/utils/nepaliTime'
+} from "@/utils/nepaliTime";
 
 export type TimeInputTargetValue = {
-  valid: boolean
-  value?: NepaliTime
-}
+  valid: boolean;
+  value?: NepaliTime;
+};
 
 export interface TimeInputProps {
-  className?: string
-  selectedTime?: NepaliTime
-  input?: InputProps
-  lang?: Language
-  hourFormat?: HourFormat
-  fullWidth?: boolean
+  className?: string;
+  selectedTime?: NepaliTime;
+  input?: InputProps;
+  lang?: Language;
+  hourFormat?: HourFormat;
+  fullWidth?: boolean;
   error?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
   success?: {
-    message?: string
-    show?: boolean
-    rootClassName?: string
-    className?: string
-  }
+    message?: string;
+    show?: boolean;
+    rootClassName?: string;
+    className?: string;
+  };
 }
 export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
   function TimeInput(
     {
-      className = '',
-      lang = 'ne',
+      className = "",
+      lang = "ne",
       input = {},
       fullWidth = false,
-      hourFormat = '12',
+      hourFormat = "12",
       selectedTime,
       error: {
-        message: errorMessage = '',
+        message: errorMessage = "",
         show: showError = false,
-        rootClassName: errorRootClassName = '',
-        className: errorClassName = '',
+        rootClassName: errorRootClassName = "",
+        className: errorClassName = "",
       } = {},
       success: {
-        message: successMessage = '',
+        message: successMessage = "",
         show: showSuccess = false,
-        rootClassName: successRootClassName = '',
-        className: successClassName = '',
+        rootClassName: successRootClassName = "",
+        className: successClassName = "",
       } = {},
     },
     ref,
@@ -70,98 +71,98 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
       nativeInput: {
         value,
         onChange,
-        className: nativeInputClassName = '',
+        className: nativeInputClassName = "",
         ...nativeInputRest
       } = {},
       icon: {
         children = (
           <Button variant="icon">
             <ClockOutlineIcon
-              width={'36'}
-              height={'36'}
-              className="ne-dt-rounded-full ne-dt-p-1 ne-dt-bg-base-100 hover:ne-dt-bg-base-200 ne-dt-fill-base-content"
+              width={"36"}
+              height={"36"}
+              className="nedt:rounded-full nedt:p-1 nedt:bg-base-100 nedt:hover:bg-base-200 nedt:fill-base-content"
             />
           </Button>
         ),
         ...inputIconRest
       } = {},
-      className: inputClassName = '',
+      className: inputClassName = "",
       ...inputRest
-    } = input
+    } = input;
 
-    const [val, setVal] = useState<string>(value || '')
-    const [isValid, setIsValid] = useState<boolean>(true)
+    const [val, setVal] = useState<string>(value || "");
+    const [isValid, setIsValid] = useState<boolean>(true);
 
     const handleOnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
+      const { value } = e.target;
 
       if (
-        (lang === 'ne' &&
-          hourFormat === '12' &&
+        (lang === "ne" &&
+          hourFormat === "12" &&
           value.length > MAX_NEPALI_DATETIME_LENGTH_IN_12_FORMAT) ||
-        (lang === 'ne' &&
-          hourFormat === '24' &&
+        (lang === "ne" &&
+          hourFormat === "24" &&
           value.length > MAX_NEPALI_DATETIME_LENGTH_IN_24_FORMAT) ||
-        (lang === 'en' &&
-          hourFormat === '12' &&
+        (lang === "en" &&
+          hourFormat === "12" &&
           value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_12_FORMAT) ||
-        (lang === 'en' &&
-          hourFormat === '24' &&
+        (lang === "en" &&
+          hourFormat === "24" &&
           value.length > MAX_ENGLISH_DATETIME_LENGTH_IN_24_FORMAT)
       ) {
-        return
+        return;
       }
 
       const { valid, value: validatedValue } = validateTime(
         value,
         lang,
         hourFormat,
-      )
+      );
 
-      setIsValid(() => valid)
+      setIsValid(() => valid);
 
-      setVal(() => value)
+      setVal(() => value);
 
       e.target.value = JSON.stringify({
         valid,
         ...(valid ? { value: validatedValue } : {}),
-      })
+      });
 
-      onChange?.(e)
-    }
+      onChange?.(e);
+    };
 
     useEffect(() => {
       if (!selectedTime) {
-        setVal(() => '')
+        setVal(() => "");
 
-        return
+        return;
       }
-      const formattedTime = formatTime(selectedTime, lang, hourFormat)
+      const formattedTime = formatTime(selectedTime, lang, hourFormat);
 
-      const { valid } = validateTime(formattedTime, lang, hourFormat)
+      const { valid } = validateTime(formattedTime, lang, hourFormat);
 
-      setVal(() => formattedTime)
+      setVal(() => formattedTime);
 
-      setIsValid(() => valid)
-    }, [hourFormat, lang, selectedTime, value])
+      setIsValid(() => valid);
+    }, [hourFormat, lang, selectedTime, value]);
 
     return (
-      <div className={cn('ne-dt-flex ne-dt-flex-col', className)} ref={ref}>
+      <div className={cn("nedt:flex nedt:flex-col", className)} ref={ref}>
         <Input
-          className={cn(inputClassName, fullWidth && 'ne-dt-w-full')}
+          className={cn(inputClassName, fullWidth && "nedt:w-full")}
           nativeInput={{
             value: val,
             onChange: handleOnInputChange,
             className: cn(
               nativeInputClassName,
-              fullWidth && 'ne-dt-w-full',
+              fullWidth && "nedt:w-full",
               showError &&
                 !isValid &&
-                'ne-dt-border-error focus:ne-dt-outline-error',
+                "nedt:border-error focus:nedt:outline-error",
               showSuccess &&
                 isValid &&
                 val.length > 0 &&
-                'ne-dt-border-success focus:ne-dt-outline-success',
+                "nedt:border-success focus:nedt:outline-success",
             ),
             ...nativeInputRest,
           }}
@@ -175,7 +176,7 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
         {showError && errorMessage && !isValid && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               errorRootClassName,
             )}
           >
@@ -186,7 +187,7 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
         {showSuccess && successMessage && isValid && val.length > 0 && (
           <div
             className={cn(
-              'ne-dt-absolute ne-dt-bottom-0 ne-dt-left-0 ne-dt-translate-y-full',
+              "nedt:absolute nedt:bottom-0 nedt:left-0 nedt:translate-y-full",
               successRootClassName,
             )}
           >
@@ -197,6 +198,6 @@ export const TimeInput = forwardRef<HTMLDivElement, TimeInputProps>(
           </div>
         )}
       </div>
-    )
+    );
   },
-)
+);

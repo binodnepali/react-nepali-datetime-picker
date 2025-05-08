@@ -69,7 +69,7 @@ export const Modal = ({
     <div className={className} data-auto-id={dataAutoId}>
       <div
         className={cn(
-          "ne-dt-hidden md:ne-dt-block ne-dt-w-full ne-dt-h-full ne-dt-fixed ne-dt-inset-0 ne-dt-opactiy-0 ",
+          "nedt:hidden nedt:md:block nedt:w-full nedt:h-full nedt:fixed nedt:inset-0 nedt:opactiy-0 ",
           desktopOverlayClassName,
         )}
         onClick={handleOnClose}
@@ -77,8 +77,8 @@ export const Modal = ({
 
       <div
         className={cn(
-          "ne-dt-fixed md:ne-dt-absolute ne-dt-h-full ne-dt-w-full md:ne-dt-h-fit md:ne-dt-w-fit ne-dt-inset-0 ne-dt-bg-black ne-dt-bg-opacity-50 md:ne-dt-bg-opacity-0 ne-dt-flex md:ne-dt-block ne-dt-items-center ne-dt-justify-center ne-dt-z-[1000] ne-dt-transition-transform ne-dt-duration-300",
-          !showModal && "ne-dt-transform-none",
+          "nedt:fixed nedt:md:absolute nedt:h-full nedt:w-full nedt:md:h-fit nedt:md:w-fit nedt:inset-0 nedt:bg-black nedt:bg-opacity-50 nedt:md:bg-opacity-0 nedt:flex nedt:md:block nedt:items-center nedt:justify-center nedt:z-[1000] nedt:transition-transform nedt:duration-300",
+          !showModal && "nedt:transform-none",
           modalClassName,
         )}
         style={{
@@ -88,13 +88,13 @@ export const Modal = ({
       >
         <div
           className={cn(
-            "ne-dt-fixed md:ne-dt-hidden ne-dt-top-0 ne-dt-left-0 ne-dt-w-full ne-dt-h-full ne-dt-opactiy-0 ne-dt-z-[999]",
+            "nedt:fixed nedt:md:hidden nedt:top-0 nedt:left-0 nedt:w-full nedt:h-full nedt:opactiy-0 nedt:z-[999]",
             mobileOverlayClassName,
           )}
           onClick={handleOnClose}
         />
 
-        <div className={cn("ne-dt-z-[1000]", modalContentClassName)}>
+        <div className={cn("nedt:z-[1000]", modalContentClassName)}>
           {children}
         </div>
       </div>

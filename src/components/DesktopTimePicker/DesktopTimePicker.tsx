@@ -1,19 +1,15 @@
-import type { HTMLAttributes} from "react";
+import type { HTMLAttributes } from "react";
 import { useRef, useState } from "react";
 
-import type {
-  DesktopTimeProps} from "@/components/DesktopTime/DesktopTime";
-import {
-  DesktopTime
-} from "@/components/DesktopTime/DesktopTime";
+import type { DesktopTimeProps } from "@/components/DesktopTime/DesktopTime";
+import { DesktopTime } from "@/components/DesktopTime/DesktopTime";
 import type { ModalProps } from "@/components/Modal/Modal";
 import { Modal } from "@/components/Modal/Modal";
 import type {
   TimeInputProps,
-  TimeInputTargetValue} from "@/components/TimeInput/TimeInput";
-import {
-  TimeInput
+  TimeInputTargetValue,
 } from "@/components/TimeInput/TimeInput";
+import { TimeInput } from "@/components/TimeInput/TimeInput";
 import { cn } from "@/plugins/twMerge";
 import transData from "@/translations/DesktopTimePicker.json";
 import type { HourFormat } from "@/types/HourFormat";
@@ -105,7 +101,7 @@ export const DesktopTimePicker = ({
 
   return (
     <div
-      className={cn("ne-dt-relative ne-dt-flex ne-dt-flex-col", className)}
+      className={cn("nedt:relative nedt:flex nedt:flex-col", className)}
       {...rest}
     >
       <TimeInput
@@ -137,7 +133,7 @@ export const DesktopTimePicker = ({
           showModal={showModal}
           inputRef={timeInputRef}
           modalContentClassName={cn(
-            "ne-dt-px-4 md:ne-dt-px-0",
+            "nedt:px-4 nedt:md:px-0",
             modalContentClassName,
           )}
           {...modalRest}
@@ -148,7 +144,7 @@ export const DesktopTimePicker = ({
             lang={lang}
             hourFormat={hourFormat}
             className={cn(
-              "ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-1 md:ne-dt-p-2",
+              "nedt:border nedt:border-primary nedt:rounded-md nedt:bg-base-100 nedt:text-base-content nedt:p-1 nedt:md:p-2",
               timeClassName,
             )}
             {...desktopTimeRest}

@@ -1,14 +1,13 @@
-import type { HTMLAttributes} from "react";
+import type { HTMLAttributes } from "react";
 import { useRef, useState } from "react";
 
 import type { CalendarProps } from "@/components/Calendar/Calendar";
 import { Calendar } from "@/components/Calendar/Calendar";
 import type {
   DateInputProps,
-  DateInputTargetValue} from "@/components/DateInput/DateInput";
-import {
-  DateInput
+  DateInputTargetValue,
 } from "@/components/DateInput/DateInput";
+import { DateInput } from "@/components/DateInput/DateInput";
 import type { ModalProps } from "@/components/Modal/Modal";
 import { Modal } from "@/components/Modal/Modal";
 import { cn } from "@/plugins/twMerge";
@@ -85,7 +84,7 @@ export const DatePicker = ({
 
   return (
     <div
-      className={cn("ne-dt-relative ne-dt-flex ne-dt-flex-col", className)}
+      className={cn("nedt:relative nedt:flex nedt:flex-col", className)}
       {...rest}
     >
       <DateInput
@@ -113,7 +112,7 @@ export const DatePicker = ({
           onClose={handleOnModalClose}
           showModal={showModal}
           modalContentClassName={cn(
-            "ne-dt-px-4 md:ne-dt-px-0",
+            "nedt:px-4 nedt:md:px-0",
             modalContentClassName,
           )}
           {...modalRest}
@@ -123,7 +122,7 @@ export const DatePicker = ({
             lang={lang}
             selectedDate={selectedDateRef.current}
             className={cn(
-              "ne-dt-border ne-dt-border-primary ne-dt-rounded-md ne-dt-bg-base-100 ne-dt-text-base-content ne-dt-p-2 md:ne-dt-p-4",
+              "nedt:border nedt:border-primary nedt:rounded-md nedt:bg-base-100 nedt:text-base-content nedt:p-2 nedt:md:p-4",
               calendarClassName,
             )}
             {...calendarRest}
