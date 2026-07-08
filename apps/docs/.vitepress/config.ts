@@ -7,7 +7,7 @@ export default defineConfig({
   base: DOCS_BASE,
   title: 'react-nepali-datetime-picker',
   description:
-    'Bikram Sambat calendar and date picker for React and React Native',
+    'Bikram Sambat calendar, date, time, and datetime pickers for React and React Native',
   cleanUrls: true,
   themeConfig: {
     nav: [
@@ -23,12 +23,19 @@ export default defineConfig({
         text: 'Guide',
         items: [
           { text: 'Getting Started', link: '/getting-started' },
-          { text: 'BsDayPicker API', link: '/api' },
           { text: 'Localization', link: '/localization' },
           { text: 'Styling', link: '/styling' },
           { text: 'Data Source', link: '/data' },
           { text: 'React Native', link: '/react-native' },
           { text: 'Migration from v1', link: '/migration' },
+        ],
+      },
+      {
+        text: 'API',
+        items: [
+          { text: 'Overview', link: '/api' },
+          { text: 'BsDayPicker', link: '/api/day-picker' },
+          { text: 'Pickers', link: '/api/pickers' },
         ],
       },
     ],

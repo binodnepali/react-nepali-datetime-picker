@@ -56,8 +56,11 @@ export function getCurrentBsDate(): BsDate {
 
   const data = getCalendarData()
   for (const yearKey of Object.keys(data)) {
-    for (const monthKey of Object.keys(data[yearKey])) {
-      const monthData = data[yearKey][monthKey]
+    const yearData = data[yearKey]
+    if (!yearData) continue
+    for (const monthKey of Object.keys(yearData)) {
+      const monthData = yearData[monthKey]
+      if (!monthData) continue
       for (const day of monthData.days) {
         if (day.adDate === adToday) {
           return {

@@ -1,6 +1,9 @@
-# BsDayPicker API
+# API overview
 
-The headless primitive mirrors the minimal [React DayPicker](https://daypicker.dev/) API.
+Shared types and BS ↔ AD helpers used across registry items. Component-specific props live on dedicated pages:
+
+- [BsDayPicker](/api/day-picker) — headless calendar primitive and `useBsCalendar`
+- [Pickers](/api/pickers) — `BsDatePicker`, `BsTimePicker`, `BsDateTimePicker`
 
 ## `BsDate`
 
@@ -14,7 +17,7 @@ type BsDate = {
 
 Months are **1-indexed** to match Hamro Patro URLs (`/calendar/2083/1`).
 
-## BS ↔ AD
+## BS ↔ AD {#bs-ad}
 
 `onSelect`, `onChange`, and `onValueChange` return **`BsDate` only** (Bikram Sambat year / month / day). They do **not** include the Gregorian (AD) date in the callback.
 
@@ -43,50 +46,4 @@ function handleSelect(bs: BsDate | undefined) {
 | `formatAdDate(adDate, locale)` | Localized AD label for display         |
 | `getCurrentBsDate()`           | Today as `BsDate` (from calendar data) |
 
-## `BsDayPicker` props
-
-| Prop              | Type                                | Default    | Description                                          |
-| ----------------- | ----------------------------------- | ---------- | ---------------------------------------------------- |
-| `mode`            | `"single" \| "multiple" \| "range"` | `"single"` | v1 implements `single` only                          |
-| `selected`        | `BsDate \| undefined`               | —          | Selected date                                        |
-| `onSelect`        | `(date?: BsDate) => void`           | —          | Selection callback (BS only — see [BS ↔ AD](#bs-ad)) |
-| `locale`          | `"en" \| "ne"`                      | `"ne"`     | Labels and digit formatting                          |
-| `month`           | `{ year, month }`                   | today      | Visible month                                        |
-| `onMonthChange`   | `(month) => void`                   | —          | Month navigation callback                            |
-| `captionLayout`   | `"label" \| "dropdown"`             | `"label"`  | Caption UI                                           |
-| `showOutsideDays` | `boolean`                           | `true`     | Show adjacent-month days                             |
-| `disabled`        | `boolean \| (date) => boolean`      | —          | Disable days                                         |
-| `className`       | `string`                            | —          | Root class                                           |
-| `classNames`      | `BsDayPickerClassNames`             | —          | Slot class map                                       |
-| `components`      | `BsDayPickerComponents`             | —          | Sub-component overrides                              |
-| `footer`          | `ReactNode`                         | —          | Footer below grid                                    |
-
-## `useBsCalendar`
-
-```ts
-const {
-  month,
-  weeks,
-  weekdayLabels,
-  years,
-  months,
-  goToPreviousMonth,
-  goToNextMonth,
-  setMonth,
-  selectDate,
-} = useBsCalendar({
-  locale: "ne",
-  month: { year: 2083, month: 1 },
-  selected,
-  onSelect,
-});
-```
-
-## `BsDatePicker` (web)
-
-| Prop          | Type                       | Description                                      |
-| ------------- | -------------------------- | ------------------------------------------------ |
-| `value`       | `BsDate`                   | Selected value                                   |
-| `onChange`    | `(value?: BsDate) => void` | Change handler (BS only — see [BS ↔ AD](#bs-ad)) |
-| `locale`      | `"en" \| "ne"`             | Display locale                                   |
-| `placeholder` | `string`                   | Trigger placeholder                              |
+For datetime values, see [BS ↔ AD datetime](/api/pickers#bs-ad-datetime) on the pickers page.

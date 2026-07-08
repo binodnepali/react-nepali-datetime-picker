@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { cp, mkdir, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 import { dirname, join } from 'node:path'
@@ -31,6 +31,27 @@ const NATIVE_CORE_COPY_FILES = CORE_COPY_FILES.filter(
   (file) => file !== 'bs-day-picker.tsx',
 )
 
+const CORE_TIME_FILES = [
+  'types.ts',
+  'helpers.ts',
+  'formatters.ts',
+  'datetime.ts',
+  'index.ts',
+]
+
+async function copyTimeCoreTo(targetDir, prefix = 'lib/bs-time-picker/time') {
+  const destinationRoot = join(targetDir, prefix)
+  await mkdir(destinationRoot, { recursive: true })
+
+  for (const file of CORE_TIME_FILES) {
+    const source = join(CORE_SRC, 'time', file)
+    const destination = join(destinationRoot, file)
+    let contents = await readFile(source, 'utf8')
+    contents = contents.replaceAll("from '../", "from '../../bs-day-picker/")
+    await writeFile(destination, contents)
+  }
+}
+
 async function copyCoreTo(
   targetDir,
   prefix = 'lib/bs-day-picker',
@@ -40,7 +61,15 @@ async function copyCoreTo(
   await mkdir(destinationRoot, { recursive: true })
 
   for (const file of files) {
-    await cp(join(CORE_SRC, file), join(destinationRoot, file))
+    const source = join(CORE_SRC, file)
+    const destination = join(destinationRoot, file)
+    if (file === 'index.ts') {
+      let contents = await readFile(source, 'utf8')
+      contents = contents.replace(/^export \* from '\.\/time'\n/m, '')
+      await writeFile(destination, contents)
+      continue
+    }
+    await cp(source, destination)
   }
 
   await cp(
@@ -51,6 +80,13 @@ async function copyCoreTo(
 
 async function buildWebRegistry() {
   await copyCoreTo(WEB_FILES)
+  await copyTimeCoreTo(WEB_FILES)
+
+  const CORE_TIME_REGISTRY_FILES = CORE_TIME_FILES.map((file) => ({
+    path: `registry/web/files/lib/bs-time-picker/time/${file}`,
+    type: 'registry:lib',
+    target: `lib/bs-time-picker/time/${file}`,
+  }))
 
   const registry = {
     $schema: 'https://ui.shadcn.com/schema/registry.json',
@@ -98,6 +134,57 @@ async function buildWebRegistry() {
             type: 'registry:component',
             target: 'components/bs-date-picker.tsx',
           },
+        ],
+      },
+      {
+        name: 'bs-time-picker',
+        type: 'registry:component',
+        title: 'Bikram Sambat Time Picker',
+        description:
+          'Popover time picker with 12h/24h support for Bikram Sambat apps.',
+        dependencies: ['clsx', 'tailwind-merge', 'lucide-react'],
+        registryDependencies: ['button', 'popover'],
+        docs: 'Install bs-calendar before this component if you need shared locale helpers.',
+        files: [
+          {
+            path: 'registry/web/files/components/bs-time-picker.tsx',
+            type: 'registry:component',
+            target: 'components/bs-time-picker.tsx',
+          },
+          {
+            path: 'registry/web/files/lib/bs-time-picker.ts',
+            type: 'registry:lib',
+            target: 'lib/bs-time-picker.ts',
+          },
+          ...CORE_TIME_REGISTRY_FILES,
+        ],
+      },
+      {
+        name: 'bs-datetime-picker',
+        type: 'registry:component',
+        title: 'Bikram Sambat Date Time Picker',
+        description:
+          'Combined Bikram Sambat date and time picker with BS to AD conversion helpers.',
+        dependencies: ['clsx', 'tailwind-merge', 'lucide-react'],
+        registryDependencies: ['button', 'popover'],
+        docs: 'Install bs-calendar and bs-date-picker first. Uses `toAdDate()` for API submission.',
+        files: [
+          {
+            path: 'registry/web/files/components/bs-datetime-picker.tsx',
+            type: 'registry:component',
+            target: 'components/bs-datetime-picker.tsx',
+          },
+          {
+            path: 'registry/web/files/lib/bs-datetime-picker.ts',
+            type: 'registry:lib',
+            target: 'lib/bs-datetime-picker.ts',
+          },
+          {
+            path: 'registry/web/files/lib/bs-time-picker.ts',
+            type: 'registry:lib',
+            target: 'lib/bs-time-picker.ts',
+          },
+          ...CORE_TIME_REGISTRY_FILES,
         ],
       },
     ],
@@ -159,8 +246,87 @@ const NATIVE_DATE_PICKER_FILES = [
   },
 ]
 
+const CORE_TIME_REGISTRY_FILES = CORE_TIME_FILES.map((file) => ({
+  path: `registry/native/files/lib/bs-time-picker/time/${file}`,
+  type: 'registry:lib',
+  target: `lib/bs-time-picker/time/${file}`,
+}))
+
+const NATIVE_TIME_PICKER_FILES = [
+  {
+    path: 'registry/native/files/lib/bs-time-picker.ts',
+    type: 'registry:lib',
+    target: 'lib/bs-time-picker.ts',
+  },
+  ...CORE_TIME_REGISTRY_FILES,
+  {
+    path: 'registry/native/files/components/ui/bs-wheel-column.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-wheel-column.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-dialog.android.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-dialog.android.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-wheels.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-wheels.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-wheels.ios.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker.android.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker.android.tsx',
+  },
+]
+
+const NATIVE_DATETIME_PICKER_FILES = [
+  {
+    path: 'registry/native/files/lib/bs-datetime-picker.ts',
+    type: 'registry:lib',
+    target: 'lib/bs-datetime-picker.ts',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-dialog.android.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-dialog.android.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-datetime-picker-wheels.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-datetime-picker-wheels.ios.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-datetime-picker.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-datetime-picker.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-datetime-picker.android.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-datetime-picker.android.tsx',
+  },
+]
+
 async function buildNativeRegistry() {
   await copyCoreTo(NATIVE_FILES, 'lib/bs-day-picker', NATIVE_CORE_COPY_FILES)
+  await copyTimeCoreTo(NATIVE_FILES)
 
   const registry = {
     $schema: 'https://ui.shadcn.com/schema/registry.json',
@@ -217,6 +383,40 @@ async function buildNativeRegistry() {
         registryDependencies: ['button'],
         docs: 'Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).',
         files: NATIVE_DATE_PICKER_FILES,
+      },
+      {
+        name: 'bs-time-picker',
+        type: 'registry:component',
+        title: 'Bikram Sambat Time Picker (Native)',
+        description:
+          'Platform Bikram Sambat time picker (iOS wheels, Android Material dialog).',
+        dependencies: [
+          'clsx',
+          'tailwind-merge',
+          'lucide-react-native',
+          'react-native-safe-area-context',
+          'react-native-svg',
+        ],
+        registryDependencies: ['button'],
+        docs: 'Install bs-calendar and bs-date-picker first. Android uses Material-style `BsTimePickerDialog` (no native time picker).',
+        files: NATIVE_TIME_PICKER_FILES,
+      },
+      {
+        name: 'bs-datetime-picker',
+        type: 'registry:component',
+        title: 'Bikram Sambat Date Time Picker (Native)',
+        description:
+          'Combined BS date and time picker (iOS sheet, Android calendar then time dialog).',
+        dependencies: [
+          'clsx',
+          'tailwind-merge',
+          'lucide-react-native',
+          'react-native-safe-area-context',
+          'react-native-svg',
+        ],
+        registryDependencies: ['button'],
+        docs: 'Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.',
+        files: NATIVE_DATETIME_PICKER_FILES,
       },
     ],
   }

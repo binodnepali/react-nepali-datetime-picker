@@ -1,0 +1,49 @@
+{
+  "name": "bs-datetime-picker",
+  "type": "registry:component",
+  "title": "Bikram Sambat Date Time Picker (Native)",
+  "description": "Combined BS date and time picker (iOS sheet, Android calendar then time dialog).",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge",
+    "lucide-react-native",
+    "react-native-safe-area-context",
+    "react-native-svg"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "docs": "Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.",
+  "files": [
+    {
+      "path": "registry/native/files/lib/bs-datetime-picker.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-datetime-picker.ts"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-dialog.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-dialog.android.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-datetime-picker-wheels.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-datetime-picker-wheels.ios.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-datetime-picker.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-datetime-picker.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-datetime-picker.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-datetime-picker.android.tsx"
+    }
+  ]
+}
