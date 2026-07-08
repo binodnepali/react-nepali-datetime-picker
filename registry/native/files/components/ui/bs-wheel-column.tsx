@@ -114,8 +114,13 @@ export function BsWheelColumn<T extends string | number>({
 
   React.useEffect(() => {
     const targetIndex = indexForSelected(selectedIndex)
-    scrollToIndex(targetIndex, false)
-  }, [indexForSelected, scrollToIndex, selected, selectedIndex])
+    // Scroll only — avoid setFocusedIndex here (react-hooks/set-state-in-effect).
+    if (targetIndex < 0 || targetIndex >= data.length) return
+    listRef.current?.scrollToOffset({
+      offset: targetIndex * ITEM_HEIGHT,
+      animated: false,
+    })
+  }, [data.length, indexForSelected, selectedIndex])
 
   const commitIndex = React.useCallback(
     (index: number) => {
