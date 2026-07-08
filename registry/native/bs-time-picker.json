@@ -1,0 +1,79 @@
+{
+  "name": "bs-time-picker",
+  "type": "registry:component",
+  "title": "Bikram Sambat Time Picker (Native)",
+  "description": "Platform Bikram Sambat time picker (iOS wheels, Android Material dialog).",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge",
+    "lucide-react-native",
+    "react-native-safe-area-context",
+    "react-native-svg"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "docs": "Install bs-calendar and bs-date-picker first. Android uses Material-style `BsTimePickerDialog` (no native time picker).",
+  "files": [
+    {
+      "path": "registry/native/files/lib/bs-time-picker.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker.ts"
+    },
+    {
+      "path": "registry/native/files/lib/bs-time-picker/time/types.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/types.ts"
+    },
+    {
+      "path": "registry/native/files/lib/bs-time-picker/time/helpers.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/helpers.ts"
+    },
+    {
+      "path": "registry/native/files/lib/bs-time-picker/time/formatters.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/formatters.ts"
+    },
+    {
+      "path": "registry/native/files/lib/bs-time-picker/time/datetime.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/datetime.ts"
+    },
+    {
+      "path": "registry/native/files/lib/bs-time-picker/time/index.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/index.ts"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-wheel-column.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-wheel-column.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-dialog.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-dialog.android.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-wheels.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-wheels.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-wheels.ios.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker.android.tsx"
+    }
+  ]
+}

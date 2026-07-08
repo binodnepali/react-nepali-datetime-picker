@@ -41,6 +41,10 @@ type BsCalendarData = Record<string, Record<string, {
 
 `2000` – `2089` BS (matching Hamro Patro navigation).
 
+## Date + time pickers
+
+`BsDateTimePicker` and `toAdDate()` resolve the Gregorian date from the same `bs-calendar.json` entries (`adDate` per BS day). If a day is missing from the dataset, `getDayAdDate` / `toAdDate` return `null` — handle that in submit handlers.
+
 ## Attribution
 
 Hamro Patro is the authoritative source for BS–AD mapping and festival labels. Re-scrape periodically to pick up calendar corrections.
