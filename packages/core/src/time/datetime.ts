@@ -1,5 +1,5 @@
 import { getDayAdDate } from '../calendar-grid'
-import { formatBsDateLong } from '../formatters'
+import { formatBsDateLongWithWeekday } from '../formatters'
 import { getCurrentBsDate } from '../navigation'
 import type { BsDate } from '../types'
 import { clampBsTime, getDefaultBsTime } from './helpers'
@@ -35,7 +35,7 @@ export function formatBsDateTime(
   locale: BsLocale = 'en',
   is24Hour = false,
 ): string {
-  const dateLabel = formatBsDateLong(value, locale)
+  const dateLabel = formatBsDateLongWithWeekday(value, locale)
   const timeLabel = formatBsTime(value, locale, is24Hour)
   return `${dateLabel}, ${timeLabel}`
 }

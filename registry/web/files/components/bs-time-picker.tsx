@@ -149,15 +149,17 @@ export function BsTimePicker({
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-between gap-2 text-left font-normal",
             !value && "text-muted-foreground",
             className,
           )}
         >
-          <ClockIcon className="mr-2 size-4" />
-          {value
-            ? formatBsTimeWheelLabel(value, locale, is24Hour)
-            : placeholder}
+          <span className="truncate">
+            {value
+              ? formatBsTimeWheelLabel(value, locale, is24Hour)
+              : placeholder}
+          </span>
+          <ClockIcon className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

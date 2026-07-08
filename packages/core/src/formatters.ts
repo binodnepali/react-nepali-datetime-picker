@@ -50,6 +50,15 @@ export function formatBsDateLong(date: BsDate, locale: BsLocale = 'en'): string 
   return `${dayLabel} ${monthName} ${yearLabel}`
 }
 
+/** Long BS date with weekday prefix, e.g. "Friday, 26 Ashad 2083". */
+export function formatBsDateLongWithWeekday(
+  date: BsDate,
+  locale: BsLocale = 'en',
+): string {
+  const weekdayLabel = getWeekdayLabel(getBsDateWeekday(date), locale, false)
+  return `${weekdayLabel}, ${formatBsDateLong(date, locale)}`
+}
+
 export function formatBsDateHeadline(date: BsDate, locale: BsLocale = 'en'): string {
   const monthName = getMonthLabel(date.month, locale, locale === 'en')
   const dayLabel =

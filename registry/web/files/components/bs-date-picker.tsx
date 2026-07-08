@@ -39,13 +39,15 @@ export function BsDatePicker({
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-start text-left font-normal",
+            "w-full justify-between gap-2 text-left font-normal",
             !value && "text-muted-foreground",
             className,
           )}
         >
-          <CalendarIcon className="mr-2 size-4" />
-          {value ? formatBsDateLong(value, locale) : placeholder}
+          <span className="truncate">
+            {value ? formatBsDateLong(value, locale) : placeholder}
+          </span>
+          <CalendarIcon className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

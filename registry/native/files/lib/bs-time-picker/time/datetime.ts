@@ -1,5 +1,5 @@
 import { getDayAdDate } from '../../bs-day-picker/calendar-grid'
-import { formatBsDateLong } from '../../bs-day-picker/formatters'
+import { formatBsDateLongWithWeekday } from '../../bs-day-picker/formatters'
 import { getCurrentBsDate } from '../../bs-day-picker/navigation'
 import type { BsDate } from '../../bs-day-picker/types'
 import { clampBsTime, getDefaultBsTime } from './helpers'
@@ -35,7 +35,7 @@ export function formatBsDateTime(
   locale: BsLocale = 'en',
   is24Hour = false,
 ): string {
-  const dateLabel = formatBsDateLong(value, locale)
+  const dateLabel = formatBsDateLongWithWeekday(value, locale)
   const timeLabel = formatBsTime(value, locale, is24Hour)
   return `${dateLabel}, ${timeLabel}`
 }

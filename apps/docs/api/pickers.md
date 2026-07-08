@@ -77,7 +77,8 @@ function submitJourney(bsDateTime: BsDateTime) {
 | Helper                        | Returns                                       |
 | ----------------------------- | --------------------------------------------- |
 | `toAdDate(bsDateTime)`        | `Date` or `null` (uses `getDayAdDate` + time) |
-| `formatBsDateTime()`          | Localized BS date + time label                |
+| `formatBsDateTime()`          | Localized BS date + time label (weekday + long date + time) |
+| `formatBsDateLongWithWeekday()` | Date only, e.g. `Friday, 26 Ashad 2083`                  |
 | `getDefaultBsDateTime()`      | Today + now as `BsDateTime`                   |
 | `mergeBsDateTime(date, time)` | Combine `BsDate` + `BsTime`                   |
 
