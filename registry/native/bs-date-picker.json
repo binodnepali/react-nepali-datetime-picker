@@ -1,0 +1,58 @@
+{
+  "name": "bs-date-picker",
+  "type": "registry:component",
+  "title": "Bikram Sambat Date Picker (Native)",
+  "description": "Platform Bikram Sambat date picker for React Native / Expo (iOS wheel, Android Material calendar, web dropdowns).",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge",
+    "lucide-react-native",
+    "react-native-safe-area-context"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "docs": "Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).",
+  "files": [
+    {
+      "path": "registry/native/files/lib/bs-picker.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-picker.ts"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-wheel-column.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-wheel-column.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker-wheels.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker-wheels.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker-wheels.ios.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker-wheels.ios.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker-wheels.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker-wheels.android.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker.android.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-date-picker-dialog.android.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-date-picker-dialog.android.tsx"
+    }
+  ]
+}

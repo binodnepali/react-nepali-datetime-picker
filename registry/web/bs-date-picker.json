@@ -1,0 +1,23 @@
+{
+  "name": "bs-date-picker",
+  "type": "registry:component",
+  "title": "Bikram Sambat Date Picker",
+  "description": "Popover date picker built on the Bikram Sambat calendar.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "button",
+    "popover"
+  ],
+  "docs": "Install bs-calendar before this component: `shadcn add <registry-url>/bs-calendar.json`",
+  "files": [
+    {
+      "path": "registry/web/files/components/bs-date-picker.tsx",
+      "type": "registry:component",
+      "target": "components/bs-date-picker.tsx"
+    }
+  ]
+}
