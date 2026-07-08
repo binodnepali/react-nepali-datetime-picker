@@ -13,6 +13,7 @@ export function getCalendarData(): BsCalendarData {
 
 function weekdayFromAdDate(adDate: string): number {
   const [year, month, day] = adDate.split('-').map(Number)
+  if (year == null || month == null || day == null) return 0
   return new Date(year, month - 1, day).getDay()
 }
 
@@ -74,6 +75,7 @@ export function formatBsDateWheelLabel(date: BsDate, locale: BsLocale = 'en'): s
 
 export function formatAdDate(adDate: string, locale: BsLocale = 'en'): string {
   const [year, month, day] = adDate.split('-').map(Number)
+  if (year == null || month == null || day == null) return adDate
   const date = new Date(year, month - 1, day)
   return new Intl.DateTimeFormat(locale === 'ne' ? 'ne-NP' : 'en-US', {
     year: 'numeric',
