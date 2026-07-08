@@ -286,11 +286,22 @@ async function main() {
     }
   }
 
-  await mkdir(dirname(OUTPUT_PATH), { recursive: true })
-  await writeFile(OUTPUT_PATH, JSON.stringify(data, null, 2))
+  const isFullRange = minYear === MIN_YEAR && maxYear === MAX_YEAR
 
-  console.log(`\nWrote ${OUTPUT_PATH}`)
-  console.log(`Years: ${Object.keys(data).length}`)
+  if (isFullRange) {
+    await mkdir(dirname(OUTPUT_PATH), { recursive: true })
+    await writeFile(OUTPUT_PATH, JSON.stringify(data, null, 2))
+    console.log(`\nWrote ${OUTPUT_PATH}`)
+    console.log(`Years: ${Object.keys(data).length}`)
+  } else {
+    console.log(
+      `\nCache updated for ${minYear}-${maxYear}. Run \`pnpm data:build\` to merge into bs-calendar.json.`,
+    )
+  }
+
+  if (failures.length > 0) {
+    process.exit(1)
+  }
 }
 
 main().catch((error) => {

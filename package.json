@@ -5,6 +5,7 @@
   "description": "Registry-first Bikram Sambat date and datetime pickers for React and React Native.",
   "type": "module",
   "license": "MIT",
+  "packageManager": "pnpm@10.28.0",
   "engines": {
     "node": ">=20"
   },
@@ -13,13 +14,14 @@
     "data:legacy": "node scripts/generate-legacy-data.mjs",
     "data:build": "node scripts/generate-legacy-data.mjs",
     "data:validate": "node scripts/validate-calendar-data.mjs",
+    "data:refresh": "node scripts/scrape-hamropatro.mjs && node scripts/generate-legacy-data.mjs && node scripts/validate-calendar-data.mjs",
     "registry:build": "node scripts/build-registry.mjs",
     "build": "pnpm registry:build",
     "test": "pnpm --filter @react-nepali-datetime-picker/core test",
     "test:watch": "pnpm --filter @react-nepali-datetime-picker/core test:watch",
     "check-types": "pnpm --filter @react-nepali-datetime-picker/core check-types",
     "dev": "pnpm --filter @react-nepali-datetime-picker/docs dev",
-    "docs:build": "pnpm --filter @react-nepali-datetime-picker/docs build",
+    "docs:build": "pnpm registry:build && pnpm --filter @react-nepali-datetime-picker/docs build",
     "docs:preview": "pnpm --filter @react-nepali-datetime-picker/docs preview",
     "lint": "eslint packages/core/src apps/docs --ext ts,tsx"
   },

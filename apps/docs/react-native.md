@@ -39,17 +39,17 @@ Install **bs-calendar first**, then **bs-date-picker**.
 
 ## Hosted install
 
-When docs are deployed:
+When docs are deployed ([GitHub Pages](https://binodnepali.github.io/react-nepali-datetime-picker/)):
 
 ```bash
-pnpm dlx shadcn@latest add https://your-docs-host/r-native/bs-calendar.json
-pnpm dlx shadcn@latest add https://your-docs-host/r-native/bs-date-picker.json
+pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-calendar.json
+pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-date-picker.json
 ```
 
 Namespaced install:
 
 ```bash
-pnpm dlx shadcn@latest registry add @react-nepali-datetime-picker-native=https://your-docs-host/r-native/{name}.json
+pnpm dlx shadcn@latest registry add @react-nepali-datetime-picker-native=https://binodnepali.github.io/react-nepali-datetime-picker/r-native/{name}.json
 pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-calendar
 pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-date-picker
 ```

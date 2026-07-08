@@ -30,17 +30,17 @@ pnpm dlx shadcn@latest add /absolute/path/to/react-nepali-datetime-picker/apps/d
 
 Install **bs-calendar first**, then **bs-date-picker**.
 
-When hosting docs, use the published registry JSON:
+When docs are deployed ([GitHub Pages](https://binodnepali.github.io/react-nepali-datetime-picker/)):
 
 ```bash
-pnpm dlx shadcn@latest add https://your-docs-host/r/bs-calendar.json
-pnpm dlx shadcn@latest add https://your-docs-host/r/bs-date-picker.json
+pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r/bs-calendar.json
+pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r/bs-date-picker.json
 ```
 
 For namespaced installs over HTTP, register the registry once:
 
 ```bash
-pnpm dlx shadcn@latest registry add @react-nepali-datetime-picker=https://your-docs-host/r/{name}.json
+pnpm dlx shadcn@latest registry add @react-nepali-datetime-picker=https://binodnepali.github.io/react-nepali-datetime-picker/r/{name}.json
 pnpm dlx shadcn@latest add @react-nepali-datetime-picker/bs-calendar
 pnpm dlx shadcn@latest add @react-nepali-datetime-picker/bs-date-picker
 ```

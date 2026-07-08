@@ -8,14 +8,16 @@ From the monorepo root:
 
 ```bash
 # Scrape Hamro Patro (rate-limited; resumes from .cache/hamropatro/)
-pnpm data:scrape
+pnpm data:scrape -- --years 2080-2089
 
-# Build full dataset (chains BS days + overlays scraped months)
+# Build full dataset (legacy grid + scraped month overlays)
 pnpm data:build
 
 # Validate grid integrity and spot-checks
 pnpm data:validate
 ```
+
+Maintainers can also run **Actions → Refresh calendar data** to open a PR automatically. See [Contributing — Data release](https://github.com/binodnepali/react-nepali-datetime-picker/blob/main/CONTRIBUTING.md#data-release-maintainers).
 
 ## Schema
 

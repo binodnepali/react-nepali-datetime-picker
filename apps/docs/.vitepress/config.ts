@@ -1,6 +1,10 @@
 import { defineConfig } from 'vitepress'
 
+/** GitHub Pages project site: binodnepali.github.io/react-nepali-datetime-picker */
+const DOCS_BASE = '/react-nepali-datetime-picker/'
+
 export default defineConfig({
+  base: DOCS_BASE,
   title: 'react-nepali-datetime-picker',
   description:
     'Bikram Sambat calendar and date picker for React and React Native',

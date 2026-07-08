@@ -18,12 +18,12 @@ Docs: [Getting started](./apps/docs/getting-started.md)
 
 ## Install in your app
 
-After hosting `apps/docs/public/r/` (web) or `r-native/` (Expo):
+After hosting docs (GitHub Pages: `https://binodnepali.github.io/react-nepali-datetime-picker/`), use `apps/docs/public/r/` (web) or `r-native/` (Expo):
 
 ```json
 {
   "registries": {
-    "@react-nepali-datetime-picker": "https://your-docs-host/r/{name}.json"
+    "@react-nepali-datetime-picker": "https://binodnepali.github.io/react-nepali-datetime-picker/r/{name}.json"
   }
 }
 ```
@@ -50,7 +50,9 @@ Expo / React Native: use `@react-nepali-datetime-picker-native` → `r-native/{n
 |---------|-------------|
 | `pnpm dev` | Docs dev server |
 | `pnpm registry:build` | Build web + native registry JSON |
-| `pnpm scrape:hamropatro` | Refresh calendar data (2000–2089 BS) |
+| `pnpm data:scrape` | Refresh Hamro Patro cache (use `-- --years 2080-2089`) |
+| `pnpm data:build` | Merge cache into full `bs-calendar.json` |
+| `pnpm data:refresh` | Scrape + build + validate (chain) |
 | `pnpm test` | Vitest (`packages/core`) |
 
 ## License

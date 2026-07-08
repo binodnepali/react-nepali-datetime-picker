@@ -21,5 +21,5 @@ features:
   - title: React Native ready
     details: Matching registry items for Expo and React Native Reusables with NativeWind.
   - title: Hamro Patro data
-    details: Calendar data is scraped from Hamro Patro and regenerated at build time.
+    details: Calendar data is scraped from Hamro Patro, validated, and refreshed on a manual release cadence.
 ---
