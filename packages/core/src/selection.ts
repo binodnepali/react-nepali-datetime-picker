@@ -8,7 +8,7 @@ export function selectSingleDate(
 ): BsDate | undefined {
   if (mode !== 'single') {
     console.warn(
-      `[BsDayPicker] mode "${mode}" is not implemented in v1. Falling back to single.`,
+      `[BsDayPicker] mode "${mode}" is not implemented in v2. Falling back to single.`,
     )
   }
 
