@@ -74,7 +74,7 @@ export function formatBsDateWheelLabel(date: BsDate, locale: BsLocale = 'en'): s
 
 export function formatAdDate(adDate: string, locale: BsLocale = 'en'): string {
   const [year, month, day] = adDate.split('-').map(Number)
-  const date = new Date(year, month - 1, day)
+  const date = new Date(Date.UTC(year, month - 1, day))
   return new Intl.DateTimeFormat(locale === 'ne' ? 'ne-NP' : 'en-US', {
     year: 'numeric',
     month: 'long',
