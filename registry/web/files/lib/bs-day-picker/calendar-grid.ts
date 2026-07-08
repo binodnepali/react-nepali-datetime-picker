@@ -57,8 +57,6 @@ export function buildMonthGrid({
   today?: BsDate
   disabled?: boolean | ((date: BsDate) => boolean)
 }): BsDayCell[][] {
-  void showOutsideDays
-
   const monthData = getMonthData(month.year, month.month)
   if (!monthData) return []
 
@@ -70,6 +68,10 @@ export function buildMonthGrid({
     }
     const currentMonth =
       day.bsYear === month.year && day.bsMonth === month.month
+
+    if (!showOutsideDays && !currentMonth) {
+      return createPlaceholderCell(day.weekday, month)
+    }
 
     return {
       date,
