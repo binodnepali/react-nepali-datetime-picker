@@ -75,6 +75,8 @@ export function Example() {
 }
 ```
 
+`onValueChange` returns **`BsDate` only**. To get the matching AD date, use `getDayAdDate` — see [BS ↔ AD](/api#bs-ad).
+
 Calendar only:
 
 ```tsx
