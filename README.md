@@ -1,88 +1,60 @@
-# React Nepali Datetime Picker
+# react-nepali-datetime-picker
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+Registry-first **Bikram Sambat (BS)** date pickers for React (web) and React Native (Expo). Copy components into your app with the shadcn CLI — no npm runtime dependency.
 
-This component library is built with React and TailwindCSS, and it is highly customizable to meet the needs of any user. And it aims to provide a comprehensive solution for integrating Nepali calendar functionality into your React applications. It offers a collection of reusable components that will enable seamless date picking, time picking, and datetime picking capabilities.
+The headless calendar engine lives in **`lib/bs-day-picker/`** (`BsDayPicker`, `useBsCalendar`). Registry items are **`bs-calendar`** and **`bs-date-picker`**.
 
-## Components
-
-* **Date Picker**: Let's user select nepali calendar date. ✅ 
-* **Time Picker**: Let's user select nepali time. ✅ 
-* **DateTime Picker**: Let's user select nepali date and time. ✅ 
-* **Static Calendar**: Let's user select nepali calendar date without popupover/modal. ✅ 
-* **Static Desktop Time**: Let's user select nepali time without popupover/modal. ✅ 
-* **Static Mobile Time**: Let's user select nepali time with clock layout and no popupover/modal. 🚧
-
-Demo site [link](https://react-nepali-datetime-picker.web.app)
-
-## Before installation
-
-You need to insall [Node.js](https://nodejs.org) and [Tailwind CSS](https://tailwindcss.com).
-
-## Installation
-
-1. Install react-nepali-datetime-picker
+## Quick start
 
 ```bash
-  npm install react-nepali-datetime-picker
-  #or
-  yarn add react-nepali-datetime-picker
-  #or
-  pnpm add react-nepali-datetime-picker
-  ```
+git clone https://github.com/binodnepali/react-nepali-datetime-picker.git
+cd react-nepali-datetime-picker
+pnpm install
+pnpm registry:build
+pnpm dev
+```
 
-2. Then add `nedtTwPlugin` to your tailwind.config.js files:
+Docs: [Getting started](./apps/docs/getting-started.md)
 
-```js
-  import {
-      nedtTwPlugin,
-  } from 'react-nepali-datetime-picker';
+## Install in your app
 
-  module.exports = {
-      //...
-      plugins: [nedtTwPlugin()],
+After hosting docs (GitHub Pages: `https://binodnepali.github.io/react-nepali-datetime-picker/`), use `apps/docs/public/r/` (web) or `r-native/` (Expo):
+
+```json
+{
+  "registries": {
+    "@react-nepali-datetime-picker": "https://binodnepali.github.io/react-nepali-datetime-picker/r/{name}.json"
   }
+}
 ```
 
-## Usage
-
-```jsx
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  StaticCalendar,
-  StaticDesktopTime,
-} from 'react-nepali-datetime-picker';
-
-import 'react-nepali-datetime-picker/dist/style.css';
-
-const MyComponent = () => {
-  return (
-    <>
-      <DatePicker />
-      <TimePicker />
-      <DateTimePicker />
-      <StaticCalendar />
-      <StaticDesktopTime/>
-    </>
-  );
-};
-
-export default MyComponent;
+```bash
+pnpm dlx shadcn@latest add @react-nepali-datetime-picker/bs-calendar
+pnpm dlx shadcn@latest add @react-nepali-datetime-picker/bs-date-picker
 ```
+
+Expo / React Native: use `@react-nepali-datetime-picker-native` → `r-native/{name}.json`. See [React Native guide](./apps/docs/react-native.md).
+
+## Monorepo
+
+| Path | Purpose |
+|------|---------|
+| `packages/core` | `@react-nepali-datetime-picker/core` — BS calendar data + headless hook |
+| `registry/web`, `registry/native` | shadcn registry sources |
+| `apps/docs` | VitePress site + hosted registry JSON |
+| `scripts/scrape-hamropatro.mjs` | Regenerate `bs-calendar.json` from Hamro Patro |
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Docs dev server |
+| `pnpm registry:build` | Build web + native registry JSON |
+| `pnpm data:scrape` | Refresh Hamro Patro cache (use `-- --years 2080-2089`) |
+| `pnpm data:build` | Merge cache into full `bs-calendar.json` |
+| `pnpm data:refresh` | Scrape + build + validate (chain) |
+| `pnpm test` | Vitest (`packages/core`) |
 
 ## License
 
-This project is licensed under the MIT License. For more details, see the [LICENSE](./LICENSE) file.
-
-## Author
-
-* Name: Binod Nepali
-* GitHub: [@binodnepali](https://github.com/binodnepali)
-* Email: nepalibinod9@gmail.com
-* Website: [https://binodnepali.me/](https://binodnepali.me/)
-
-We welcome contributions from the open-source community to help us complete and improve this project. Feel free to create issues, submit pull requests, or reach out to the author for any feedback or questions.
-
-Thank you for your interest in the React Nepali Datetime Picker! Together, we can make it a powerful tool for Nepali calendar integration in React applications.
+MIT

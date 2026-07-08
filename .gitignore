@@ -1,31 +1,25 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# dependencies
 node_modules
+.pnpm-store
+
+# build
 dist
-dist-ssr
-*.local
-analyse.html
-package-lock.json
-yarn.lock
-burn.lock
+.turbo
+apps/docs/.vitepress/dist
+apps/docs/.vitepress/cache
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# scrape cache
+.cache
+
+# env
+.env
+.env.*
+
+# IDE
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.log
 
-# ignore files
-today.md
+# legacy (removed in v2)
+# demo-site, doc-site, src/ are deleted — data lives in packages/core

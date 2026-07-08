@@ -1,126 +1,65 @@
-## Contributing Guide
+# Contributing
 
-Thank you for your interest in contributing to the React Nepali Datetime Picker project! Your contributions will help improve and enhance this library. Please take a moment to review the guidelines before getting started.
-
-### Before Getting Started
-
-Before you start contributing, please ensure that you have the following prerequisites:
-
-* Node.js 16.8 or higher installed on your machine. You can download it from the [official Node.js website](https://nodejs.org/en/). Alternatively, you can use [nvm](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions.
-
-### Getting Started
-
-To set up the project on your local machine, follow these steps:
-
-1. Clone the repository:
-
-   
+## Setup
 
 ```bash
-   git clone https://github.com/binodnepali/react-nepali-datetime-picker.git
-   # or
-   git clone git@github.com:binodnepali/react-nepali-datetime-picker.git
-   ```
+pnpm install
+pnpm registry:build
+pnpm dev
+```
 
-2. Navigate to the cloned repository:
+## Calendar data
 
-   
+Hamro Patro is the source of truth for BS month lengths and BS↔AD mapping. Month day counts can change when Hamro Patro corrects a year — refresh data manually; do **not** scrape on every docs deploy.
 
-```bash
-   cd react-nepali-datetime-picker
-   ```
-
-3. Install project dependencies:
-
-   
+### Local refresh
 
 ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
+# Near-term years (recommended); fills .cache/hamropatro/ then merges
+pnpm data:scrape -- --years 2080-2089
+pnpm data:build
+pnpm data:validate
+pnpm test
+pnpm registry:build
+```
 
-4. Start the development server:
-
-   
-
-```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-5. Build the project for production:
-
-   
+Full range (slow, ~1000 requests):
 
 ```bash
-   npm run build
-   # or
-   yarn build
-   # or
-   pnpm build
-   ```
+pnpm data:scrape -- --years 2000-2089
+pnpm data:build
+pnpm data:validate
+```
 
-6. Run lint checks:
+### Data release (maintainers)
 
-   
+1. **Actions → Refresh calendar data → Run workflow**
+   - Default years: `2080-2089` (adjust as needed)
+   - Opens a PR with updated `bs-calendar.json` and rebuilt registry JSON
+2. **Review the PR** — focus on `daysInMonth` and AD date shifts
+3. **Merge to `main`** — docs deploy runs separately; registry JSON updates go out with the merge
 
-```bash
-   npm run lint
-   # or
-   yarn lint
-   # or
-   pnpm lint
-   ```
+Suggested schedule: before Baishakh 1 (Nepali New Year) or when Hamro Patro publishes corrections.
 
-7. Start the preview server after building:
+## Registry
 
-   
+After changing files under `registry/web/files` or `registry/native/files`:
 
 ```bash
-   npm run preview
-   # or
-   yarn preview
-   # or
-   pnpm preview
-   ```
+pnpm registry:build
+```
 
-### Pull Requests
+Commit updated JSON under `apps/docs/public/r/` and `r-native/`.
 
-We welcome and appreciate pull requests from the community. If you have any improvements, bug fixes, or new features to contribute, please follow these steps:
+## Docs
 
-1. Fork the repository and create a new branch based on the `main` branch.
+Edit Markdown under `apps/docs/`. Playground lives in `apps/docs/components/Playground.vue`.
 
-2. Make your changes and ensure that the codebase adheres to the project's linting rules.
+Docs deploy to GitHub Pages on push to `main` (`.github/workflows/docs.yml`). Enable **Settings → Pages → Source: GitHub Actions** once after merge.
 
-3. Write tests for your changes if applicable.
+## Tests
 
-4. Commit your changes with descriptive commit messages.
-
-5. Push your branch to your forked repository.
-
-6. Create a pull request from your branch to the `main` branch of the original repository.
-
-7. Provide a clear and concise description of your changes in the pull request, along with any additional context or information that may be useful.
-
-8. Participate in the code review process and address any feedback or suggestions.
-
-### License
-
-By contributing to this project, you agree that your contributions will be licensed under the MIT License. For more details, please see the [LICENSE](./LICENSE) file.
-
-### Author
-
-* Name: Binod Nepali
-* GitHub: [@binodnepali](https://github.com/binodnepali)
-* Email: nepalibinod9@gmail.com
-* Website: [https://binodnepali.me/](https://binodnepali.me/)
-
-If you have any questions, feedback, or need further assistance, feel free to reach out to the author.
-
-Thank you for your valuable contributions to the React Nepali Datetime Picker project! We appreciate your efforts in making this library even better.
+```bash
+pnpm test
+pnpm check-types
+```

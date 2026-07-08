@@ -1,0 +1,87 @@
+name: Refresh calendar data
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: 'BS year range to scrape (e.g. 2080-2089)'
+        required: true
+        default: '2080-2089'
+      open_pr:
+        description: 'Open a pull request with updated data'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-calendar-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Scrape Hamro Patro
+        run: pnpm data:scrape -- --years ${{ inputs.years }}
+
+      - name: Build calendar dataset
+        run: pnpm data:build
+
+      - name: Validate calendar data
+        run: pnpm data:validate
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Rebuild registry JSON
+        run: pnpm registry:build
+
+      - name: Summarize changes
+        run: |
+          echo '### Calendar data diff' >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat packages/core/src/data/bs-calendar.json >> "$GITHUB_STEP_SUMMARY" || true
+          echo '' >> "$GITHUB_STEP_SUMMARY"
+          echo '### Registry diff' >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat apps/docs/public/r apps/docs/public/r-native >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Create pull request
+        if: inputs.open_pr && success()
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore(data): refresh Hamro Patro calendar (${{ inputs.years }})'
+          title: 'chore(data): refresh Hamro Patro calendar (${{ inputs.years }})'
+          body: |
+            Automated calendar data refresh from Hamro Patro.
+
+            **Year range:** `${{ inputs.years }}`
+
+            ## Checklist for reviewers
+
+            - [ ] Review `daysInMonth` changes in `packages/core/src/data/bs-calendar.json`
+            - [ ] Spot-check a few BS↔AD dates against [Hamro Patro](https://english.hamropatro.com/)
+            - [ ] `pnpm data:validate` and `pnpm test` passed in CI
+
+            Docs deploy is unchanged until this PR merges to `main`.
+          branch: chore/calendar-data-${{ github.run_id }}
+          delete-branch: true
+          labels: |
+            calendar-data

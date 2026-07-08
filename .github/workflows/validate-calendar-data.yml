@@ -1,0 +1,39 @@
+name: Validate calendar data
+
+on:
+  pull_request:
+    paths:
+      - 'packages/core/src/data/**'
+      - 'apps/docs/public/r/**'
+      - 'apps/docs/public/r-native/**'
+      - 'scripts/scrape-hamropatro.mjs'
+      - 'scripts/generate-legacy-data.mjs'
+      - 'scripts/validate-calendar-data.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate calendar data
+        run: pnpm data:validate
+
+      - name: Run tests
+        run: pnpm test

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "react-nepali-datetime-picker",
+  "homepage": "https://github.com/binodnepali/react-nepali-datetime-picker",
+  "items": [
+    {
+      "name": "bs-calendar",
+      "type": "registry:ui",
+      "title": "Bikram Sambat Calendar",
+      "description": "A Bikram Sambat calendar component styled like shadcn Calendar.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/web/files/components/ui/bs-calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/bs-calendar.tsx"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/types.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/types.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/constants.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/constants.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/formatters.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/formatters.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/navigation.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/navigation.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/calendar-grid.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/calendar-grid.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/selection.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/selection.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/use-bs-calendar.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/use-bs-calendar.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/bs-day-picker.tsx",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/bs-day-picker.tsx"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/index.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/index.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-day-picker/data/bs-calendar.json",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/data/bs-calendar.json"
+        }
+      ]
+    },
+    {
+      "name": "bs-date-picker",
+      "type": "registry:component",
+      "title": "Bikram Sambat Date Picker",
+      "description": "Popover date picker built on the Bikram Sambat calendar.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "popover"
+      ],
+      "docs": "Install bs-calendar before this component: `shadcn add <registry-url>/bs-calendar.json`",
+      "files": [
+        {
+          "path": "registry/web/files/components/bs-date-picker.tsx",
+          "type": "registry:component",
+          "target": "components/bs-date-picker.tsx"
+        }
+      ]
+    }
+  ]
+}
