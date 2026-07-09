@@ -80,7 +80,11 @@ Hidden types (no changelog section): `docs`, `chore`, `ci`, `test`, `refactor`, 
 | Tag | Meaning |
 |-----|---------|
 | `v1.x` | Legacy npm package |
-| `v2.0.0` | Registry-first (`bs-calendar`, `bs-date-picker`) — manifest baseline |
-| `v2.1.0+` | Time/datetime pickers, pattern formatters, etc. |
+| `v2.0.0` | Registry-first rewrite (changelog backfill; no git tag) |
+| `v2.1.0+` | Pattern formatting, release-please, CI |
 
-Last v1 tag: `v1.0.2`.
+Last v1 tag: `v1.0.2`. First automated release tag: `react-nepali-datetime-picker-v2.1.0`.
+
+### One-time 2.0.0 backfill
+
+v2 landed on `main` before release-please. The **2.0.0** changelog section was written manually so the registry rewrite is not buried in a small 2.1.0 entry. Future releases stay release-please–generated; editing **past** sections is safe.
