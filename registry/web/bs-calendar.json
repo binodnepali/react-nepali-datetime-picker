@@ -33,6 +33,11 @@
       "target": "lib/bs-day-picker/formatters.ts"
     },
     {
+      "path": "registry/web/files/lib/bs-day-picker/pattern.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-day-picker/pattern.ts"
+    },
+    {
       "path": "registry/web/files/lib/bs-day-picker/navigation.ts",
       "type": "registry:lib",
       "target": "lib/bs-day-picker/navigation.ts"

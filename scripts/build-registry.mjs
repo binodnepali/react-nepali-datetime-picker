@@ -19,6 +19,7 @@ const CORE_COPY_FILES = [
   'types.ts',
   'constants.ts',
   'formatters.ts',
+  'pattern.ts',
   'navigation.ts',
   'calendar-grid.ts',
   'selection.ts',
@@ -36,6 +37,7 @@ const CORE_TIME_FILES = [
   'helpers.ts',
   'formatters.ts',
   'datetime.ts',
+  'pattern.ts',
   'index.ts',
 ]
 

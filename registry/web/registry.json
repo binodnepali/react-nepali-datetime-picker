@@ -38,6 +38,11 @@
           "target": "lib/bs-day-picker/formatters.ts"
         },
         {
+          "path": "registry/web/files/lib/bs-day-picker/pattern.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-day-picker/pattern.ts"
+        },
+        {
           "path": "registry/web/files/lib/bs-day-picker/navigation.ts",
           "type": "registry:lib",
           "target": "lib/bs-day-picker/navigation.ts"
@@ -144,6 +149,11 @@
           "target": "lib/bs-time-picker/time/datetime.ts"
         },
         {
+          "path": "registry/web/files/lib/bs-time-picker/time/pattern.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-time-picker/time/pattern.ts"
+        },
+        {
           "path": "registry/web/files/lib/bs-time-picker/time/index.ts",
           "type": "registry:lib",
           "target": "lib/bs-time-picker/time/index.ts"
@@ -200,6 +210,11 @@
           "path": "registry/web/files/lib/bs-time-picker/time/datetime.ts",
           "type": "registry:lib",
           "target": "lib/bs-time-picker/time/datetime.ts"
+        },
+        {
+          "path": "registry/web/files/lib/bs-time-picker/time/pattern.ts",
+          "type": "registry:lib",
+          "target": "lib/bs-time-picker/time/pattern.ts"
         },
         {
           "path": "registry/web/files/lib/bs-time-picker/time/index.ts",

@@ -5,7 +5,6 @@ import { ClockIcon } from "lucide-react"
 
 import {
   clampBsTime,
-  formatBsTimeWheelLabel,
   formatHourOption,
   formatMinuteOption,
   formatPeriodOption,
@@ -17,6 +16,10 @@ import {
   resolveDisplayPeriod,
   resolveWheelHour,
 } from "@/lib/bs-time-picker"
+import {
+  BS_TIME_DISPLAY_PATTERN,
+  formatBsTimePattern,
+} from "@/lib/bs-time-picker/time/pattern"
 import type { BsLocale, BsPeriod, BsTime } from "@/lib/bs-time-picker/time/types"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,8 +35,27 @@ export type BsTimePickerProps = {
   locale?: BsLocale
   is24Hour?: boolean
   placeholder?: string
+  /** date-fns-style BS time tokens, e.g. `h:mm a` */
+  formatPattern?: string
+  formatValue?: (value: BsTime, locale: BsLocale, is24Hour: boolean) => string
   className?: string
   disabled?: boolean
+}
+
+function resolveTimeDisplayLabel(
+  value: BsTime,
+  locale: BsLocale,
+  is24Hour: boolean,
+  formatValue?: BsTimePickerProps['formatValue'],
+  formatPattern?: string,
+): string {
+  if (formatValue) return formatValue(value, locale, is24Hour)
+  return formatBsTimePattern(
+    value,
+    formatPattern ?? BS_TIME_DISPLAY_PATTERN,
+    locale,
+    is24Hour,
+  )
 }
 
 function TimeSelects({
@@ -128,6 +150,8 @@ export function BsTimePicker({
   locale = "ne",
   is24Hour = false,
   placeholder = "Select time",
+  formatPattern,
+  formatValue,
   className,
   disabled = false,
 }: BsTimePickerProps) {
@@ -156,7 +180,13 @@ export function BsTimePicker({
         >
           <span className="truncate">
             {value
-              ? formatBsTimeWheelLabel(value, locale, is24Hour)
+              ? resolveTimeDisplayLabel(
+                  value,
+                  locale,
+                  is24Hour,
+                  formatValue,
+                  formatPattern,
+                )
               : placeholder}
           </span>
           <ClockIcon className="size-4 shrink-0 opacity-50" />

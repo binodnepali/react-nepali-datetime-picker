@@ -50,6 +50,11 @@
       "target": "lib/bs-time-picker/time/datetime.ts"
     },
     {
+      "path": "registry/web/files/lib/bs-time-picker/time/pattern.ts",
+      "type": "registry:lib",
+      "target": "lib/bs-time-picker/time/pattern.ts"
+    },
+    {
       "path": "registry/web/files/lib/bs-time-picker/time/index.ts",
       "type": "registry:lib",
       "target": "lib/bs-time-picker/time/index.ts"

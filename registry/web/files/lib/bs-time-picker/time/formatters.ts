@@ -1,4 +1,4 @@
-import { pad2, toNepaliDigit } from '../../bs-day-picker/constants'
+import { pad2 } from '../../bs-day-picker/constants'
 import type { BsLocale } from '../../bs-day-picker/types'
 import { to12Hour } from './helpers'
 import type { BsTime } from './types'

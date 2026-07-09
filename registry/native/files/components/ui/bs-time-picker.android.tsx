@@ -1,6 +1,9 @@
 import { getDefaultBsTime } from '@/lib/bs-time-picker'
-import { formatBsTimeWheelLabel } from '@/lib/bs-time-picker'
-import type { BsTime } from '@/lib/bs-time-picker/time/types'
+import {
+  BS_TIME_DISPLAY_PATTERN,
+  formatBsTimePattern,
+} from '@/lib/bs-time-picker/time/pattern'
+import type { BsLocale, BsTime } from '@/lib/bs-time-picker/time/types'
 import { cn } from '@/lib/utils'
 import { Clock } from 'lucide-react-native'
 import * as React from 'react'
@@ -12,14 +15,32 @@ import { Text } from '@/components/ui/text'
 export type BsTimePickerProps = {
   value?: BsTime
   onValueChange?: (value: BsTime | undefined) => void
-  locale?: 'en' | 'ne'
+  locale?: BsLocale
   is24Hour?: boolean
   placeholder?: string
   title?: string
   cancelLabel?: string
   confirmLabel?: string
+  formatPattern?: string
+  formatValue?: (value: BsTime, locale: BsLocale, is24Hour: boolean) => string
   className?: string
   disabled?: boolean
+}
+
+function resolveTimeDisplayLabel(
+  value: BsTime,
+  locale: BsLocale,
+  is24Hour: boolean,
+  formatValue?: BsTimePickerProps['formatValue'],
+  formatPattern?: string,
+): string {
+  if (formatValue) return formatValue(value, locale, is24Hour)
+  return formatBsTimePattern(
+    value,
+    formatPattern ?? BS_TIME_DISPLAY_PATTERN,
+    locale,
+    is24Hour,
+  )
 }
 
 export function BsTimePicker({
@@ -31,6 +52,8 @@ export function BsTimePicker({
   title,
   cancelLabel,
   confirmLabel,
+  formatPattern,
+  formatValue,
   className,
   disabled = false,
 }: BsTimePickerProps) {
@@ -61,7 +84,13 @@ export function BsTimePicker({
   }
 
   const displayLabel = value
-    ? formatBsTimeWheelLabel(value, locale, is24Hour)
+    ? resolveTimeDisplayLabel(
+        value,
+        locale,
+        is24Hour,
+        formatValue,
+        formatPattern,
+      )
     : resolvedPlaceholder
 
   return (

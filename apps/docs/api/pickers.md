@@ -4,6 +4,75 @@ Registry items: **`bs-date-picker`**, **`bs-time-picker`**, **`bs-datetime-picke
 
 Date callbacks return **`BsDate` only** — see [BS ↔ AD](/api#bs-ad) on the overview page.
 
+## Display formatting
+
+All three pickers format the trigger label with **date-fns-style tokens** mapped to Bikram Sambat data (weekday/month names from Hamro Patro). No `date-fns` dependency.
+
+**Precedence:** `formatValue` → `formatPattern` → built-in default.
+
+| Picker            | Default pattern              | Example (`en`)                         |
+| ----------------- | ---------------------------- | -------------------------------------- |
+| `BsDatePicker`    | `EEEE, d MMMM yyyy`          | `Friday, 26 Ashad 2083`                |
+| `BsTimePicker`    | `h:mm a`                     | `10:51 PM`                             |
+| `BsDateTimePicker`| `EEEE, d MMMM yyyy, h:mm a`  | `Friday, 26 Ashad 2083, 10:51 PM`     |
+
+### Props (all pickers)
+
+| Prop            | Type | Description |
+| --------------- | ---- | ----------- |
+| `formatPattern` | `string` | date-fns-style BS tokens (see table below) |
+| `formatValue`   | `(value, locale, …) => string` | Full override; takes precedence over `formatPattern` |
+
+Use single quotes for literals, e.g. `'at' h:mm a` → `at 10:51 PM`.
+
+### Date tokens
+
+| Token | Output |
+| ----- | ------ |
+| `EEEE` | Full weekday (`Friday` / `शुक्रबार`) |
+| `EEE` | Short weekday |
+| `MMMM` | Full BS month (`Ashad` / `असार`) |
+| `MMM` | Short BS month |
+| `yyyy` | 4-digit BS year |
+| `yy` | 2-digit BS year |
+| `MM` / `M` | Month number (padded / unpadded) |
+| `dd` / `d` | Day of month (padded / unpadded) |
+
+Nepali locale uses Nepali digits where applicable.
+
+### Time tokens
+
+| Token | Output |
+| ----- | ------ |
+| `HH` / `H` | 24-hour hour (padded / unpadded) |
+| `hh` / `h` | 12-hour hour when `is24Hour={false}`; maps to 24h when `is24Hour={true}` |
+| `mm` / `m` | Minute (padded / unpadded) |
+| `a` | AM/PM (`AM`/`PM` or `एम`/`पिम`); omitted in 24-hour mode |
+
+### Helpers
+
+```ts
+import { formatBsDatePattern, BS_DATE_DISPLAY_PATTERN } from "@/lib/bs-day-picker/pattern"
+import {
+  formatBsTimePattern,
+  formatBsDateTimePattern,
+  BS_TIME_DISPLAY_PATTERN,
+  BS_DATETIME_DISPLAY_PATTERN,
+} from "@/lib/bs-time-picker/time/pattern"
+```
+
+For Gregorian labels, use `formatValue` with `toAdDate()` and your own formatter (e.g. `date-fns`).
+
+```tsx
+<BsDateTimePicker
+  value={bsValue}
+  onChange={setBsValue}
+  locale="en"
+  formatPattern="EEE d MMM yyyy, HH:mm"
+  is24Hour
+/>
+```
+
 ## `BsDatePicker`
 
 | Prop            | Type                       | Default | Description                                      |
@@ -13,6 +82,8 @@ Date callbacks return **`BsDate` only** — see [BS ↔ AD](/api#bs-ad) on the o
 | `onValueChange` | `(value?: BsDate) => void` | —       | Change handler (native)                          |
 | `locale`        | `"en" \| "ne"`             | `"ne"`  | Display locale                                   |
 | `placeholder`   | `string`                   | —       | Trigger placeholder                              |
+| `formatPattern` | `string`                   | `EEEE, d MMMM yyyy` | Trigger label pattern              |
+| `formatValue`   | `(value, locale) => string`| —       | Custom trigger label                             |
 | `disabled`      | `boolean`                  | —       | Disable trigger                                  |
 
 | Platform | UX                                    |
@@ -44,6 +115,8 @@ Nepali period labels in the picker UI: **एम** (AM), **पिम** (PM).
 | `locale`        | `"en" \| "ne"`              | `"ne"`  | Labels and digits        |
 | `is24Hour`      | `boolean`                   | `false` | 24h vs 12h + AM/PM       |
 | `placeholder`   | `string`                    | —       | Trigger placeholder      |
+| `formatPattern` | `string`                    | `h:mm a`| Trigger label pattern    |
+| `formatValue`   | `(value, locale, is24Hour) => string` | — | Custom trigger label |
 | `disabled`      | `boolean`                   | —       | Disable trigger          |
 
 | Platform | UX                                              |
@@ -77,14 +150,20 @@ function submitJourney(bsDateTime: BsDateTime) {
 | Helper                        | Returns                                       |
 | ----------------------------- | --------------------------------------------- |
 | `toAdDate(bsDateTime)`        | `Date` or `null` (uses `getDayAdDate` + time) |
-| `formatBsDateTime()`          | Localized BS date + time label (weekday + long date + time) |
-| `formatBsDateLongWithWeekday()` | Date only, e.g. `Friday, 26 Ashad 2083`                  |
+| `formatBsDateTime()`          | Default pattern: `Friday, 26 Ashad 2083, 10:51 PM` |
+| `formatBsDateTimePattern()`   | Custom pattern formatting                     |
+| `formatBsDateLongWithWeekday()` | Date only, e.g. `Friday, 26 Ashad 2083`    |
 | `getDefaultBsDateTime()`      | Today + now as `BsDateTime`                   |
 | `mergeBsDateTime(date, time)` | Combine `BsDate` + `BsTime`                   |
 
 ## `BsDateTimePicker`
 
 Same props as `BsTimePicker`, plus date selection. Web uses `onChange`; native uses `onValueChange`.
+
+| Prop            | Type                        | Default | Description              |
+| --------------- | --------------------------- | ------- | ------------------------ |
+| `formatPattern` | `string`                    | `EEEE, d MMMM yyyy, h:mm a` | Trigger label pattern |
+| `formatValue`   | `(value, locale, is24Hour) => string` | — | Custom trigger label |
 
 | Platform | UX                                              |
 | -------- | ----------------------------------------------- |

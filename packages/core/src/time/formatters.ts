@@ -1,4 +1,4 @@
-import { pad2, toNepaliDigit } from '../constants'
+import { pad2 } from '../constants'
 import type { BsLocale } from '../types'
 import { to12Hour } from './helpers'
 import type { BsTime } from './types'

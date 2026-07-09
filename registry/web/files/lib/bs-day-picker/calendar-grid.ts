@@ -44,7 +44,7 @@ function buildGridCells(cells: BsDayCell[], month: BsMonth): BsDayCell[] {
 
 export function buildMonthGrid({
   month,
-  locale,
+  locale: _locale,
   showOutsideDays = true,
   selected,
   today,

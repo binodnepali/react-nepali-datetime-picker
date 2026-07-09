@@ -1,6 +1,9 @@
 import { getDefaultBsDate } from '@/lib/bs-picker'
-import { formatBsDateWheelLabel } from '@/lib/bs-day-picker/formatters'
-import type { BsDate } from '@/lib/bs-day-picker/types'
+import {
+  BS_DATE_DISPLAY_PATTERN,
+  formatBsDatePattern,
+} from '@/lib/bs-day-picker/pattern'
+import type { BsDate, BsLocale } from '@/lib/bs-day-picker/types'
 import { cn } from '@/lib/utils'
 import { Calendar } from 'lucide-react-native'
 import * as React from 'react'
@@ -14,13 +17,29 @@ import { Text } from '@/components/ui/text'
 export type BsDatePickerProps = {
   value?: BsDate
   onValueChange?: (value: BsDate | undefined) => void
-  locale?: 'en' | 'ne'
+  locale?: BsLocale
   placeholder?: string
   title?: string
   cancelLabel?: string
   confirmLabel?: string
+  formatPattern?: string
+  formatValue?: (value: BsDate, locale: BsLocale) => string
   className?: string
   disabled?: boolean
+}
+
+function resolveDateDisplayLabel(
+  value: BsDate,
+  locale: BsLocale,
+  formatValue?: BsDatePickerProps['formatValue'],
+  formatPattern?: string,
+): string {
+  if (formatValue) return formatValue(value, locale)
+  return formatBsDatePattern(
+    value,
+    formatPattern ?? BS_DATE_DISPLAY_PATTERN,
+    locale,
+  )
 }
 
 export function BsDatePicker({
@@ -31,6 +50,8 @@ export function BsDatePicker({
   title: _title,
   cancelLabel,
   confirmLabel,
+  formatPattern,
+  formatValue,
   className,
   disabled = false,
 }: BsDatePickerProps) {
@@ -61,7 +82,7 @@ export function BsDatePicker({
   }
 
   const displayLabel = value
-    ? formatBsDateWheelLabel(value, locale)
+    ? resolveDateDisplayLabel(value, locale, formatValue, formatPattern)
     : resolvedPlaceholder
 
   return (

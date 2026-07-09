@@ -1,9 +1,11 @@
 import { getDayAdDate } from '../../bs-day-picker/calendar-grid'
-import { formatBsDateLongWithWeekday } from '../../bs-day-picker/formatters'
 import { getCurrentBsDate } from '../../bs-day-picker/navigation'
 import type { BsDate } from '../../bs-day-picker/types'
 import { clampBsTime, getDefaultBsTime } from './helpers'
-import { formatBsTime } from './formatters'
+import {
+  BS_DATETIME_DISPLAY_PATTERN,
+  formatBsDateTimePattern,
+} from './pattern'
 import type { BsDateTime, BsLocale, BsTime } from './types'
 
 export function clampBsDateTime(value: BsDateTime): BsDateTime {
@@ -35,9 +37,12 @@ export function formatBsDateTime(
   locale: BsLocale = 'en',
   is24Hour = false,
 ): string {
-  const dateLabel = formatBsDateLongWithWeekday(value, locale)
-  const timeLabel = formatBsTime(value, locale, is24Hour)
-  return `${dateLabel}, ${timeLabel}`
+  return formatBsDateTimePattern(
+    value,
+    BS_DATETIME_DISPLAY_PATTERN,
+    locale,
+    is24Hour,
+  )
 }
 
 /** Map BS datetime to AD `Date` using calendar data (Asia/Kathmandu local fields). */

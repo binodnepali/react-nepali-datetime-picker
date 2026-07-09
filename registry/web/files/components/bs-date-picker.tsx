@@ -4,7 +4,11 @@ import * as React from "react"
 import { CalendarIcon } from "lucide-react"
 
 import { BsCalendar, type BsDate } from "@/components/bs-calendar"
-import { formatBsDateLong } from "@/lib/bs-day-picker/formatters"
+import {
+  BS_DATE_DISPLAY_PATTERN,
+  formatBsDatePattern,
+} from "@/lib/bs-day-picker/pattern"
+import type { BsLocale } from "@/lib/bs-day-picker/types"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
@@ -16,10 +20,27 @@ import { cn } from "@/lib/utils"
 export type BsDatePickerProps = {
   value?: BsDate
   onChange?: (value: BsDate | undefined) => void
-  locale?: "en" | "ne"
+  locale?: BsLocale
   placeholder?: string
+  /** date-fns-style BS tokens, e.g. `EEEE, d MMMM yyyy` */
+  formatPattern?: string
+  formatValue?: (value: BsDate, locale: BsLocale) => string
   className?: string
   disabled?: boolean
+}
+
+function resolveDateDisplayLabel(
+  value: BsDate,
+  locale: BsLocale,
+  formatValue?: BsDatePickerProps['formatValue'],
+  formatPattern?: string,
+): string {
+  if (formatValue) return formatValue(value, locale)
+  return formatBsDatePattern(
+    value,
+    formatPattern ?? BS_DATE_DISPLAY_PATTERN,
+    locale,
+  )
 }
 
 export function BsDatePicker({
@@ -27,6 +48,8 @@ export function BsDatePicker({
   onChange,
   locale = "ne",
   placeholder = "Select date",
+  formatPattern,
+  formatValue,
   className,
   disabled = false,
 }: BsDatePickerProps) {
@@ -45,7 +68,9 @@ export function BsDatePicker({
           )}
         >
           <span className="truncate">
-            {value ? formatBsDateLong(value, locale) : placeholder}
+            {value
+              ? resolveDateDisplayLabel(value, locale, formatValue, formatPattern)
+              : placeholder}
           </span>
           <CalendarIcon className="size-4 shrink-0 opacity-50" />
         </Button>
