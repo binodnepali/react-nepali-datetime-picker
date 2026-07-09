@@ -6,7 +6,6 @@ import { formatBsDateLong } from './formatters'
 import { addMonths, clampMonth, getCurrentBsDate } from './navigation'
 import { selectSingleDate } from './selection'
 import type {
-  BsCaptionLayout,
   BsDate,
   BsDayCell,
   BsDisabledMatcher,
@@ -91,12 +90,6 @@ export function useBsCalendar({
         }
       }),
     [locale],
-  )
-
-  const captionLabel = useMemo(
-    () =>
-      `${getMonthLabel(month.month, locale)} ${locale === 'ne' ? '२०' : '20'}${String(month.year).slice(-2)}`,
-    [locale, month.month, month.year],
   )
 
   const setMonth = (nextMonth: BsMonth) => {
