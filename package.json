@@ -23,14 +23,15 @@
     "dev": "pnpm --filter @react-nepali-datetime-picker/docs dev",
     "docs:build": "pnpm registry:build && pnpm --filter @react-nepali-datetime-picker/docs build",
     "docs:preview": "pnpm --filter @react-nepali-datetime-picker/docs preview",
-    "lint": "eslint packages/core/src apps/docs --ext ts,tsx"
+    "lint": "eslint packages/core/src apps/docs --ext ts,tsx",
+    "release:check": "node scripts/release-check.mjs"
   },
   "devDependencies": {
-    "nepali-datetime": "1.4.1",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.17.0",
+    "nepali-datetime": "1.4.1",
     "typescript": "^5.7.0"
   }
 }

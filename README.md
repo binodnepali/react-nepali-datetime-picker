@@ -54,6 +54,9 @@ Expo / React Native: use `@react-nepali-datetime-picker-native` → `r-native/{n
 | `pnpm data:build` | Merge cache into full `bs-calendar.json` |
 | `pnpm data:refresh` | Scrape + build + validate (chain) |
 | `pnpm test` | Vitest (`packages/core`) |
+| `pnpm release:check` | Test, types, registry build + verify committed JSON |
+
+Versioning: [VERSIONING.md](./VERSIONING.md) (release-please Release PRs)
 
 ## License
 

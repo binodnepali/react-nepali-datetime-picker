@@ -62,4 +62,29 @@ Docs deploy to GitHub Pages on push to `main` (`.github/workflows/docs.yml`). En
 ```bash
 pnpm test
 pnpm check-types
+pnpm release:check
 ```
+
+## Versioning and releases
+
+See [VERSIONING.md](./VERSIONING.md).
+
+### Conventional commits
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) on `main` so release-please can build the Release PR changelog:
+
+- `feat:` — new registry items, props, tokens (minor)
+- `fix:` — bug fixes (patch)
+- `data:` — Hamro Patro calendar refresh (patch; changelog **Data** section)
+- `feat!:` / `BREAKING CHANGE:` — major
+
+### Maintainer release (release-please)
+
+1. Merge feature PRs to `main` (with conventional commits).
+2. Run `pnpm registry:build` if needed; commit `apps/docs/public/r/` and `r-native/` in the same PR.
+3. **release-please** opens or updates a **Release PR** (e.g. `chore(main): release 2.1.0`).
+4. Review the Release PR — CI runs `pnpm release:check`.
+5. **Merge the Release PR** when ready → tag `vX.Y.Z` + GitHub Release.
+6. **Deploy docs** publishes registry JSON to GitHub Pages on push to `main`.
+
+See [VERSIONING.md](./VERSIONING.md) for bootstrap notes (`2.0.0` baseline, `bootstrap-sha`).
