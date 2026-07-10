@@ -1,6 +1,11 @@
 import * as React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react-native'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react-native'
+import Animated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  withTiming,
+} from 'react-native-reanimated'
 
 import { formatDayLabel, formatYearLabel } from './formatters'
 import { useBsCalendar } from './use-bs-calendar'
@@ -379,6 +384,22 @@ function MaterialYearGrid({
   )
 }
 
+function MaterialYearToggleIcon({ open }: { open: boolean }) {
+  const progress = useDerivedValue(
+    () => (open ? withTiming(1, { duration: 250 }) : withTiming(0, { duration: 200 })),
+    [open],
+  )
+  const chevronStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${progress.value * 180}deg` }],
+  }))
+
+  return (
+    <Animated.View style={chevronStyle}>
+      <Icon as={ChevronDown} className="size-5 text-foreground" />
+    </Animated.View>
+  )
+}
+
 export function BsDayPicker({
   mode = 'single',
   selected,
@@ -469,15 +490,7 @@ export function BsDayPicker({
                 'mb-1 flex-row items-center justify-between px-1',
               )}
             >
-              <Pressable
-                accessibilityLabel={`${monthLabel} ${yearLabel}`}
-                className="min-h-10 flex-row items-center gap-1 rounded-md px-1 active:bg-accent/40"
-                onPress={() =>
-                  setMaterialOverlay((current) =>
-                    current === 'year-grid' ? null : 'year-grid',
-                  )
-                }
-              >
+              <View className="min-h-10 flex-row items-center">
                 <Text
                   className={
                     classNames?.caption_label ??
@@ -486,20 +499,34 @@ export function BsDayPicker({
                 >
                   {materialCaption}
                 </Text>
-                {materialOverlay === 'year-grid' ? (
-                  <Icon as={ChevronUp} className="size-4 text-foreground" />
-                ) : (
-                  <Chevron orientation="down" className="size-4" />
-                )}
-              </Pressable>
+                <Pressable
+                  accessibilityLabel={
+                    materialOverlay === 'year-grid'
+                      ? locale === 'ne'
+                        ? 'वर्ष चयन बन्द गर्नुहोस्'
+                        : 'Close year selection'
+                      : locale === 'ne'
+                        ? 'वर्ष छान्नुहोस्'
+                        : 'Select year'
+                  }
+                  className="size-12 items-center justify-center rounded-full active:bg-accent/40"
+                  onPress={() =>
+                    setMaterialOverlay((current) =>
+                      current === 'year-grid' ? null : 'year-grid',
+                    )
+                  }
+                >
+                  <MaterialYearToggleIcon open={materialOverlay === 'year-grid'} />
+                </Pressable>
+              </View>
 
               {materialOverlay !== 'year-grid' ? (
-              <View className="flex-row items-center">
+              <View className="shrink-0 flex-row items-center gap-1">
                 <Pressable
                   accessibilityLabel="Previous month"
                   className={cn(
                     classNames?.button_previous,
-                    'size-10 items-center justify-center rounded-full',
+                    'size-12 items-center justify-center rounded-full active:bg-accent/40',
                   )}
                   onPress={goToPreviousMonth}
                 >
@@ -509,7 +536,7 @@ export function BsDayPicker({
                   accessibilityLabel="Next month"
                   className={cn(
                     classNames?.button_next,
-                    'size-10 items-center justify-center rounded-full',
+                    'size-12 items-center justify-center rounded-full active:bg-accent/40',
                   )}
                   onPress={goToNextMonth}
                 >

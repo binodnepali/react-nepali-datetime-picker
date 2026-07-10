@@ -16,6 +16,7 @@
     "data:validate": "node scripts/validate-calendar-data.mjs",
     "data:refresh": "node scripts/scrape-hamropatro.mjs && node scripts/generate-legacy-data.mjs && node scripts/validate-calendar-data.mjs",
     "registry:build": "node scripts/build-registry.mjs",
+    "registry:serve": "npx --yes serve apps/docs/public -l 4310 --cors",
     "build": "pnpm registry:build",
     "test": "pnpm --filter @react-nepali-datetime-picker/core test",
     "test:watch": "pnpm --filter @react-nepali-datetime-picker/core test:watch",
