@@ -11,9 +11,10 @@
     "react-native-svg"
   ],
   "registryDependencies": [
-    "button"
+    "https://reactnativereusables.com/r/nativewind/button.json",
+    "https://reactnativereusables.com/r/nativewind/icon.json"
   ],
-  "docs": "Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.",
+  "docs": "Installs RNR `button` (and `text`) + `icon` when missing. Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.",
   "files": [
     {
       "path": "registry/native/files/lib/bs-datetime-picker.ts",

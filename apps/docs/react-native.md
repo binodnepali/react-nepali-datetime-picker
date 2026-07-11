@@ -1,215 +1,97 @@
 # React Native
 
-Native registry items follow [React Native Reusables](https://reactnativereusables.com/docs) conventions. Use the **built** JSON files (with embedded source), same idea as the web install.
+Bikram Sambat pickers for Expo / React Native, built for [React Native Reusables](https://reactnativereusables.com/docs) (NativeWind v4, `@/` aliases).
 
 ## Prerequisites
 
-From your Expo / React Native project:
+- RNR project setup: `components.json`, NativeWind v4, `lib/utils` (`cn`)
+- Expo SDK 50+ / React Native 0.74+
+- `react-native-safe-area-context` (iOS sheets)
+- `react-native-svg` (Android time clock — added with time/datetime items)
 
-- `components.json` with `@/` aliases (RNR / shadcn setup)
-- NativeWind v4
-- RNR primitives: `button`, `text`, `icon`
-- `lib/utils` with `cn()` helper
-- `react-native-safe-area-context` (iOS bottom sheets)
-- `react-native-svg` (Android Material time clock hand — installed with time/datetime items)
+Missing RNR `button`, `text`, and `icon` are installed automatically when you add picker items (see [Registry deps](#registry-deps) below).
 
-## Local install (development)
+## Install
 
-Build the registry in the picker repo (copies core + embeds file content):
-
-```bash
-cd /path/to/react-nepali-datetime-picker
-pnpm registry:build
-```
-
-Install from your Expo project root:
-
-```bash
-REG="/absolute/path/to/react-nepali-datetime-picker/apps/docs/public/r-native"
-
-pnpm dlx shadcn@latest add "$REG/bs-calendar.json" --overwrite
-pnpm dlx shadcn@latest add "$REG/bs-date-picker.json" --overwrite
-pnpm dlx shadcn@latest add "$REG/bs-time-picker.json" --overwrite
-pnpm dlx shadcn@latest add "$REG/bs-datetime-picker.json" --overwrite
-```
+Use [@react-native-reusables/cli](https://reactnativereusables.com/docs/cli) with **full `*.json` URLs** — not short names like `@react-nepali-datetime-picker-native/bs-date-picker` (RNR CLI prefixes its own registry and fails).
 
 Install in order: **bs-calendar** → **bs-date-picker** → **bs-time-picker** → **bs-datetime-picker**.
 
-> Use `apps/docs/public/r-native/`, not `registry/native/`. The source JSON only has paths; the built JSON embeds the files the CLI needs.
->
-> `@react-native-reusables/cli add` with an absolute path is unreliable (it may treat the path as a remote item). Prefer `shadcn add` with the built `r-native` JSON — RNR projects use the same `components.json` format.
-
-## Hosted install
-
-When docs are deployed ([GitHub Pages](https://binodnepali.github.io/react-nepali-datetime-picker/)):
+**Hosted** (recommended):
 
 ```bash
-pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-calendar.json
-pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-date-picker.json
-pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-time-picker.json
-pnpm dlx shadcn@latest add https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-datetime-picker.json
+pnpm dlx @react-native-reusables/cli@latest add \
+  https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-calendar.json \
+  https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-date-picker.json \
+  https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-time-picker.json \
+  https://binodnepali.github.io/react-nepali-datetime-picker/r-native/bs-datetime-picker.json \
+  --yes
 ```
 
-Namespaced install:
+Use `--yes` without `--overwrite` so existing files (especially your RNR `button.tsx`) are kept. Add `--overwrite` only when you want to refresh every file.
 
-```bash
-pnpm dlx shadcn@latest registry add @react-nepali-datetime-picker-native=https://binodnepali.github.io/react-nepali-datetime-picker/r-native/{name}.json
-pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-calendar
-pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-date-picker
-pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-time-picker
-pnpm dlx shadcn@latest add @react-nepali-datetime-picker-native/bs-datetime-picker
-```
+**Local** (picker repo dev): run `pnpm registry:build`, then point at `apps/docs/public/r-native/*.json` (built JSON with embedded source — not `registry/native/`).
+
+<details>
+<summary>shadcn alternative</summary>
+
+Same JSON URLs work with `pnpm dlx shadcn@latest add …`. For namespaced installs, register the registry in `components.json` then use `shadcn add @react-nepali-datetime-picker-native/bs-calendar` (etc.).
+
+</details>
+
+### Registry deps
+
+Picker items declare RNR primitives as **full URLs** in `registryDependencies`:
+
+- `https://reactnativereusables.com/r/nativewind/button.json` (also pulls `text`)
+- `https://reactnativereusables.com/r/nativewind/icon.json`
+
+Bare `"button"` in any registry JSON resolves to the **web** shadcn button (`ui.shadcn.com`), not RNR’s `Pressable` button — even when using the RNR CLI.
+
+After sync, confirm lib imports stayed on `@/lib/bs-time-picker` and `@/lib/bs-datetime-picker`.
 
 ## Usage
-
-**Date picker**
 
 ```tsx
 import { useState } from "react"
 import { BsDatePicker } from "@/components/ui/bs-date-picker"
-import type { BsDate } from "@/lib/bs-day-picker/types"
-
-export function Example() {
-  const [value, setValue] = useState<BsDate>()
-
-  return (
-    <BsDatePicker
-      value={value}
-      onValueChange={setValue}
-      locale="ne"
-      placeholder="मिति छान्नुहोस्"
-    />
-  )
-}
-```
-
-`onValueChange` returns **`BsDate` only**. To get the matching AD date, use `getDayAdDate` — see [BS ↔ AD](/api#bs-ad).
-
-**Time picker**
-
-```tsx
-import { useState } from "react"
 import { BsTimePicker } from "@/components/ui/bs-time-picker"
-import type { BsTime } from "@/lib/bs-time-picker/time/types"
-
-export function Example() {
-  const [value, setValue] = useState<BsTime>()
-
-  return (
-    <BsTimePicker
-      value={value}
-      onValueChange={setValue}
-      locale="ne"
-      cancelLabel="रद्द"
-      confirmLabel="ठीक"
-    />
-  )
-}
-```
-
-**Date + time picker**
-
-```tsx
-import { useState } from "react"
 import { BsDateTimePicker } from "@/components/ui/bs-datetime-picker"
+import { BsCalendar } from "@/components/ui/bs-calendar"
 import { toAdDate } from "@/lib/bs-datetime-picker"
-import type { BsDateTime } from "@/lib/bs-time-picker/time/types"
+import type { BsDate } from "@/lib/bs-day-picker/types"
+import type { BsTime, BsDateTime } from "@/lib/bs-time-picker/time/types"
 
-export function Example() {
-  const [value, setValue] = useState<BsDateTime>()
+// Date — onValueChange returns BsDate; use getDayAdDate for AD (see /api#bs-ad)
+<BsDatePicker value={date} onValueChange={setDate} locale="ne" placeholder="मिति छान्नुहोस्" />
 
-  return (
-    <BsDateTimePicker
-      value={value}
-      onValueChange={setValue}
-      locale="ne"
-      placeholder="मिति र समय छान्नुहोस्"
-    />
-  )
-}
+// Time
+<BsTimePicker value={time} onValueChange={setTime} locale="ne" cancelLabel="रद्द" confirmLabel="ठीक" />
+
+// Date + time — toAdDate(value) for Gregorian APIs (see /api/pickers#bs-ad-datetime)
+<BsDateTimePicker value={dt} onValueChange={setDt} locale="ne" placeholder="मिति र समय छान्नुहोस्" />
+
+// Inline calendar only
+<BsCalendar mode="single" selected={date} onSelect={setDate} locale="ne" />
 ```
 
-Use `toAdDate(value)` when submitting to APIs that expect a Gregorian `Date` — see [Pickers](/api/pickers#bs-ad-datetime).
+Native pickers use `onValueChange` (not web `onChange`). Icons use `lucide-react-native` via the RNR `Icon` wrapper.
 
-**Calendar only**
+## Platform behavior
 
-```tsx
-import { BsCalendar, type BsDate } from "@/components/ui/bs-calendar"
-```
-
-## Platform files (Metro auto-resolution)
-
-Install once; Expo Metro picks the right file per platform:
-
-### Date
-
-| File | Platform | UX |
-|------|----------|-----|
-| `bs-date-picker.tsx` | iOS, web default | Bottom sheet + Cancel / Confirm |
-| `bs-date-picker.android.tsx` | Android | Material dialog trigger |
-| `bs-date-picker-dialog.android.tsx` | Android | Material calendar modal |
-| `bs-date-picker-wheels.ios.tsx` | iOS | Chronological wheel (`Sun 26 Bai`) |
-| `bs-date-picker-wheels.tsx` | Web | HTML `<select>` dropdowns |
-
-### Time
-
-| File | Platform | UX |
-|------|----------|-----|
-| `bs-time-picker.tsx` | iOS, web default | Sheet / popover shell |
-| `bs-time-picker.android.tsx` | Android | Opens `BsTimePickerDialog` |
-| `bs-time-picker-dialog.android.tsx` | Android | Material digital + analog clock |
-| `bs-time-picker-wheels.ios.tsx` | iOS | Hour / minute / AM·PM wheels |
-| `bs-time-picker-wheels.tsx` | Web | HTML `<select>` columns |
-
-### Date + time
-
-| File | Platform | UX |
-|------|----------|-----|
-| `bs-datetime-picker.tsx` | iOS, web default | Combined sheet / popover |
-| `bs-datetime-picker.android.tsx` | Android | Calendar dialog → time dialog |
-| `bs-datetime-picker-wheels.ios.tsx` | iOS | Date wheel + time wheels |
-| `bs-datetime-picker-wheels.tsx` | Web | Calendar + time selects |
-
-### Shared
-
-| File | Role |
-|------|------|
-| `bs-calendar.tsx` / `bs-calendar.android.tsx` | Inline grid |
-| `bs-wheel-column.tsx` | iOS / Android infinite scroll wheel |
-| `lib/bs-day-picker/` | BS calendar data + headless engine |
-| `lib/bs-time-picker/` | Time formatters and helpers |
-| `lib/bs-datetime-picker.ts` | `toAdDate`, `formatBsDateTime`, merge helpers |
-
-## Requirements
-
-- Expo SDK 50+ / React Native 0.74+
-- NativeWind v4
-- `lucide-react-native` (trigger icons)
-- `react-native-safe-area-context` (iOS sheet inset)
-- `react-native-svg` (Android time clock hand)
-- `clsx`, `tailwind-merge` (installed by the CLI)
-- `bs-calendar` core lib (install first)
-- Optional: `@expo/ui` for web HTML `<select>` wheels only
-
-## UX patterns
+Metro resolves `.ios.tsx` / `.android.tsx` automatically — install once.
 
 | Component | iOS | Android | Web |
 | --------- | --- | ------- | --- |
-| **Date** | Bottom sheet, chronological date wheel | Material calendar + year grid | Popover + grid or selects |
-| **Time** | Hour / minute / AM·PM wheels | Material time dialog (clock) | Popover + selects |
-| **DateTime** | Date wheel + time wheels in one sheet | Calendar dialog, then time dialog | Popover: calendar + selects |
+| **Date** | Sheet + chronological wheel | Material calendar dialog | Popover + grid or `<select>` |
+| **Time** | Hour / minute / AM·PM wheels | Material time dialog (clock) | Popover + `<select>` |
+| **DateTime** | Date + time wheels in one sheet | Calendar dialog → time dialog | Popover: calendar + selects |
+| **Calendar** | Inline grid | Inline grid | Inline grid |
 
-`BsCalendar` remains available for inline grid display.
+Shared: `bs-wheel-column.tsx` (iOS wheels), `lib/bs-day-picker/` (calendar engine), `lib/bs-time-picker/` (time helpers).
 
-## RNR differences
-
-| Web | Native pickers |
-|-----|----------------|
-| Popover + grid / selects | Modal + platform wheels / Material dialogs |
-| `onChange` | `onValueChange` |
-| lucide-react | lucide-react-native via `Icon` wrapper |
-| Inherited text styles | Explicit `Text` classes |
+Optional: `@expo/ui/community/picker` for web HTML `<select>` wheels only.
 
 ## PortalHost
 
-If you embed pickers inside other portal-based overlays, ensure a `PortalHost` is mounted at the app root per React Native Reusables docs.
+If pickers sit inside other portal-based overlays, mount a `PortalHost` at the app root per RNR docs.

@@ -356,6 +356,12 @@ const NATIVE_DATETIME_PICKER_FILES = [
   },
 ]
 
+/** RNR nativewind primitives — never bare `button` (resolves to web shadcn). */
+const NATIVE_RNR_REGISTRY_DEPS = [
+  'https://reactnativereusables.com/r/nativewind/button.json',
+  'https://reactnativereusables.com/r/nativewind/icon.json',
+]
+
 async function buildNativeRegistry() {
   await copyCoreTo(NATIVE_FILES, 'lib/bs-day-picker', NATIVE_CORE_COPY_FILES)
   await copyTimeCoreTo(NATIVE_FILES)
@@ -412,8 +418,9 @@ async function buildNativeRegistry() {
           'lucide-react-native',
           'react-native-safe-area-context',
         ],
-        registryDependencies: ['button'],
-        docs: 'Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).',
+        registryDependencies: NATIVE_RNR_REGISTRY_DEPS,
+        docs:
+          'Installs RNR `button` (and `text`) + `icon` when missing via registryDependencies URLs. Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).',
         files: NATIVE_DATE_PICKER_FILES,
       },
       {
@@ -429,8 +436,9 @@ async function buildNativeRegistry() {
           'react-native-safe-area-context',
           'react-native-svg',
         ],
-        registryDependencies: ['button'],
-        docs: 'Install bs-calendar and bs-date-picker first. Android uses Material-style `BsTimePickerDialog` (no native time picker).',
+        registryDependencies: NATIVE_RNR_REGISTRY_DEPS,
+        docs:
+          'Installs RNR `button` (and `text`) + `icon` when missing. Install bs-calendar and bs-date-picker first. Android uses Material-style `BsTimePickerDialog` (no native time picker).',
         files: NATIVE_TIME_PICKER_FILES,
       },
       {
@@ -446,8 +454,9 @@ async function buildNativeRegistry() {
           'react-native-safe-area-context',
           'react-native-svg',
         ],
-        registryDependencies: ['button'],
-        docs: 'Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.',
+        registryDependencies: NATIVE_RNR_REGISTRY_DEPS,
+        docs:
+          'Installs RNR `button` (and `text`) + `icon` when missing. Install bs-calendar, bs-date-picker, and bs-time-picker first. Android: BS calendar dialog then `BsTimePickerDialog`.',
         files: NATIVE_DATETIME_PICKER_FILES,
       },
     ],

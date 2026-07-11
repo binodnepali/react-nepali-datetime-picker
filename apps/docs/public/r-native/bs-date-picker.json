@@ -10,7 +10,8 @@
     "react-native-safe-area-context"
   ],
   "registryDependencies": [
-    "button"
+    "https://reactnativereusables.com/r/nativewind/button.json",
+    "https://reactnativereusables.com/r/nativewind/icon.json"
   ],
   "files": [
     {
@@ -68,6 +69,6 @@
       "target": "components/ui/bs-date-picker-dialog.android.tsx"
     }
   ],
-  "docs": "Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).",
+  "docs": "Installs RNR `button` (and `text`) + `icon` when missing via registryDependencies URLs. Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).",
   "type": "registry:component"
 }
