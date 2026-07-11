@@ -20,6 +20,7 @@ apps/docs/.vitepress/cache
 # IDE
 .DS_Store
 *.log
+*-log.txt
 
 # legacy (removed in v2)
 # demo-site, doc-site, src/ are deleted — data lives in packages/core

@@ -51,6 +51,35 @@ You control **when** to ship by choosing when to merge the Release PR. Commits k
 
 Remove `bootstrap-sha` from `release-please-config.json` after the **first** Release PR merges.
 
+### Troubleshooting: “No user facing commits found”
+
+release-please only reads the **first line** of each commit on `main`. Squash-merged PRs use the **PR title** as that line.
+
+If CI logs show:
+
+```text
+commit could not be parsed: … Enhance UI components …
+No user facing commits found since … - skipping
+```
+
+then `main` has no parseable `feat:` / `fix:` / `perf:` / `data:` / `revert:` commits since the last release. Common causes:
+
+| Cause | Fix |
+|-------|-----|
+| PR squash title is not conventional (`Enhance UI…` instead of `feat: …`) | Use a conventional **PR title** before squash merge; see [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Only `docs:` / `chore:` / `ci:` commits since last release | Those types are hidden — merge a user-facing change or wait for the next `feat:` / `fix:` |
+| Already merged with a bad squash title | Push a new conventional commit on `main` (see below) |
+
+**Unblock after a bad squash merge** (changelog will use the new commit message):
+
+```bash
+git checkout main && git pull
+git commit --allow-empty -m "feat: enhance wheel picker layout, haptics, and calendar UI"
+git push origin main
+```
+
+Replace the message with an accurate summary of what shipped. release-please will open/update the Release PR on the next workflow run.
+
 ### Branch protection
 
 - Allow **release-please[bot]** (or `github-actions[bot]`) to open and update Release PRs.

@@ -78,6 +78,10 @@ Use [Conventional Commits](https://www.conventionalcommits.org/) on `main` so re
 - `data:` — Hamro Patro calendar refresh (patch; changelog **Data** section)
 - `feat!:` / `BREAKING CHANGE:` — major
 
+**Squash merge:** GitHub uses the **PR title** as the commit message on `main`. Set the PR title to a conventional commit (e.g. `feat: improve BS wheel picker layout and haptics`), not a free-form sentence like `Enhance UI components…`. CI checks PR titles on pull requests.
+
+Hidden types on `main` (`docs:`, `chore:`, `ci:`, …) do not trigger a Release PR bump by themselves.
+
 ### Maintainer release (release-please)
 
 1. Merge feature PRs to `main` (with conventional commits).
