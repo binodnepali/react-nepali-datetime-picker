@@ -276,70 +276,68 @@ export function BsDayPicker({
             </button>
           </div>
 
-          <table className={classNames?.month_grid}>
-            <thead>
-              <tr className={classNames?.weekdays}>
-                {weekdayLabels.map((label) => (
-                  <th key={label} className={classNames?.weekday}>
-                    {label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {weeks.map((week, weekIndex) => (
-                <tr key={weekIndex} className={classNames?.week}>
-                  {week.map((cell, cellIndex) => {
-                    if (cell.isPlaceholder) {
-                      return (
-                        <td
-                          key={`placeholder-${weekIndex}-${cellIndex}`}
-                          className={classNames?.day}
-                        />
-                      )
-                    }
-
-                    const label =
-                      locale === 'ne'
-                        ? String(cell.date.day)
-                            .split('')
-                            .map((digit) => {
-                              const map = '०१२३४५६७८९'
-                              const index = Number(digit)
-                              return Number.isNaN(index) ? digit : map[index]
-                            })
-                            .join('')
-                        : String(cell.date.day)
-
-                    return (
-                      <td
-                        key={`${cell.date.year}-${cell.date.month}-${cell.date.day}`}
-                        className={cn(
-                          classNames?.day,
-                          !cell.currentMonth && classNames?.outside,
-                          cell.isSelected && classNames?.selected,
-                          cell.isToday && classNames?.today,
-                          cell.isDisabled && classNames?.disabled,
-                        )}
-                      >
-                        <DayButton
-                          date={cell.date}
-                          adDate={cell.adDate}
-                          label={label}
-                          selected={Boolean(cell.isSelected)}
-                          today={Boolean(cell.isToday)}
-                          outside={!cell.currentMonth}
-                          disabled={Boolean(cell.isDisabled)}
-                          onClick={() => selectDate(cell.date)}
-                          className={classNames?.day_button}
-                        />
-                      </td>
-                    )
-                  })}
-                </tr>
+          <div className={classNames?.month_grid}>
+            <div className={classNames?.weekdays} role="row">
+              {weekdayLabels.map((label) => (
+                <div key={label} className={classNames?.weekday} role="columnheader">
+                  {label}
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+            {weeks.map((week, weekIndex) => (
+              <div key={weekIndex} className={classNames?.week} role="row">
+                {week.map((cell, cellIndex) => {
+                  if (cell.isPlaceholder) {
+                    return (
+                      <div
+                        key={`placeholder-${weekIndex}-${cellIndex}`}
+                        className={classNames?.day}
+                        role="gridcell"
+                      />
+                    )
+                  }
+
+                  const label =
+                    locale === 'ne'
+                      ? String(cell.date.day)
+                          .split('')
+                          .map((digit) => {
+                            const map = '०१२३४५६७८९'
+                            const index = Number(digit)
+                            return Number.isNaN(index) ? digit : map[index]
+                          })
+                          .join('')
+                      : String(cell.date.day)
+
+                  return (
+                    <div
+                      key={`${cell.date.year}-${cell.date.month}-${cell.date.day}`}
+                      role="gridcell"
+                      className={cn(
+                        classNames?.day,
+                        !cell.currentMonth && classNames?.outside,
+                        cell.isSelected && classNames?.selected,
+                        cell.isToday && classNames?.today,
+                        cell.isDisabled && classNames?.disabled,
+                      )}
+                    >
+                      <DayButton
+                        date={cell.date}
+                        adDate={cell.adDate}
+                        label={label}
+                        selected={Boolean(cell.isSelected)}
+                        today={Boolean(cell.isToday)}
+                        outside={!cell.currentMonth}
+                        disabled={Boolean(cell.isDisabled)}
+                        onClick={() => selectDate(cell.date)}
+                        className={classNames?.day_button}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
 
           {footer ? <div className={classNames?.footer}>{footer}</div> : null}
         </div>
