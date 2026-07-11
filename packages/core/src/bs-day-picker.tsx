@@ -20,6 +20,7 @@ export type BsDayPickerClassNames = {
   button_next?: string
   month_caption?: string
   dropdowns?: string
+  dropdown_root?: string
   dropdown?: string
   caption_label?: string
   month_grid?: string
@@ -203,38 +204,58 @@ export function BsDayPicker({
             <div className={classNames?.month_caption}>
               {captionLayout === 'dropdown' ? (
                 <div className={classNames?.dropdowns}>
-                  <select
-                    className={classNames?.dropdown}
-                    value={visibleMonth.year}
-                    onChange={(event) =>
-                      setMonth({
-                        year: Number(event.target.value),
-                        month: visibleMonth.month,
-                      })
-                    }
-                  >
-                    {years.map((year) => (
-                      <option key={year} value={year}>
-                        {formatYearLabel(year, locale)}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className={classNames?.dropdown}
-                    value={visibleMonth.month}
-                    onChange={(event) =>
-                      setMonth({
-                        year: visibleMonth.year,
-                        month: Number(event.target.value),
-                      })
-                    }
-                  >
-                    {months.map((entry) => (
-                      <option key={entry.value} value={entry.value}>
-                        {entry.label}
-                      </option>
-                    ))}
-                  </select>
+                  <div className={classNames?.dropdown_root}>
+                    <select
+                      className={classNames?.dropdown}
+                      value={visibleMonth.year}
+                      aria-label="Select year"
+                      onChange={(event) =>
+                        setMonth({
+                          year: Number(event.target.value),
+                          month: visibleMonth.month,
+                        })
+                      }
+                    >
+                      {years.map((year) => (
+                        <option key={year} value={year}>
+                          {formatYearLabel(year, locale)}
+                        </option>
+                      ))}
+                    </select>
+                    <span className={classNames?.caption_label}>
+                      <span>{formatYearLabel(visibleMonth.year, locale)}</span>
+                      <Chevron orientation="down" />
+                    </span>
+                  </div>
+                  <div className={classNames?.dropdown_root}>
+                    <select
+                      className={classNames?.dropdown}
+                      value={visibleMonth.month}
+                      aria-label="Select month"
+                      onChange={(event) =>
+                        setMonth({
+                          year: visibleMonth.year,
+                          month: Number(event.target.value),
+                        })
+                      }
+                    >
+                      {months.map((entry) => (
+                        <option key={entry.value} value={entry.value}>
+                          {entry.label}
+                        </option>
+                      ))}
+                    </select>
+                    <span className={classNames?.caption_label}>
+                      <span>
+                        {
+                          months.find(
+                            (entry) => entry.value === visibleMonth.month,
+                          )?.label
+                        }
+                      </span>
+                      <Chevron orientation="down" />
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <span className={classNames?.caption_label}>

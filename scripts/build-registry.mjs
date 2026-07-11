@@ -84,6 +84,10 @@ async function buildWebRegistry() {
   await copyCoreTo(WEB_FILES)
   await copyTimeCoreTo(WEB_FILES)
 
+  const WEB_REGISTRY_BASE =
+    'https://binodnepali.github.io/react-nepali-datetime-picker/r'
+  const WEB_POPOVER_DEP = `${WEB_REGISTRY_BASE}/popover.json`
+
   const CORE_TIME_REGISTRY_FILES = CORE_TIME_FILES.map((file) => ({
     path: `registry/web/files/lib/bs-time-picker/time/${file}`,
     type: 'registry:lib',
@@ -95,6 +99,21 @@ async function buildWebRegistry() {
     name: 'react-nepali-datetime-picker',
     homepage: 'https://github.com/binodnepali/react-nepali-datetime-picker',
     items: [
+      {
+        name: 'popover',
+        type: 'registry:ui',
+        title: 'Popover (picker)',
+        description:
+          'shadcn Popover with data-slot and overflow-hidden for BS picker popovers.',
+        dependencies: ['@radix-ui/react-popover'],
+        files: [
+          {
+            path: 'registry/web/files/components/ui/popover.tsx',
+            type: 'registry:ui',
+            target: 'components/popover.tsx',
+          },
+        ],
+      },
       {
         name: 'bs-calendar',
         type: 'registry:ui',
@@ -128,7 +147,7 @@ async function buildWebRegistry() {
         description:
           'Popover date picker built on the Bikram Sambat calendar.',
         dependencies: ['clsx', 'tailwind-merge', 'lucide-react'],
-        registryDependencies: ['button', 'popover'],
+        registryDependencies: ['button', WEB_POPOVER_DEP, 'select'],
         docs: 'Install bs-calendar before this component: `shadcn add <registry-url>/bs-calendar.json`',
         files: [
           {
@@ -145,9 +164,14 @@ async function buildWebRegistry() {
         description:
           'Popover time picker with 12h/24h support for Bikram Sambat apps.',
         dependencies: ['clsx', 'tailwind-merge', 'lucide-react'],
-        registryDependencies: ['button', 'popover'],
+        registryDependencies: ['button', WEB_POPOVER_DEP, 'select'],
         docs: 'Install bs-calendar before this component if you need shared locale helpers.',
         files: [
+          {
+            path: 'registry/web/files/components/bs-time-selects.tsx',
+            type: 'registry:component',
+            target: 'components/bs-time-selects.tsx',
+          },
           {
             path: 'registry/web/files/components/bs-time-picker.tsx',
             type: 'registry:component',
@@ -168,9 +192,14 @@ async function buildWebRegistry() {
         description:
           'Combined Bikram Sambat date and time picker with BS to AD conversion helpers.',
         dependencies: ['clsx', 'tailwind-merge', 'lucide-react'],
-        registryDependencies: ['button', 'popover'],
+        registryDependencies: ['button', WEB_POPOVER_DEP, 'select'],
         docs: 'Install bs-calendar and bs-date-picker first. Uses `toAdDate()` for API submission.',
         files: [
+          {
+            path: 'registry/web/files/components/bs-time-selects.tsx',
+            type: 'registry:component',
+            target: 'components/bs-time-selects.tsx',
+          },
           {
             path: 'registry/web/files/components/bs-datetime-picker.tsx',
             type: 'registry:component',

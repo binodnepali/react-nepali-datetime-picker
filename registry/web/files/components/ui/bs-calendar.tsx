@@ -1,67 +1,109 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { BsDayPicker } from "@/lib/bs-day-picker/bs-day-picker"
-import type {
-  BsDate,
-  BsDayPickerClassNames,
-} from "@/lib/bs-day-picker"
-import { cn } from "@/lib/utils"
-
-const defaultClassNames: BsDayPickerClassNames = {
-  root: "w-fit",
-  months: "flex gap-4 flex-col md:flex-row relative",
-  month: "flex flex-col w-full gap-4",
-  nav: "flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between",
-  button_previous:
-    "inline-flex items-center justify-center size-8 rounded-md hover:bg-accent",
-  button_next:
-    "inline-flex items-center justify-center size-8 rounded-md hover:bg-accent",
-  month_caption:
-    "flex items-center justify-center h-8 w-full px-8 text-sm font-medium",
-  dropdowns: "flex items-center gap-2",
-  dropdown:
-    "rounded-md border border-input bg-background px-2 py-1 text-sm shadow-xs",
-  caption_label: "select-none font-medium text-sm",
-  month_grid: "w-full border-collapse mt-10",
-  weekdays: "",
-  weekday:
-    "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none p-2",
-  week: "",
-  day: "relative p-0 text-center aspect-square select-none",
-  day_button:
-    "inline-flex size-8 items-center justify-center rounded-md text-sm hover:bg-accent data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground data-[today=true]:bg-accent data-[outside=true]:text-muted-foreground",
-  outside: "",
-  selected: "",
-  today: "",
-  disabled: "opacity-50 pointer-events-none",
-  footer: "pt-3 text-sm text-muted-foreground",
-}
+import { BsDayPicker } from "@/lib/bs-day-picker/bs-day-picker";
+import type { BsDate, BsDayPickerClassNames } from "@/lib/bs-day-picker";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 function BsCalendar({
   className,
   classNames,
-  buttonVariant: _buttonVariant,
+  buttonVariant = "ghost",
+  captionLayout = "label",
+  showOutsideDays = true,
   ...props
 }: React.ComponentProps<typeof BsDayPicker> & {
-  buttonVariant?: "default" | "ghost" | "outline"
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
   return (
     <BsDayPicker
+      showOutsideDays={showOutsideDays}
+      captionLayout={captionLayout}
       className={cn(
-        "bg-background group/calendar p-3 [--cell-size:2rem]",
+        "bg-background group/calendar rounded-md p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         className,
       )}
-      classNames={{ ...defaultClassNames, ...classNames }}
+      classNames={{
+        root: cn("w-full", classNames?.root),
+        months: cn(
+          "flex w-full flex-col gap-4 md:flex-row",
+          classNames?.months,
+        ),
+        month: cn("relative flex flex-col w-full gap-4", classNames?.month),
+        nav: cn(
+          "grid w-full grid-cols-[var(--cell-size)_minmax(0,1fr)_var(--cell-size)] items-center gap-1",
+          classNames?.nav,
+        ),
+        button_previous: cn(
+          buttonVariants({ variant: buttonVariant, size: "icon" }),
+          "size-(--cell-size) shrink-0 p-0 select-none",
+          classNames?.button_previous,
+        ),
+        button_next: cn(
+          buttonVariants({ variant: buttonVariant, size: "icon" }),
+          "size-(--cell-size) shrink-0 p-0 select-none",
+          classNames?.button_next,
+        ),
+        month_caption: cn(
+          "flex min-w-0 items-center justify-center h-(--cell-size)",
+          classNames?.month_caption,
+        ),
+        dropdowns: cn(
+          "flex min-w-0 w-full items-center justify-center text-sm font-medium h-(--cell-size) gap-1.5",
+          classNames?.dropdowns,
+        ),
+        dropdown_root: cn(
+          "relative min-w-0 max-w-full has-focus:border-ring border border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] rounded-md",
+          classNames?.dropdown_root,
+        ),
+        dropdown: cn(
+          "absolute bg-popover inset-0 opacity-0 w-full h-full cursor-pointer",
+          classNames?.dropdown,
+        ),
+        caption_label: cn(
+          "select-none font-medium",
+          captionLayout === "label"
+            ? "text-sm"
+            : "rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 min-w-0 max-w-full [&>svg]:shrink-0 [&>svg]:text-muted-foreground [&>svg]:size-3.5 [&>:first-child]:truncate",
+          classNames?.caption_label,
+        ),
+        month_grid: cn("w-full border-collapse", classNames?.month_grid),
+        weekdays: cn(classNames?.weekdays),
+        weekday: cn(
+          "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
+          classNames?.weekday,
+        ),
+        week: cn(classNames?.week),
+        day: cn(
+          "relative w-full p-0 text-center aspect-square select-none",
+          classNames?.day,
+        ),
+        day_button: cn(
+          "inline-flex aspect-square size-(--cell-size) w-full max-w-full items-center justify-center rounded-md text-sm font-normal hover:bg-accent data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground data-[today=true]:bg-accent data-[today=true]:text-accent-foreground data-[outside=true]:text-muted-foreground",
+          classNames?.day_button,
+        ),
+        outside: cn(classNames?.outside),
+        selected: cn(classNames?.selected),
+        today: cn(classNames?.today),
+        disabled: cn(
+          "text-muted-foreground opacity-50 pointer-events-none",
+          classNames?.disabled,
+        ),
+        footer: cn("pt-3 text-sm text-muted-foreground", classNames?.footer),
+      }}
       components={{
         Root: ({ className: rootClassName, children }) => (
-          <div data-slot="bs-calendar" className={rootClassName}>
+          <div
+            data-slot="bs-calendar"
+            className={cn("overflow-hidden rounded-md", rootClassName)}
+          >
             {children}
           </div>
         ),
@@ -69,16 +111,14 @@ function BsCalendar({
           if (orientation === "left") {
             return (
               <ChevronLeftIcon className={cn("size-4", chevronClassName)} />
-            )
+            );
           }
           if (orientation === "right") {
             return (
               <ChevronRightIcon className={cn("size-4", chevronClassName)} />
-            )
+            );
           }
-          return (
-            <ChevronDownIcon className={cn("size-4", chevronClassName)} />
-          )
+          return <ChevronDownIcon className={cn("size-4", chevronClassName)} />;
         },
         DayButton: ({
           label,
@@ -106,8 +146,8 @@ function BsCalendar({
       }}
       {...props}
     />
-  )
+  );
 }
 
-export { BsCalendar, defaultClassNames }
-export type { BsDate }
+export { BsCalendar };
+export type { BsDate, BsDayPickerClassNames };

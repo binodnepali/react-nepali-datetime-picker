@@ -2,6 +2,21 @@
 
 Components use your project's Tailwind / NativeWind theme tokens (`bg-background`, `text-muted-foreground`, `border-input`, `bg-primary`, etc.). No separate CSS file or Tailwind plugin is required.
 
+## Popover (`popover`)
+
+Web date/time/datetime pickers use a popover shell. Install the registry **`popover`** item (pulled automatically as a `registryDependency` when you add `bs-date-picker`, `bs-time-picker`, or `bs-datetime-picker`):
+
+- `data-slot="popover-content"` — lets `bs-calendar` use a transparent background inside pickers
+- `overflow-hidden` — clips calendar content to the popover’s rounded corners
+
+If you already have a shadcn `popover.tsx`, merge those two attributes onto `PopoverContent`, or reinstall with `shadcn add <registry-url>/popover.json --overwrite`.
+
+## Time selects (`bs-time-selects`)
+
+Web `bs-time-picker` and `bs-datetime-picker` use **`bs-time-selects`** — three shadcn **`Select`** triggers (hour, minute, optional AM/PM) styled to match calendar dropdown height (`h-8`, `shadow-xs`). Requires shadcn **`select`** (installed automatically with time/datetime picker items).
+
+`bs-datetime-picker` shows a small **Time / समय** label above the row; standalone `bs-time-picker` omits it.
+
 ## Calendar (`bs-calendar`)
 
 Web `bs-calendar` follows the [shadcn Calendar](https://ui.shadcn.com/docs/components/base/calendar) slot pattern.

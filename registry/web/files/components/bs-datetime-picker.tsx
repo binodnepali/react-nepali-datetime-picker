@@ -4,18 +4,7 @@ import * as React from "react";
 import { CalendarClockIcon } from "lucide-react";
 
 import { BsCalendar, type BsDate } from "@/components/bs-calendar";
-import {
-  clampBsTime,
-  formatHourOption,
-  formatMinuteOption,
-  formatPeriodOption,
-  getHourOptions,
-  getMinuteOptions,
-  getPeriodOptions,
-  resolveDisplayHour,
-  resolveDisplayPeriod,
-  resolveWheelHour,
-} from "../lib/bs-time-picker";
+import { BsTimeSelects } from "./bs-time-selects";
 import {
   formatBsDateTime,
   getDefaultBsDateTime,
@@ -24,11 +13,7 @@ import {
 } from "../lib/bs-datetime-picker";
 import { formatBsDateTimePattern } from "@/lib/bs-time-picker/time/pattern";
 import type { BsDateTime } from "@/lib/bs-time-picker/time/types";
-import type {
-  BsLocale,
-  BsPeriod,
-  BsTime,
-} from "@/lib/bs-time-picker/time/types";
+import type { BsLocale, BsTime } from "@/lib/bs-time-picker/time/types";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -68,92 +53,6 @@ function resolveDateTimeDisplayLabel(
   return formatBsDateTime(value, locale, is24Hour);
 }
 
-function InlineTimeSelects({
-  value,
-  locale,
-  is24Hour,
-  onChange,
-}: {
-  value: BsTime;
-  locale: BsLocale;
-  is24Hour: boolean;
-  onChange: (value: BsTime) => void;
-}) {
-  const clamped = clampBsTime(value);
-  const hourOptions = getHourOptions(is24Hour);
-  const minuteOptions = getMinuteOptions();
-  const periodOptions = getPeriodOptions();
-  const displayHour = resolveDisplayHour(clamped.hour, is24Hour);
-  const displayPeriod = resolveDisplayPeriod(clamped.hour, is24Hour);
-
-  const updateTime = (
-    nextHour: number,
-    nextMinute: number,
-    nextPeriod: BsPeriod,
-  ) => {
-    onChange(
-      clampBsTime({
-        hour: resolveWheelHour(nextHour, nextPeriod, is24Hour),
-        minute: nextMinute,
-      }),
-    );
-  };
-
-  const selectClassName =
-    "h-9 rounded-md border border-input bg-background px-2 text-sm";
-
-  return (
-    <div className="flex flex-wrap items-center gap-2 border-t px-3 py-3">
-      <select
-        className={selectClassName}
-        value={displayHour}
-        onChange={(event) =>
-          updateTime(Number(event.target.value), clamped.minute, displayPeriod)
-        }
-      >
-        {hourOptions.map((hour) => (
-          <option key={hour} value={hour}>
-            {formatHourOption(hour, locale, is24Hour)}
-          </option>
-        ))}
-      </select>
-      <span>:</span>
-      <select
-        className={selectClassName}
-        value={clamped.minute}
-        onChange={(event) =>
-          updateTime(displayHour, Number(event.target.value), displayPeriod)
-        }
-      >
-        {minuteOptions.map((minute) => (
-          <option key={minute} value={minute}>
-            {formatMinuteOption(minute, locale)}
-          </option>
-        ))}
-      </select>
-      {!is24Hour ? (
-        <select
-          className={selectClassName}
-          value={displayPeriod}
-          onChange={(event) =>
-            updateTime(
-              displayHour,
-              clamped.minute,
-              event.target.value as BsPeriod,
-            )
-          }
-        >
-          {periodOptions.map((period) => (
-            <option key={period} value={period}>
-              {formatPeriodOption(period, locale)}
-            </option>
-          ))}
-        </select>
-      ) : null}
-    </div>
-  );
-}
-
 export function BsDateTimePicker({
   value,
   onChange,
@@ -189,6 +88,8 @@ export function BsDateTimePicker({
     );
   };
 
+  const confirmLabel = locale === "ne" ? "ठीक" : "OK";
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -215,7 +116,7 @@ export function BsDateTimePicker({
           <CalendarClockIcon className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
         <BsCalendar
           mode="single"
           locale={locale}
@@ -223,11 +124,13 @@ export function BsDateTimePicker({
           onSelect={handleDateSelect}
           captionLayout="dropdown"
         />
-        <InlineTimeSelects
+        <BsTimeSelects
           value={splitBsDateTime(tempValue).time}
           locale={locale}
           is24Hour={is24Hour}
           onChange={handleTimeChange}
+          showLabel
+          className="border-t px-3 py-3"
         />
         <div className="flex justify-end border-t p-2">
           <Button
@@ -237,7 +140,7 @@ export function BsDateTimePicker({
               setOpen(false);
             }}
           >
-            OK
+            {confirmLabel}
           </Button>
         </div>
       </PopoverContent>

@@ -10,10 +10,16 @@
   ],
   "registryDependencies": [
     "button",
-    "popover"
+    "https://binodnepali.github.io/react-nepali-datetime-picker/r/popover.json",
+    "select"
   ],
   "docs": "Install bs-calendar before this component if you need shared locale helpers.",
   "files": [
+    {
+      "path": "registry/web/files/components/bs-time-selects.tsx",
+      "type": "registry:component",
+      "target": "components/bs-time-selects.tsx"
+    },
     {
       "path": "registry/web/files/components/bs-time-picker.tsx",
       "type": "registry:component",
