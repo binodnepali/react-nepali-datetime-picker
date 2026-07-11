@@ -107,16 +107,17 @@ type BsWheelRowProps = {
   columnGap?: number
 }
 
-export function BsWheelRow({
-  children,
-  className,
-  showSelectionBand = true,
-  columnGap = BS_WHEEL_COLUMN_GAP,
-}: BsWheelRowProps) {
-  const flatChildren = React.useMemo(
-    () => flattenWheelChildren(children),
-    [children],
-  )
+type BsWheelRowMeasuredProps = {
+  flatChildren: React.ReactNode[]
+  showSelectionBand: boolean
+  columnGap: number
+}
+
+function BsWheelRowMeasured({
+  flatChildren,
+  showSelectionBand,
+  columnGap,
+}: BsWheelRowMeasuredProps) {
   const childLayouts = React.useRef<Array<{ x: number; width: number }>>([])
   const [pillBox, setPillBox] = React.useState({ left: 0, width: 0 })
 
@@ -128,11 +129,6 @@ export function BsWheelRow({
     const left = Math.min(...layouts.map((layout) => layout.x))
     const right = Math.max(...layouts.map((layout) => layout.x + layout.width))
     setPillBox({ left, width: right - left })
-  }, [flatChildren.length])
-
-  React.useEffect(() => {
-    childLayouts.current = []
-    setPillBox({ left: 0, width: 0 })
   }, [flatChildren.length])
 
   const wrappedChildren = flatChildren.map((child, index) => (
@@ -150,6 +146,27 @@ export function BsWheelRow({
   ))
 
   return (
+    <View className="relative flex-row items-stretch" style={{ gap: columnGap }}>
+      {showSelectionBand && pillBox.width > 0 ? (
+        <BsWheelSelectionBand left={pillBox.left} width={pillBox.width} />
+      ) : null}
+      {wrappedChildren}
+    </View>
+  )
+}
+
+export function BsWheelRow({
+  children,
+  className,
+  showSelectionBand = true,
+  columnGap = BS_WHEEL_COLUMN_GAP,
+}: BsWheelRowProps) {
+  const flatChildren = React.useMemo(
+    () => flattenWheelChildren(children),
+    [children],
+  )
+
+  return (
     <View
       className={cn('relative w-full', className)}
       style={{ height: BS_WHEEL_HEIGHT }}
@@ -158,12 +175,12 @@ export function BsWheelRow({
         className="h-full w-full items-center justify-center"
         style={{ zIndex: 2 }}
       >
-        <View className="relative flex-row items-stretch" style={{ gap: columnGap }}>
-          {showSelectionBand && pillBox.width > 0 ? (
-            <BsWheelSelectionBand left={pillBox.left} width={pillBox.width} />
-          ) : null}
-          {wrappedChildren}
-        </View>
+        <BsWheelRowMeasured
+          key={flatChildren.length}
+          flatChildren={flatChildren}
+          showSelectionBand={showSelectionBand}
+          columnGap={columnGap}
+        />
       </View>
     </View>
   )
