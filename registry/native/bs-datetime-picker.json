@@ -26,6 +26,16 @@
       "target": "components/ui/bs-time-picker-dialog.android.tsx"
     },
     {
+      "path": "registry/native/files/components/ui/bs-wheel-column.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-wheel-column.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-wheel-sheet.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-wheel-sheet.tsx"
+    },
+    {
       "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.tsx",
       "type": "registry:component",
       "target": "components/ui/bs-datetime-picker-wheels.tsx"
@@ -34,6 +44,16 @@
       "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx",
       "type": "registry:component",
       "target": "components/ui/bs-datetime-picker-wheels.ios.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-wheels.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-wheels.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker-wheels.ios.tsx"
     },
     {
       "path": "registry/native/files/components/ui/bs-datetime-picker.tsx",

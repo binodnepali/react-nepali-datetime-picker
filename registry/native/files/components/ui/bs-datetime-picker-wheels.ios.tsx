@@ -1,11 +1,34 @@
-import { clampBsDate } from '@/lib/bs-picker'
+import {
+  clampBsDate,
+  formatBsDateWheelKey,
+  getBsDateWheelKeys,
+  parseBsDateWheelKey,
+} from '@/lib/bs-picker'
+import { getBsDateIndex } from '@/lib/bs-day-picker/navigation'
+import { bsDateKey } from '@/lib/bs-day-picker/types'
 import type { BsDate, BsLocale } from '@/lib/bs-day-picker/types'
-import type { BsTime } from '@/lib/bs-time-picker/time/types'
-import type { BsDateTime } from '@/lib/bs-time-picker/time/types'
+import {
+  clampBsTime,
+  formatHourOption,
+  formatMinuteOption,
+  formatPeriodOption,
+  getHourOptions,
+  getMinuteOptions,
+  getPeriodOptions,
+  resolveDisplayHour,
+  resolveDisplayPeriod,
+  resolveWheelHour,
+} from '@/lib/bs-time-picker'
+import type { BsDateTime, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
 import { mergeBsDateTime, splitBsDateTime } from '@/lib/bs-datetime-picker'
-import { View } from 'react-native'
-import { BsDatePickerWheels } from './bs-date-picker-wheels'
-import { BsTimePickerWheels } from './bs-time-picker-wheels'
+import {
+  BS_WHEEL_DATE_COL_WIDTH,
+  BS_WHEEL_HOUR_COL_WIDTH,
+  BS_WHEEL_MIN_COL_WIDTH,
+  BS_WHEEL_PERIOD_COL_WIDTH,
+  BsWheelColumn,
+  BsWheelRow,
+} from './bs-wheel-column'
 
 type BsDateTimePickerWheelsProps = {
   value: BsDateTime
@@ -21,32 +44,81 @@ export function BsDateTimePickerWheels({
   onChange,
 }: BsDateTimePickerWheelsProps) {
   const { date, time } = splitBsDateTime(value)
+  const dateKeys = getBsDateWheelKeys()
+  const clampedDate = clampBsDate(date)
+  const clampedTime = clampBsTime(time)
+  const selectedKey = bsDateKey(clampedDate)
+  const selectedIndex = getBsDateIndex(clampedDate)
+
+  const hourOptions = getHourOptions(is24Hour)
+  const minuteOptions = getMinuteOptions()
+  const periodOptions = getPeriodOptions()
+  const displayHour = resolveDisplayHour(clampedTime.hour, is24Hour)
+  const displayPeriod = resolveDisplayPeriod(clampedTime.hour, is24Hour)
 
   const handleDateChange = (nextDate: BsDate) => {
-    onChange(mergeBsDateTime(clampBsDate(nextDate), time))
+    onChange(mergeBsDateTime(clampBsDate(nextDate), clampedTime))
   }
 
-  const handleTimeChange = (nextTime: BsTime) => {
-    onChange(mergeBsDateTime(date, nextTime))
+  const updateTime = (
+    nextHour: number,
+    nextMinute: number,
+    nextPeriod: BsPeriod,
+  ) => {
+    const nextTime: BsTime = clampBsTime({
+      hour: resolveWheelHour(nextHour, nextPeriod, is24Hour),
+      minute: nextMinute,
+    })
+    onChange(mergeBsDateTime(clampedDate, nextTime))
   }
 
   return (
-    <View className="w-full flex-row">
-      <View className="flex-[1.4]">
-        <BsDatePickerWheels
-          value={date}
-          locale={locale}
-          onChange={handleDateChange}
+    <BsWheelRow>
+      <BsWheelColumn
+        showOverlay={false}
+        columnWidth={BS_WHEEL_DATE_COL_WIDTH}
+        items={dateKeys}
+        selected={selectedKey}
+        selectedIndex={selectedIndex >= 0 ? selectedIndex : undefined}
+        onSelect={(key) => {
+          const next = parseBsDateWheelKey(key)
+          if (next) handleDateChange(clampBsDate(next))
+        }}
+        formatLabel={(key) => formatBsDateWheelKey(key, locale)}
+      />
+      <BsWheelColumn
+        showOverlay={false}
+        compact
+        columnWidth={BS_WHEEL_HOUR_COL_WIDTH}
+        items={hourOptions}
+        selected={displayHour}
+        onSelect={(hour) => updateTime(hour, clampedTime.minute, displayPeriod)}
+        formatLabel={(hour) => formatHourOption(hour, locale, is24Hour)}
+        loop
+      />
+      <BsWheelColumn
+        showOverlay={false}
+        compact
+        columnWidth={BS_WHEEL_MIN_COL_WIDTH}
+        items={minuteOptions}
+        selected={clampedTime.minute}
+        onSelect={(minute) => updateTime(displayHour, minute, displayPeriod)}
+        formatLabel={(minute) => formatMinuteOption(minute, locale)}
+        loop
+      />
+      {!is24Hour ? (
+        <BsWheelColumn
+          showOverlay={false}
+          compact
+          columnWidth={BS_WHEEL_PERIOD_COL_WIDTH}
+          items={periodOptions}
+          selected={displayPeriod}
+          onSelect={(period) =>
+            updateTime(displayHour, clampedTime.minute, period)
+          }
+          formatLabel={(period) => formatPeriodOption(period, locale)}
         />
-      </View>
-      <View className="flex-1">
-        <BsTimePickerWheels
-          value={time}
-          locale={locale}
-          is24Hour={is24Hour}
-          onChange={handleTimeChange}
-        />
-      </View>
-    </View>
+      ) : null}
+    </BsWheelRow>
   )
 }

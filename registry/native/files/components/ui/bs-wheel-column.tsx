@@ -1,9 +1,11 @@
 import { Text } from '@/components/ui/text'
 import { cn } from '@/lib/utils'
+import * as Haptics from 'expo-haptics'
 import * as React from 'react'
 import {
   FlatList,
   Platform,
+  useColorScheme,
   type ListRenderItemInfo,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
@@ -16,6 +18,156 @@ const VISIBLE_COUNT = 5
 export const BS_WHEEL_HEIGHT = ITEM_HEIGHT * VISIBLE_COUNT
 const EDGE_PADDING = ITEM_HEIGHT * Math.floor(VISIBLE_COUNT / 2)
 const DEFAULT_LOOP_REPEATS = 51
+/** iOS UIDatePicker-style selection band height (44pt row). */
+export const BS_WHEEL_SELECTION_HEIGHT = ITEM_HEIGHT
+/** Horizontal padding beyond measured column edges. */
+const BS_WHEEL_PILL_H_PAD = 6
+
+function wheelItemOpacity(distance: number): number {
+  if (distance <= 0) return 1
+  if (distance === 1) return 0.48
+  if (distance === 2) return 0.28
+  return 0.14
+}
+
+/** Gap between wheel columns (native UIDatePicker is tight). */
+export const BS_WHEEL_COLUMN_GAP = 6
+export const BS_WHEEL_DATE_COL_WIDTH = 172
+export const BS_WHEEL_HOUR_COL_WIDTH = 46
+export const BS_WHEEL_MIN_COL_WIDTH = 46
+export const BS_WHEEL_PERIOD_COL_WIDTH = 50
+
+function triggerWheelSelectionHaptic() {
+  if (Platform.OS === 'web') return
+  void Haptics.selectionAsync()
+}
+
+function flattenWheelChildren(children: React.ReactNode): React.ReactNode[] {
+  const nodes: React.ReactNode[] = []
+  React.Children.forEach(children, (child) => {
+    if (child == null || child === false) return
+    if (React.isValidElement(child) && child.type === React.Fragment) {
+      flattenWheelChildren(child.props.children).forEach((node) => nodes.push(node))
+      return
+    }
+    nodes.push(child)
+  })
+  return nodes
+}
+
+type BsWheelSelectionBandProps = {
+  /** When set, pill hugs measured column group (native UIDatePicker). */
+  left?: number
+  width?: number
+}
+
+/** One centered pill spanning all columns (native iOS wheel — not per-column). */
+export function BsWheelSelectionBand({
+  left,
+  width,
+}: BsWheelSelectionBandProps = {}) {
+  const colorScheme = useColorScheme()
+  const radius = BS_WHEEL_SELECTION_HEIGHT / 2
+  const top = (BS_WHEEL_HEIGHT - BS_WHEEL_SELECTION_HEIGHT) / 2
+  const hugContent = width != null && width > 0 && left != null
+
+  return (
+    <View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        zIndex: 1,
+        top,
+        ...(hugContent
+          ? {
+              left: left - BS_WHEEL_PILL_H_PAD,
+              width: width + BS_WHEEL_PILL_H_PAD * 2,
+            }
+          : {
+              left: BS_WHEEL_PILL_H_PAD,
+              right: BS_WHEEL_PILL_H_PAD,
+            }),
+        height: BS_WHEEL_SELECTION_HEIGHT,
+        borderRadius: radius,
+        backgroundColor:
+          colorScheme === 'dark'
+            ? 'rgba(120, 120, 128, 0.36)'
+            : 'rgba(120, 120, 128, 0.24)',
+      }}
+    />
+  )
+}
+
+type BsWheelRowProps = {
+  children: React.ReactNode
+  className?: string
+  /** Show the shared selection band (default true for multi-column rows). */
+  showSelectionBand?: boolean
+  /** Gap between column groups (default BS_WHEEL_COLUMN_GAP). */
+  columnGap?: number
+}
+
+export function BsWheelRow({
+  children,
+  className,
+  showSelectionBand = true,
+  columnGap = BS_WHEEL_COLUMN_GAP,
+}: BsWheelRowProps) {
+  const flatChildren = React.useMemo(
+    () => flattenWheelChildren(children),
+    [children],
+  )
+  const childLayouts = React.useRef<Array<{ x: number; width: number }>>([])
+  const [pillBox, setPillBox] = React.useState({ left: 0, width: 0 })
+
+  const updatePillBox = React.useCallback(() => {
+    const layouts = childLayouts.current
+    if (layouts.length < flatChildren.length) return
+    if (layouts.some((layout) => layout == null || layout.width <= 0)) return
+
+    const left = Math.min(...layouts.map((layout) => layout.x))
+    const right = Math.max(...layouts.map((layout) => layout.x + layout.width))
+    setPillBox({ left, width: right - left })
+  }, [flatChildren.length])
+
+  React.useEffect(() => {
+    childLayouts.current = []
+    setPillBox({ left: 0, width: 0 })
+  }, [flatChildren.length])
+
+  const wrappedChildren = flatChildren.map((child, index) => (
+    <View
+      key={index}
+      collapsable={false}
+      onLayout={(event) => {
+        const { x, width } = event.nativeEvent.layout
+        childLayouts.current[index] = { x, width }
+        updatePillBox()
+      }}
+    >
+      {child}
+    </View>
+  ))
+
+  return (
+    <View
+      className={cn('relative w-full', className)}
+      style={{ height: BS_WHEEL_HEIGHT }}
+    >
+      <View
+        className="h-full w-full items-center justify-center"
+        style={{ zIndex: 2 }}
+      >
+        <View className="relative flex-row items-stretch" style={{ gap: columnGap }}>
+          {showSelectionBand && pillBox.width > 0 ? (
+            <BsWheelSelectionBand left={pillBox.left} width={pillBox.width} />
+          ) : null}
+          {wrappedChildren}
+        </View>
+      </View>
+    </View>
+  )
+}
 
 type BsWheelColumnProps<T extends string | number> = {
   items: readonly T[]
@@ -23,7 +175,11 @@ type BsWheelColumnProps<T extends string | number> = {
   onSelect: (value: T) => void
   formatLabel: (value: T) => string
   className?: string
+  /** Fixed column width (preferred over Tailwind width classes). */
+  columnWidth?: number
   showOverlay?: boolean
+  /** Tighter horizontal padding for numeric columns. */
+  compact?: boolean
   /** Repeat items and recenter while scrolling for a native infinite wheel feel. */
   loop?: boolean
   loopRepeats?: number
@@ -42,7 +198,9 @@ export function BsWheelColumn<T extends string | number>({
   onSelect,
   formatLabel,
   className,
+  columnWidth,
   showOverlay = true,
+  compact = false,
   loop = false,
   loopRepeats = DEFAULT_LOOP_REPEATS,
   selectedIndex: selectedIndexProp,
@@ -149,6 +307,7 @@ export function BsWheelColumn<T extends string | number>({
     )
 
     if (index !== focusedIndex) {
+      triggerWheelSelectionHaptic()
       setFocusedIndex(index)
     }
   }
@@ -158,12 +317,18 @@ export function BsWheelColumn<T extends string | number>({
   }
 
   const renderItem = ({ item, index }: ListRenderItemInfo<T>) => {
-    const isFocused = index === focusedIndex
+    const distance = Math.abs(index - focusedIndex)
+    const opacity = wheelItemOpacity(distance)
+    const isFocused = distance === 0
     return (
       <Pressable
-        className="w-full items-center justify-center px-3"
+        className={cn(
+          'w-full items-center justify-center',
+          compact ? 'px-0' : 'px-1',
+        )}
         style={{ height: ITEM_HEIGHT }}
         onPress={() => {
+          triggerWheelSelectionHaptic()
           scrollToIndex(index, true)
           const normalizedIndex = loop
             ? normalizeIndex(index, items.length)
@@ -176,14 +341,13 @@ export function BsWheelColumn<T extends string | number>({
       >
         <Text
           className={cn(
-            'w-full text-center text-[17px] leading-[22px]',
-            isFocused
-              ? 'font-semibold text-foreground'
-              : 'font-normal text-muted-foreground/70',
+            'w-full text-center text-[20px] leading-[25px]',
+            isFocused ? 'font-semibold text-foreground' : 'font-normal text-foreground',
           )}
+          style={{ opacity }}
           numberOfLines={1}
           adjustsFontSizeToFit
-          minimumFontScale={0.85}
+          minimumFontScale={0.8}
         >
           {formatLabel(item)}
         </Text>
@@ -193,19 +357,18 @@ export function BsWheelColumn<T extends string | number>({
 
   return (
     <View
-      className={cn('relative flex-1', className)}
-      style={{ height: BS_WHEEL_HEIGHT }}
+      className={cn('relative shrink-0', className)}
+      style={{
+        width: columnWidth,
+        height: BS_WHEEL_HEIGHT,
+        backgroundColor: 'transparent',
+      }}
     >
-      {showOverlay ? (
-        <View
-          pointerEvents="none"
-          className="absolute inset-x-3 top-1/2 z-0 -mt-[22px] h-11 rounded-[10px] bg-[#787880]/20"
-        />
-      ) : null}
+      {showOverlay ? <BsWheelSelectionBand /> : null}
       <FlatList
         ref={listRef}
         data={data}
-        style={{ zIndex: 1 }}
+        style={{ flex: 1, backgroundColor: 'transparent', zIndex: 2 }}
         initialScrollIndex={
           data.length > 0 ? Math.min(focusedIndex, data.length - 1) : undefined
         }

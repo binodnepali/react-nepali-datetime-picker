@@ -217,6 +217,11 @@ const NATIVE_DATE_PICKER_FILES = [
     target: 'components/ui/bs-wheel-column.tsx',
   },
   {
+    path: 'registry/native/files/components/ui/bs-wheel-sheet.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-wheel-sheet.tsx',
+  },
+  {
     path: 'registry/native/files/components/ui/bs-date-picker-wheels.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-date-picker-wheels.tsx',
@@ -267,6 +272,11 @@ const NATIVE_TIME_PICKER_FILES = [
     target: 'components/ui/bs-wheel-column.tsx',
   },
   {
+    path: 'registry/native/files/components/ui/bs-wheel-sheet.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-wheel-sheet.tsx',
+  },
+  {
     path: 'registry/native/files/components/ui/bs-time-picker-dialog.android.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-time-picker-dialog.android.tsx',
@@ -305,6 +315,16 @@ const NATIVE_DATETIME_PICKER_FILES = [
     target: 'components/ui/bs-time-picker-dialog.android.tsx',
   },
   {
+    path: 'registry/native/files/components/ui/bs-wheel-column.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-wheel-column.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-wheel-sheet.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-wheel-sheet.tsx',
+  },
+  {
     path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-datetime-picker-wheels.tsx',
@@ -313,6 +333,16 @@ const NATIVE_DATETIME_PICKER_FILES = [
     path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-datetime-picker-wheels.ios.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-wheels.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-wheels.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker-wheels.ios.tsx',
   },
   {
     path: 'registry/native/files/components/ui/bs-datetime-picker.tsx',

@@ -10,6 +10,7 @@ import * as React from 'react'
 import { Modal, TouchableWithoutFeedback, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BsTimePickerWheels } from './bs-time-picker-wheels'
+import { BsWheelSheetChrome } from './bs-wheel-sheet'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
@@ -111,38 +112,20 @@ export function BsTimePicker({
         <TouchableWithoutFeedback onPress={handleCancel}>
           <View className="flex-1 justify-end bg-black/70">
             <TouchableWithoutFeedback onPress={() => {}}>
-              <View
-                className="rounded-t-lg bg-white dark:bg-gray-800"
-                style={{ paddingBottom: Math.max(insets.bottom, 8) }}
+              <BsWheelSheetChrome
+                cancelLabel={resolvedCancel}
+                confirmLabel={resolvedConfirm}
+                bottomInset={insets.bottom}
+                onCancel={handleCancel}
+                onConfirm={handleConfirm}
               >
-                <View className="flex-row items-center justify-between border-b border-gray-200 p-2 dark:border-gray-700">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="px-4"
-                    onPress={handleCancel}
-                  >
-                    <Text className="font-semibold">{resolvedCancel}</Text>
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="px-4"
-                    onPress={handleConfirm}
-                  >
-                    <Text className="font-semibold">{resolvedConfirm}</Text>
-                  </Button>
-                </View>
-
-                <View className="w-full items-center justify-center py-1">
-                  <BsTimePickerWheels
-                    value={tempTime}
-                    locale={locale}
-                    is24Hour={is24Hour}
-                    onChange={setTempTime}
-                  />
-                </View>
-              </View>
+                <BsTimePickerWheels
+                  value={tempTime}
+                  locale={locale}
+                  is24Hour={is24Hour}
+                  onChange={setTempTime}
+                />
+              </BsWheelSheetChrome>
             </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>

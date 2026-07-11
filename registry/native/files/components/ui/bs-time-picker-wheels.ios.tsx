@@ -12,8 +12,13 @@ import {
   resolveWheelHour,
 } from '@/lib/bs-time-picker'
 import type { BsLocale, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
-import { View } from 'react-native'
-import { BsWheelColumn, BS_WHEEL_HEIGHT } from './bs-wheel-column'
+import {
+  BS_WHEEL_HOUR_COL_WIDTH,
+  BS_WHEEL_MIN_COL_WIDTH,
+  BS_WHEEL_PERIOD_COL_WIDTH,
+  BsWheelColumn,
+  BsWheelRow,
+} from './bs-wheel-column'
 
 type BsTimePickerWheelsProps = {
   value: BsTime
@@ -22,7 +27,7 @@ type BsTimePickerWheelsProps = {
   onChange: (value: BsTime) => void
 }
 
-export function BsTimePickerWheels({
+export function BsTimePickerWheelColumns({
   value,
   locale,
   is24Hour = false,
@@ -50,13 +55,11 @@ export function BsTimePickerWheels({
   }
 
   return (
-    <View
-      className="w-full flex-row px-1"
-      style={{ height: BS_WHEEL_HEIGHT }}
-    >
+    <>
       <BsWheelColumn
-        showOverlay
-        className="flex-1"
+        showOverlay={false}
+        compact
+        columnWidth={BS_WHEEL_HOUR_COL_WIDTH}
         items={hourOptions}
         selected={displayHour}
         onSelect={(hour) => updateTime(hour, clamped.minute, displayPeriod)}
@@ -64,20 +67,20 @@ export function BsTimePickerWheels({
         loop
       />
       <BsWheelColumn
-        showOverlay
-        className="flex-1"
+        showOverlay={false}
+        compact
+        columnWidth={BS_WHEEL_MIN_COL_WIDTH}
         items={minuteOptions}
         selected={clamped.minute}
-        onSelect={(minute) =>
-          updateTime(displayHour, minute, displayPeriod)
-        }
+        onSelect={(minute) => updateTime(displayHour, minute, displayPeriod)}
         formatLabel={(minute) => formatMinuteOption(minute, locale)}
         loop
       />
       {!is24Hour ? (
         <BsWheelColumn
-          showOverlay
-          className="flex-1"
+          showOverlay={false}
+          compact
+          columnWidth={BS_WHEEL_PERIOD_COL_WIDTH}
           items={periodOptions}
           selected={displayPeriod}
           onSelect={(period) =>
@@ -86,7 +89,17 @@ export function BsTimePickerWheels({
           formatLabel={(period) => formatPeriodOption(period, locale)}
         />
       ) : null}
-    </View>
+    </>
+  )
+}
+
+export function BsTimePickerWheels({
+  ...props
+}: BsTimePickerWheelsProps) {
+  return (
+    <BsWheelRow>
+      <BsTimePickerWheelColumns {...props} />
+    </BsWheelRow>
   )
 }
 

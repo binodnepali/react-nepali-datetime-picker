@@ -56,6 +56,11 @@
       "target": "components/ui/bs-wheel-column.tsx"
     },
     {
+      "path": "registry/native/files/components/ui/bs-wheel-sheet.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-wheel-sheet.tsx"
+    },
+    {
       "path": "registry/native/files/components/ui/bs-time-picker-dialog.android.tsx",
       "type": "registry:component",
       "target": "components/ui/bs-time-picker-dialog.android.tsx"
