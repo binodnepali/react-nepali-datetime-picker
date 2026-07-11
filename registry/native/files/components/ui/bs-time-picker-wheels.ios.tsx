@@ -3,14 +3,13 @@ import {
   formatHourOption,
   formatMinuteOption,
   formatPeriodOption,
-  getDefaultBsTime,
   getHourOptions,
   getMinuteOptions,
   getPeriodOptions,
   resolveDisplayHour,
   resolveDisplayPeriod,
   resolveWheelHour,
-} from '@/lib/bs-time-picker'
+} from '../../lib/bs-time-picker'
 import type { BsLocale, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
 import {
   BS_WHEEL_HOUR_COL_WIDTH,
@@ -102,5 +101,3 @@ export function BsTimePickerWheels({
     </BsWheelRow>
   )
 }
-
-export { getDefaultBsTime }

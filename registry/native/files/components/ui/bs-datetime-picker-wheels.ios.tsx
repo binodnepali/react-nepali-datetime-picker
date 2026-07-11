@@ -18,9 +18,9 @@ import {
   resolveDisplayHour,
   resolveDisplayPeriod,
   resolveWheelHour,
-} from '@/lib/bs-time-picker'
+} from '../../lib/bs-time-picker'
 import type { BsDateTime, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
-import { mergeBsDateTime, splitBsDateTime } from '@/lib/bs-datetime-picker'
+import { mergeBsDateTime, splitBsDateTime } from '../../lib/bs-datetime-picker'
 import {
   BS_WHEEL_DATE_COL_WIDTH,
   BS_WHEEL_HOUR_COL_WIDTH,

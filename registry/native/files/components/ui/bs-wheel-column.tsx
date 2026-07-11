@@ -46,7 +46,7 @@ function flattenWheelChildren(children: React.ReactNode): React.ReactNode[] {
   const nodes: React.ReactNode[] = []
   React.Children.forEach(children, (child) => {
     if (child == null || child === false) return
-    if (React.isValidElement(child) && child.type === React.Fragment) {
+    if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.type === React.Fragment) {
       flattenWheelChildren(child.props.children).forEach((node) => nodes.push(node))
       return
     }

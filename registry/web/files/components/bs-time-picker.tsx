@@ -15,7 +15,7 @@ import {
   resolveDisplayHour,
   resolveDisplayPeriod,
   resolveWheelHour,
-} from "@/lib/bs-time-picker"
+} from "../lib/bs-time-picker"
 import {
   BS_TIME_DISPLAY_PATTERN,
   formatBsTimePattern,

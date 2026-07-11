@@ -30,7 +30,18 @@ pnpm dlx @react-native-reusables/cli@latest add \
 
 Use `--yes` without `--overwrite` so existing files (especially your RNR `button.tsx`) are kept. Add `--overwrite` only when you want to refresh every file.
 
-**Local** (picker repo dev): run `pnpm registry:build`, then point at `apps/docs/public/r-native/*.json` (built JSON with embedded source — not `registry/native/`).
+**Local** (sibling repo, no server): run `pnpm registry:build`, then from your app:
+
+```bash
+pnpm dlx shadcn@latest add \
+  ../react-nepali-datetime-picker/apps/docs/public/r-native/bs-calendar.json \
+  ../react-nepali-datetime-picker/apps/docs/public/r-native/bs-date-picker.json \
+  ../react-nepali-datetime-picker/apps/docs/public/r-native/bs-time-picker.json \
+  ../react-nepali-datetime-picker/apps/docs/public/r-native/bs-datetime-picker.json \
+  --yes
+```
+
+Use **file paths with `shadcn add`** locally. RNR CLI rewrites relative paths to its own registry and fails — reserve RNR CLI for full hosted `https://…/*.json` URLs below.
 
 <details>
 <summary>shadcn alternative</summary>
@@ -41,14 +52,11 @@ Same JSON URLs work with `pnpm dlx shadcn@latest add …`. For namespaced instal
 
 ### Registry deps
 
-Picker items declare RNR primitives as **full URLs** in `registryDependencies`:
+Picker items declare RNR primitives as **full URLs** in `registryDependencies` (not bare `"button"`).
 
-- `https://reactnativereusables.com/r/nativewind/button.json` (also pulls `text`)
-- `https://reactnativereusables.com/r/nativewind/icon.json`
+Cross-picker imports use **relative paths** (`../../lib/bs-time-picker`) in registry source so `shadcn add` does not rewrite them to `@/components/ui/…` (that caused require cycles when item names matched lib paths).
 
-Bare `"button"` in any registry JSON resolves to the **web** shadcn button (`ui.shadcn.com`), not RNR’s `Pressable` button — even when using the RNR CLI.
-
-After sync, confirm lib imports stayed on `@/lib/bs-time-picker` and `@/lib/bs-datetime-picker`.
+`fromAdDate` / `toAdDate` live in core `time/datetime.ts` and ship with the registry.
 
 ## Usage
 
@@ -83,14 +91,14 @@ Metro resolves `.ios.tsx` / `.android.tsx` automatically — install once.
 
 | Component | iOS | Android | Web |
 | --------- | --- | ------- | --- |
-| **Date** | Sheet + chronological wheel | Material calendar dialog | Popover + grid or `<select>` |
-| **Time** | Hour / minute / AM·PM wheels | Material time dialog (clock) | Popover + `<select>` |
-| **DateTime** | Date + time wheels in one sheet | Calendar dialog → time dialog | Popover: calendar + selects |
+| **Date** | Sheet + chronological wheel | Material calendar dialog | Popover + calendar grid |
+| **Time** | Hour / minute / AM·PM wheels | Material time dialog (clock) | Popover + time selects |
+| **DateTime** | Date + time wheels in one sheet | Calendar dialog → time dialog | Popover: calendar + time selects |
 | **Calendar** | Inline grid | Inline grid | Inline grid |
 
-Shared: `bs-wheel-column.tsx` (iOS wheels), `lib/bs-day-picker/` (calendar engine), `lib/bs-time-picker/` (time helpers).
+Metro resolves `bs-*-picker.tsx` barrels to `.ios.tsx` / `.android.tsx`. Barrels exist for TypeScript import paths only.
 
-Optional: `@expo/ui/community/picker` for web HTML `<select>` wheels only.
+Web pickers use the **web registry** (`r/bs-*.json`) with popover — not the native `r-native/` bundle.
 
 ## PortalHost
 

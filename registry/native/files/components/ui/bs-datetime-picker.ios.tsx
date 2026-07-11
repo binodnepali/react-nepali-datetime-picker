@@ -1,16 +1,16 @@
 import {
-  getDefaultBsDateTime,
-  mergeBsDateTime,
-  splitBsDateTime,
   formatBsDateTime,
+  getDefaultBsDateTime,
 } from "../../lib/bs-datetime-picker";
 import { formatBsDateTimePattern } from "@/lib/bs-time-picker/time/pattern";
 import type { BsDateTime, BsLocale } from "@/lib/bs-time-picker/time/types";
 import { cn } from "@/lib/utils";
 import { CalendarClock } from "lucide-react-native";
 import * as React from "react";
-import { BsDatePickerDialog } from "./bs-date-picker-dialog.android";
-import { BsTimePickerDialog } from "./bs-time-picker-dialog.android";
+import { Modal, TouchableWithoutFeedback, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BsDateTimePickerWheels } from "./bs-datetime-picker-wheels.ios";
+import { BsWheelSheetChrome } from "./bs-wheel-sheet";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
@@ -21,7 +21,6 @@ export type BsDateTimePickerProps = {
   locale?: BsLocale;
   is24Hour?: boolean;
   placeholder?: string;
-  title?: string;
   cancelLabel?: string;
   confirmLabel?: string;
   formatPattern?: string;
@@ -54,7 +53,6 @@ export function BsDateTimePicker({
   locale = "ne",
   is24Hour = false,
   placeholder,
-  title,
   cancelLabel,
   confirmLabel,
   formatPattern,
@@ -62,14 +60,13 @@ export function BsDateTimePicker({
   className,
   disabled = false,
 }: BsDateTimePickerProps) {
+  const insets = useSafeAreaInsets();
   const resolvedPlaceholder =
     placeholder ??
     (locale === "ne" ? "मिति र समय छान्नुहोस्" : "Select date and time");
-  const resolvedTitle = title ?? resolvedPlaceholder;
   const resolvedCancel = cancelLabel ?? "Cancel";
-  const resolvedConfirm = confirmLabel ?? "OK";
-  const [showDatePicker, setShowDatePicker] = React.useState(false);
-  const [showTimePicker, setShowTimePicker] = React.useState(false);
+  const resolvedConfirm = confirmLabel ?? "Confirm";
+  const [showPicker, setShowPicker] = React.useState(false);
   const [tempValue, setTempValue] = React.useState<BsDateTime>(
     value ?? getDefaultBsDateTime(),
   );
@@ -77,26 +74,16 @@ export function BsDateTimePicker({
   const handleOpen = () => {
     if (disabled) return;
     setTempValue(value ?? getDefaultBsDateTime());
-    setShowDatePicker(true);
+    setShowPicker(true);
   };
 
-  const handleDateCancel = () => {
-    setShowDatePicker(false);
+  const handleCancel = () => {
+    setShowPicker(false);
     setTempValue(value ?? getDefaultBsDateTime());
   };
 
-  const handleDateConfirm = () => {
-    setShowDatePicker(false);
-    setShowTimePicker(true);
-  };
-
-  const handleTimeCancel = () => {
-    setShowTimePicker(false);
-    setTempValue(value ?? getDefaultBsDateTime());
-  };
-
-  const handleTimeConfirm = () => {
-    setShowTimePicker(false);
+  const handleConfirm = () => {
+    setShowPicker(false);
     onValueChange?.(tempValue);
   };
 
@@ -109,8 +96,6 @@ export function BsDateTimePicker({
         formatPattern,
       )
     : resolvedPlaceholder;
-
-  const { date: dialogDate, time: dialogTime } = splitBsDateTime(tempValue);
 
   return (
     <>
@@ -126,38 +111,28 @@ export function BsDateTimePicker({
         <Icon as={CalendarClock} className="size-4 text-muted-foreground" />
       </Button>
 
-      <BsDatePickerDialog
-        visible={showDatePicker}
-        value={dialogDate}
-        locale={locale}
-        title={resolvedTitle}
-        cancelLabel={resolvedCancel}
-        confirmLabel={resolvedConfirm}
-        onChange={(nextDate) => {
-          setTempValue((current) =>
-            mergeBsDateTime(nextDate, splitBsDateTime(current).time),
-          );
-        }}
-        onCancel={handleDateCancel}
-        onConfirm={handleDateConfirm}
-      />
-
-      <BsTimePickerDialog
-        key={showTimePicker ? "open" : "closed"}
-        visible={showTimePicker}
-        value={dialogTime}
-        locale={locale}
-        is24Hour={is24Hour}
-        cancelLabel={resolvedCancel}
-        confirmLabel={resolvedConfirm}
-        onChange={(nextTime) => {
-          setTempValue((current) =>
-            mergeBsDateTime(splitBsDateTime(current).date, nextTime),
-          );
-        }}
-        onCancel={handleTimeCancel}
-        onConfirm={handleTimeConfirm}
-      />
+      <Modal visible={showPicker} transparent animationType="slide">
+        <TouchableWithoutFeedback onPress={handleCancel}>
+          <View className="flex-1 justify-end bg-black/70">
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <BsWheelSheetChrome
+                cancelLabel={resolvedCancel}
+                confirmLabel={resolvedConfirm}
+                bottomInset={insets.bottom}
+                onCancel={handleCancel}
+                onConfirm={handleConfirm}
+              >
+                <BsDateTimePickerWheels
+                  value={tempValue}
+                  locale={locale}
+                  is24Hour={is24Hour}
+                  onChange={setTempValue}
+                />
+              </BsWheelSheetChrome>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </>
   );
 }

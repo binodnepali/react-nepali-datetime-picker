@@ -58,7 +58,7 @@ Native:
 
 ## Time picker (`bs-time-picker`)
 
-Web: three `<select>` columns inside a popover (hour, minute, optional AM/PM). Style via your shadcn `Button` trigger and global input/select tokens.
+Web: hour / minute / AM·PM `<select>` columns inside a popover (in `bs-time-picker.tsx` web registry). Style via your shadcn `Button` trigger and global input/select tokens.
 
 Native:
 

@@ -7,7 +7,7 @@ import {
   resolveDisplayPeriod,
   to12Hour,
   from12Hour,
-} from '@/lib/bs-time-picker'
+} from '../../lib/bs-time-picker'
 import type { BsLocale, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
 import { cn } from '@/lib/utils'
 import * as React from 'react'

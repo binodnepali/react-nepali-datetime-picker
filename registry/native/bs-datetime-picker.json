@@ -37,24 +37,14 @@
       "target": "components/ui/bs-wheel-sheet.tsx"
     },
     {
-      "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.tsx",
-      "type": "registry:component",
-      "target": "components/ui/bs-datetime-picker-wheels.tsx"
-    },
-    {
       "path": "registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx",
       "type": "registry:component",
       "target": "components/ui/bs-datetime-picker-wheels.ios.tsx"
     },
     {
-      "path": "registry/native/files/components/ui/bs-time-picker-wheels.tsx",
+      "path": "registry/native/files/components/ui/bs-datetime-picker.ios.tsx",
       "type": "registry:component",
-      "target": "components/ui/bs-time-picker-wheels.tsx"
-    },
-    {
-      "path": "registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx",
-      "type": "registry:component",
-      "target": "components/ui/bs-time-picker-wheels.ios.tsx"
+      "target": "components/ui/bs-datetime-picker.ios.tsx"
     },
     {
       "path": "registry/native/files/components/ui/bs-datetime-picker.tsx",

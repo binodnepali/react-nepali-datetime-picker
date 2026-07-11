@@ -15,13 +15,13 @@ import {
   resolveDisplayHour,
   resolveDisplayPeriod,
   resolveWheelHour,
-} from "@/lib/bs-time-picker";
+} from "../lib/bs-time-picker";
 import {
   formatBsDateTime,
   getDefaultBsDateTime,
   mergeBsDateTime,
   splitBsDateTime,
-} from "@/lib/bs-datetime-picker";
+} from "../lib/bs-datetime-picker";
 import { formatBsDateTimePattern } from "@/lib/bs-time-picker/time/pattern";
 import type { BsDateTime } from "@/lib/bs-time-picker/time/types";
 import type {

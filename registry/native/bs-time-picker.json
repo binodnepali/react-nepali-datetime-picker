@@ -67,14 +67,14 @@
       "target": "components/ui/bs-time-picker-dialog.android.tsx"
     },
     {
-      "path": "registry/native/files/components/ui/bs-time-picker-wheels.tsx",
-      "type": "registry:component",
-      "target": "components/ui/bs-time-picker-wheels.tsx"
-    },
-    {
       "path": "registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx",
       "type": "registry:component",
       "target": "components/ui/bs-time-picker-wheels.ios.tsx"
+    },
+    {
+      "path": "registry/native/files/components/ui/bs-time-picker.ios.tsx",
+      "type": "registry:component",
+      "target": "components/ui/bs-time-picker.ios.tsx"
     },
     {
       "path": "registry/native/files/components/ui/bs-time-picker.tsx",

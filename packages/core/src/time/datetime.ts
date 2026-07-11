@@ -1,4 +1,5 @@
 import { getDayAdDate } from '../calendar-grid'
+import { getCalendarData } from '../formatters'
 import { getCurrentBsDate } from '../navigation'
 import type { BsDate } from '../types'
 import { clampBsTime, getDefaultBsTime } from './helpers'
@@ -43,6 +44,41 @@ export function formatBsDateTime(
     locale,
     is24Hour,
   )
+}
+
+function formatAdDateKey(date: Date): string {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+/** Map AD `Date` to BS datetime using calendar data. */
+export function fromAdDate(date: Date): BsDateTime | null {
+  const adStr = formatAdDateKey(date)
+  const data = getCalendarData()
+
+  for (const yearKey of Object.keys(data)) {
+    const yearData = data[yearKey]
+    if (!yearData) continue
+    for (const monthKey of Object.keys(yearData)) {
+      const monthData = yearData[monthKey]
+      if (!monthData) continue
+      for (const day of monthData.days) {
+        if (day.adDate === adStr) {
+          return {
+            year: day.bsYear,
+            month: day.bsMonth,
+            day: day.bsDay,
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+          }
+        }
+      }
+    }
+  }
+
+  return null
 }
 
 /** Map BS datetime to AD `Date` using calendar data (Asia/Kathmandu local fields). */

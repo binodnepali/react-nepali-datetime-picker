@@ -222,19 +222,14 @@ const NATIVE_DATE_PICKER_FILES = [
     target: 'components/ui/bs-wheel-sheet.tsx',
   },
   {
-    path: 'registry/native/files/components/ui/bs-date-picker-wheels.tsx',
-    type: 'registry:component',
-    target: 'components/ui/bs-date-picker-wheels.tsx',
-  },
-  {
     path: 'registry/native/files/components/ui/bs-date-picker-wheels.ios.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-date-picker-wheels.ios.tsx',
   },
   {
-    path: 'registry/native/files/components/ui/bs-date-picker-wheels.android.tsx',
+    path: 'registry/native/files/components/ui/bs-date-picker.ios.tsx',
     type: 'registry:component',
-    target: 'components/ui/bs-date-picker-wheels.android.tsx',
+    target: 'components/ui/bs-date-picker.ios.tsx',
   },
   {
     path: 'registry/native/files/components/ui/bs-date-picker.tsx',
@@ -282,14 +277,14 @@ const NATIVE_TIME_PICKER_FILES = [
     target: 'components/ui/bs-time-picker-dialog.android.tsx',
   },
   {
-    path: 'registry/native/files/components/ui/bs-time-picker-wheels.tsx',
-    type: 'registry:component',
-    target: 'components/ui/bs-time-picker-wheels.tsx',
-  },
-  {
     path: 'registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-time-picker-wheels.ios.tsx',
+  },
+  {
+    path: 'registry/native/files/components/ui/bs-time-picker.ios.tsx',
+    type: 'registry:component',
+    target: 'components/ui/bs-time-picker.ios.tsx',
   },
   {
     path: 'registry/native/files/components/ui/bs-time-picker.tsx',
@@ -325,24 +320,14 @@ const NATIVE_DATETIME_PICKER_FILES = [
     target: 'components/ui/bs-wheel-sheet.tsx',
   },
   {
-    path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.tsx',
-    type: 'registry:component',
-    target: 'components/ui/bs-datetime-picker-wheels.tsx',
-  },
-  {
     path: 'registry/native/files/components/ui/bs-datetime-picker-wheels.ios.tsx',
     type: 'registry:component',
     target: 'components/ui/bs-datetime-picker-wheels.ios.tsx',
   },
   {
-    path: 'registry/native/files/components/ui/bs-time-picker-wheels.tsx',
+    path: 'registry/native/files/components/ui/bs-datetime-picker.ios.tsx',
     type: 'registry:component',
-    target: 'components/ui/bs-time-picker-wheels.tsx',
-  },
-  {
-    path: 'registry/native/files/components/ui/bs-time-picker-wheels.ios.tsx',
-    type: 'registry:component',
-    target: 'components/ui/bs-time-picker-wheels.ios.tsx',
+    target: 'components/ui/bs-datetime-picker.ios.tsx',
   },
   {
     path: 'registry/native/files/components/ui/bs-datetime-picker.tsx',
@@ -420,7 +405,7 @@ async function buildNativeRegistry() {
         ],
         registryDependencies: NATIVE_RNR_REGISTRY_DEPS,
         docs:
-          'Installs RNR `button` (and `text`) + `icon` when missing via registryDependencies URLs. Install bs-calendar first. Metro resolves `.ios.tsx` / `.android.tsx` automatically. Web uses `bs-date-picker-wheels.tsx` (optional `@expo/ui/community/picker` for HTML selects).',
+          'Installs RNR `button` (and `text`) + `icon` when missing. Install bs-calendar first. iOS: sheet + wheels (`.ios.tsx`). Android: Material calendar dialog.',
         files: NATIVE_DATE_PICKER_FILES,
       },
       {
