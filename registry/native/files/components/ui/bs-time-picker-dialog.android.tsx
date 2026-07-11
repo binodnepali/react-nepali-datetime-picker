@@ -11,7 +11,13 @@ import {
 import type { BsLocale, BsPeriod, BsTime } from '@/lib/bs-time-picker/time/types'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
-import { Modal, Pressable, View } from 'react-native'
+import { Modal, Pressable, StyleSheet, View } from 'react-native'
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
 import Svg, { Circle, Line } from 'react-native-svg'
 import { Text } from '@/components/ui/text'
 
@@ -22,6 +28,7 @@ const CENTER = CLOCK_SIZE / 2
 /** Reach the center of dial labels (Material hand length). */
 const HAND_RADIUS = CLOCK_RADIUS - NODE_SIZE / 2
 const HAND_COLOR = 'hsl(180, 82%, 24%)'
+const DIAL_TRANSITION_MS = 320
 
 type SelectionMode = 'hour' | 'minute'
 
@@ -70,6 +77,21 @@ function getMinuteDialValues(): number[] {
   return Array.from({ length: 12 }, (_, index) => index * 5)
 }
 
+function isMinuteDialSelected(dialValue: number, selectedMinute: number): boolean {
+  return (
+    Math.abs(dialValue - selectedMinute) < 3 ||
+    (selectedMinute >= 58 && dialValue === 0)
+  )
+}
+
+function resolveSelectedMinuteDial(minute: number): number {
+  return (
+    getMinuteDialValues().find((dialValue) =>
+      isMinuteDialSelected(dialValue, minute),
+    ) ?? 0
+  )
+}
+
 function hourValueToClockDegrees(hour: number, is24Hour: boolean): number {
   return is24Hour ? hour24ToClockDegrees(hour) : hour12ToClockDegrees(hour)
 }
@@ -78,7 +100,7 @@ function minuteValueToClockDegrees(minute: number): number {
   return minuteToClockDegrees(minute)
 }
 
-function clockPoint(clockDegrees: number, radius: number) {
+function clockHandEnd(clockDegrees: number, radius: number) {
   const radians = (clockDegrees - 90) * (Math.PI / 180)
   return {
     x: CENTER + radius * Math.cos(radians),
@@ -96,7 +118,7 @@ type BsTimePickerClockProps = {
 }
 
 function ClockHand({ clockDegrees }: { clockDegrees: number }) {
-  const end = clockPoint(clockDegrees, HAND_RADIUS)
+  const end = clockHandEnd(clockDegrees, HAND_RADIUS)
 
   return (
     <Svg
@@ -119,32 +141,31 @@ function ClockHand({ clockDegrees }: { clockDegrees: number }) {
   )
 }
 
-function BsTimePickerClock({
+type ClockDialNodesProps = {
+  mode: SelectionMode
+  value: BsTime
+  locale: BsLocale
+  is24Hour: boolean
+  onSelectHour: (hour: number) => void
+  onSelectMinute: (minute: number) => void
+}
+
+function ClockDialNodes({
   mode,
   value,
   locale,
   is24Hour,
   onSelectHour,
   onSelectMinute,
-}: BsTimePickerClockProps) {
+}: ClockDialNodesProps) {
   const dialValues =
     mode === 'hour' ? getHourDialValues(is24Hour) : getMinuteDialValues()
 
   const selectedHour = is24Hour ? value.hour : resolveDisplayHour(value.hour, false)
   const selectedMinute = value.minute
 
-  const handClockDegrees =
-    mode === 'hour'
-      ? hourValueToClockDegrees(selectedHour, is24Hour)
-      : minuteValueToClockDegrees(selectedMinute)
-
   return (
-    <View
-      className="relative self-center rounded-full border border-border/70 bg-input"
-      style={{ width: CLOCK_SIZE, height: CLOCK_SIZE }}
-    >
-      <ClockHand clockDegrees={handClockDegrees} />
-
+    <>
       {dialValues.map((dialValue) => {
         const clockDegrees =
           mode === 'hour'
@@ -154,8 +175,7 @@ function BsTimePickerClock({
         const isSelected =
           mode === 'hour'
             ? dialValue === selectedHour
-            : Math.abs(dialValue - selectedMinute) < 3 ||
-              (selectedMinute >= 58 && dialValue === 0)
+            : isMinuteDialSelected(dialValue, selectedMinute)
 
         const position = positionForClockDegrees(clockDegrees, CLOCK_RADIUS)
         const label =
@@ -200,9 +220,129 @@ function BsTimePickerClock({
           </Pressable>
         )
       })}
+    </>
+  )
+}
+
+type ClockDialLayerProps = {
+  mode: SelectionMode
+  value: BsTime
+  locale: BsLocale
+  is24Hour: boolean
+  handClockDegrees: number
+  onSelectHour: (hour: number) => void
+  onSelectMinute: (minute: number) => void
+}
+
+function ClockDialLayer({
+  mode,
+  value,
+  locale,
+  is24Hour,
+  handClockDegrees,
+  onSelectHour,
+  onSelectMinute,
+}: ClockDialLayerProps) {
+  return (
+    <>
+      <ClockHand clockDegrees={handClockDegrees} />
+      <ClockDialNodes
+        mode={mode}
+        value={value}
+        locale={locale}
+        is24Hour={is24Hour}
+        onSelectHour={onSelectHour}
+        onSelectMinute={onSelectMinute}
+      />
+    </>
+  )
+}
+
+function BsTimePickerClock({
+  mode,
+  value,
+  locale,
+  is24Hour,
+  onSelectHour,
+  onSelectMinute,
+}: BsTimePickerClockProps) {
+  const selectedHour = is24Hour ? value.hour : resolveDisplayHour(value.hour, false)
+  const selectedMinute = value.minute
+  const dialProgress = useSharedValue(mode === 'hour' ? 0 : 1)
+  const hasAnimatedDial = React.useRef(false)
+
+  React.useEffect(() => {
+    const target = mode === 'hour' ? 0 : 1
+    if (!hasAnimatedDial.current) {
+      dialProgress.value = target
+      hasAnimatedDial.current = true
+      return
+    }
+
+    dialProgress.value = withTiming(target, {
+      duration: DIAL_TRANSITION_MS,
+      easing: Easing.inOut(Easing.cubic),
+    })
+  }, [dialProgress, mode])
+
+  const hourDialStyle = useAnimatedStyle(() => ({
+    opacity: 1 - dialProgress.value,
+    transform: [{ scale: 1 - dialProgress.value * 0.06 }],
+  }))
+
+  const minuteDialStyle = useAnimatedStyle(() => ({
+    opacity: dialProgress.value,
+    transform: [{ scale: 0.94 + dialProgress.value * 0.06 }],
+  }))
+
+  const hourHandDegrees = hourValueToClockDegrees(selectedHour, is24Hour)
+  const minuteHandDegrees = minuteValueToClockDegrees(
+    resolveSelectedMinuteDial(selectedMinute),
+  )
+
+  return (
+    <View
+      className="relative self-center rounded-full border border-border/70 bg-input"
+      style={{ width: CLOCK_SIZE, height: CLOCK_SIZE }}
+    >
+      <Animated.View
+        pointerEvents={mode === 'hour' ? 'auto' : 'none'}
+        style={[styles.dialLayer, hourDialStyle]}
+      >
+        <ClockDialLayer
+          mode="hour"
+          value={value}
+          locale={locale}
+          is24Hour={is24Hour}
+          handClockDegrees={hourHandDegrees}
+          onSelectHour={onSelectHour}
+          onSelectMinute={onSelectMinute}
+        />
+      </Animated.View>
+
+      <Animated.View
+        pointerEvents={mode === 'minute' ? 'auto' : 'none'}
+        style={[styles.dialLayer, minuteDialStyle]}
+      >
+        <ClockDialLayer
+          mode="minute"
+          value={value}
+          locale={locale}
+          is24Hour={is24Hour}
+          handClockDegrees={minuteHandDegrees}
+          onSelectHour={onSelectHour}
+          onSelectMinute={onSelectMinute}
+        />
+      </Animated.View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  dialLayer: {
+    ...StyleSheet.absoluteFill,
+  },
+})
 
 export function BsTimePickerDialog({
   visible,

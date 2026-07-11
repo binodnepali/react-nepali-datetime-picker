@@ -13,8 +13,10 @@ const materialClassNames = {
   months: 'h-full',
   month: 'relative h-full',
   nav: '',
-  button_previous: '',
-  button_next: '',
+  button_previous:
+    'size-12 items-center justify-center rounded-full active:bg-accent/40',
+  button_next:
+    'size-12 items-center justify-center rounded-full active:bg-accent/40',
   month_caption: '',
   dropdowns: '',
   dropdown: '',

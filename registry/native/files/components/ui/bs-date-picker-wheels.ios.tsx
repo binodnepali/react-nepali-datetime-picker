@@ -7,8 +7,7 @@ import {
 import { getBsDateIndex } from '@/lib/bs-day-picker/navigation'
 import { bsDateKey } from '@/lib/bs-day-picker/types'
 import type { BsDate, BsLocale } from '@/lib/bs-day-picker/types'
-import { View } from 'react-native'
-import { BsWheelColumn, BS_WHEEL_HEIGHT } from './bs-wheel-column'
+import { BsWheelColumn, BsWheelRow, BS_WHEEL_DATE_COL_WIDTH } from './bs-wheel-column'
 
 type BsDatePickerWheelsProps = {
   value: BsDate
@@ -27,10 +26,10 @@ export function BsDatePickerWheels({
   const selectedIndex = getBsDateIndex(clampedValue)
 
   return (
-    <View className="w-full px-1" style={{ height: BS_WHEEL_HEIGHT }}>
+    <BsWheelRow>
       <BsWheelColumn
-        showOverlay
-        className="w-full"
+        showOverlay={false}
+        columnWidth={BS_WHEEL_DATE_COL_WIDTH}
         items={dateKeys}
         selected={selectedKey}
         selectedIndex={selectedIndex >= 0 ? selectedIndex : undefined}
@@ -40,6 +39,6 @@ export function BsDatePickerWheels({
         }}
         formatLabel={(key) => formatBsDateWheelKey(key, locale)}
       />
-    </View>
+    </BsWheelRow>
   )
 }
