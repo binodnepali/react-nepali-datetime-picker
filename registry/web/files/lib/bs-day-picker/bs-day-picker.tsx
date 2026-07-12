@@ -276,7 +276,7 @@ export function BsDayPicker({
             </button>
           </div>
 
-          <div className={classNames?.month_grid}>
+          <div className={classNames?.month_grid} role="grid">
             <div className={classNames?.weekdays} role="row">
               {weekdayLabels.map((label) => (
                 <div key={label} className={classNames?.weekday} role="columnheader">
