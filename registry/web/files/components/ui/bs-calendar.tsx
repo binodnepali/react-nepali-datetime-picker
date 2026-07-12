@@ -80,7 +80,7 @@ function BsCalendar({
           "text-muted-foreground flex-1 text-center rounded-md font-normal text-[0.8rem] select-none",
           classNames?.weekday,
         ),
-        week: cn("mt-2 flex w-full", classNames?.week),
+        week: cn(classNames?.week),
         day: cn(
           "group/day relative aspect-square min-w-0 flex-1 p-0 text-center select-none",
           classNames?.day,
