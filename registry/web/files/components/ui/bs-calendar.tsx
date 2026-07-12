@@ -74,7 +74,7 @@ function BsCalendar({
             : "rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 min-w-0 max-w-full [&>svg]:shrink-0 [&>svg]:text-muted-foreground [&>svg]:size-3.5 [&>:first-child]:truncate",
           classNames?.caption_label,
         ),
-        month_grid: cn("w-full", classNames?.month_grid),
+        month_grid: cn("w-full border-collapse", classNames?.month_grid),
         weekdays: cn("flex", classNames?.weekdays),
         weekday: cn(
           "text-muted-foreground flex-1 text-center rounded-md font-normal text-[0.8rem] select-none",
