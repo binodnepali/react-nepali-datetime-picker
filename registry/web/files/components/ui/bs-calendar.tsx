@@ -27,7 +27,7 @@ function BsCalendar({
       showOutsideDays={showOutsideDays}
       captionLayout={captionLayout}
       className={cn(
-        "bg-background group/calendar rounded-md p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        "bg-background group/calendar rounded-md p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         className,
       )}
       classNames={{
@@ -74,15 +74,15 @@ function BsCalendar({
             : "rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 min-w-0 max-w-full [&>svg]:shrink-0 [&>svg]:text-muted-foreground [&>svg]:size-3.5 [&>:first-child]:truncate",
           classNames?.caption_label,
         ),
-        month_grid: cn("w-full border-collapse", classNames?.month_grid),
-        weekdays: cn(classNames?.weekdays),
+        month_grid: cn("w-full", classNames?.month_grid),
+        weekdays: cn("flex", classNames?.weekdays),
         weekday: cn(
-          "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
+          "text-muted-foreground flex-1 text-center rounded-md font-normal text-[0.8rem] select-none",
           classNames?.weekday,
         ),
-        week: cn(classNames?.week),
+        week: cn("mt-2 flex w-full", classNames?.week),
         day: cn(
-          "relative w-full p-0 text-center aspect-square select-none",
+          "group/day relative aspect-square min-w-0 flex-1 p-0 text-center select-none",
           classNames?.day,
         ),
         day_button: cn(
