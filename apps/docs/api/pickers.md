@@ -13,6 +13,7 @@ All three pickers format the trigger label with **date-fns-style tokens** mapped
 | Picker            | Default pattern              | Example (`en`)                         |
 | ----------------- | ---------------------------- | -------------------------------------- |
 | `BsDatePicker`    | `EEEE, d MMMM yyyy`          | `Friday, 26 Ashad 2083`                |
+| (compact)         | `EEE, d MMM yyyy`            | `Fri, 26 Ash 2083`                     |
 | `BsTimePicker`    | `h:mm a`                     | `10:51 PM`                             |
 | `BsDateTimePicker`| `EEEE, d MMMM yyyy, h:mm a`  | `Friday, 26 Ashad 2083, 10:51 PM`     |
 
@@ -52,7 +53,11 @@ Nepali locale uses Nepali digits where applicable.
 ### Helpers
 
 ```ts
-import { formatBsDatePattern, BS_DATE_DISPLAY_PATTERN } from "@/lib/bs-day-picker/pattern"
+import {
+  formatBsDatePattern,
+  BS_DATE_COMPACT_DISPLAY_PATTERN,
+  BS_DATE_DISPLAY_PATTERN,
+} from "@/lib/bs-day-picker/pattern"
 import {
   formatBsTimePattern,
   formatBsDateTimePattern,
