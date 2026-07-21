@@ -1,7 +1,7 @@
 {
   "name": "react-nepali-datetime-picker",
   "private": true,
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Registry-first Bikram Sambat date and datetime pickers for React and React Native.",
   "type": "module",
   "license": "MIT",
