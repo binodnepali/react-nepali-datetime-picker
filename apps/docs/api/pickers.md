@@ -93,7 +93,7 @@ For Gregorian labels, use `formatValue` with `toAdDate()` and your own formatter
 
 | Platform | UX                                    |
 | -------- | ------------------------------------- |
-| iOS      | Bottom sheet with BS date wheels      |
+| iOS      | Bottom sheet with year / month / day wheels |
 | Android  | Material calendar dialog              |
 | Web      | Popover with `BsCalendar`             |
 
@@ -172,7 +172,7 @@ Same props as `BsTimePicker`, plus date selection. Web uses `onChange`; native u
 
 | Platform | UX                                              |
 | -------- | ----------------------------------------------- |
-| iOS      | Bottom sheet: BS date wheel + hour/minute wheels |
+| iOS      | Bottom sheet: chronological date wheel + hour/minute wheels |
 | Android  | Material calendar dialog → time dialog          |
 | Web      | Popover: calendar + time selects                |
 
