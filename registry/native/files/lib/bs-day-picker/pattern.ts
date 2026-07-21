@@ -5,6 +5,9 @@ import type { BsDate, BsLocale } from './types'
 /** Default date picker trigger pattern (date-fns-style tokens, BS calendar). */
 export const BS_DATE_DISPLAY_PATTERN = 'EEEE, d MMMM yyyy'
 
+/** Compact picker label — short weekday and month, e.g. "Fri, 26 Ash 2083". */
+export const BS_DATE_COMPACT_DISPLAY_PATTERN = 'EEE, d MMM yyyy'
+
 const PATTERN_TOKEN =
   /'([^']*)'|(EEEE|EEE|MMMM|MMM|yyyy|yy|MM|M|dd|d)/g
 

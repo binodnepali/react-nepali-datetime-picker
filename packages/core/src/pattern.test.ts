@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { formatBsDatePattern, BS_DATE_DISPLAY_PATTERN } from './pattern'
+import { formatBsDatePattern, BS_DATE_COMPACT_DISPLAY_PATTERN, BS_DATE_DISPLAY_PATTERN } from './pattern'
 import {
   BS_DATETIME_DISPLAY_PATTERN,
   formatBsDateTimePattern,
@@ -13,6 +13,16 @@ describe('formatBsDatePattern', () => {
   it('formats weekday long date', () => {
     const label = formatBsDatePattern(date, BS_DATE_DISPLAY_PATTERN, 'en')
     expect(label).toMatch(/^Friday, 26 Ashad 2083$/)
+  })
+
+  it('formats compact weekday and month', () => {
+    const label = formatBsDatePattern(date, BS_DATE_COMPACT_DISPLAY_PATTERN, 'en')
+    expect(label).toMatch(/^Fri, 26 Ash 2083$/)
+  })
+
+  it('formats compact nepali weekday and month', () => {
+    const label = formatBsDatePattern(date, BS_DATE_COMPACT_DISPLAY_PATTERN, 'ne')
+    expect(label).toMatch(/^शुक्र, २६ असा २०८३$/)
   })
 
   it('supports quoted literals', () => {

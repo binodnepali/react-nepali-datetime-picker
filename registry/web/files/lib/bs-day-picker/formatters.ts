@@ -73,7 +73,7 @@ export function formatBsDateHeadline(date: BsDate, locale: BsLocale = 'en'): str
   return `${dayLabel} ${monthName} ${yearLabel}`
 }
 
-/** Native iOS-style wheel label, e.g. "Sun 26 Apr" → "Sun 26 Bai". */
+/** Native iOS-style wheel label for datetime picker, e.g. "Sun 26 Ash" / "शुक्र २६ असा". */
 export function formatBsDateWheelLabel(date: BsDate, locale: BsLocale = 'en'): string {
   const weekdayLabel = getWeekdayLabel(getBsDateWeekday(date), locale, true)
   const dayLabel =
